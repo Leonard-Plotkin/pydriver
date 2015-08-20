@@ -1,0 +1,8 @@
+/build
+/build_c
+/.eggs
+/pydriver.egg-info
+/dist
+*.pyc
+*.pyd
+*.so

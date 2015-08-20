@@ -1,0 +1,8 @@
+include LICENSE README.rst
+include Makefile setup.py
+recursive-include pydriver *.py *.pyx *.pxd *.h *.rst
+include pydriver/pcl/pcl_helper/CMakeLists.txt pydriver/pcl/pcl_helper/*.cpp pydriver/pcl/pcl_helper/*.h
+
+prune build_c
+prune pydriver/pcl/pcl_helper/build
+prune pydriver/pcl/pcl_helper/lib
