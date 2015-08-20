@@ -1,0 +1,294 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The evaluation Module &mdash; PyDriver 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyDriver 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="Reference" href="reference.html" />
+    <link rel="next" title="The features Module" href="features.html" />
+    <link rel="prev" title="The detectors Module" href="detectors.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pydriver.evaluation">
+<span id="the-evaluation-module"></span><h1>The <a class="reference internal" href="#module-pydriver.evaluation" title="pydriver.evaluation"><code class="xref py py-mod docutils literal"><span class="pre">evaluation</span></code></a> Module<a class="headerlink" href="#module-pydriver.evaluation" title="Permalink to this headline">¶</a></h1>
+<p>Module for evaluating detection performance.</p>
+<span class="target" id="module-pydriver.evaluation.evaluation"></span><dl class="class">
+<dt id="pydriver.evaluation.evaluation.Evaluator">
+<em class="property">class </em><code class="descclassname">pydriver.evaluation.evaluation.</code><code class="descname">Evaluator</code><span class="sig-paren">(</span><em>minOverlap=0.5</em>, <em>nPoints=0</em>, <em>nRecallIntervals=0</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.evaluation.evaluation.Evaluator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluation curve representation</p>
+<p>Average precision and orientation similarity measures will compute the area unter the monotonically
+decreasing function of maximum performance w.r.t. increasing minimum recall values.</p>
+<p>The negative category of hypotheses is processed correctly in that sense that it will be ignored during
+matching of hypotheses to ground truth.</p>
+<p>Evaluation is performed under the assumption that the exact positive category does not matter. Create
+multiple instances for different categories and only supply ground truth / hypotheses of desired category
+if you want to evaluate a multi-category recognition scenario.</p>
+<dl class="method">
+<dt id="pydriver.evaluation.evaluation.Evaluator.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>minOverlap=0.5</em>, <em>nPoints=0</em>, <em>nRecallIntervals=0</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.evaluation.evaluation.Evaluator.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Evaluator</p>
+<p>Overlapping is computed as <em>intersection(ground truth, hypothesis) / union(ground truth, hypothesis)</em> considering
+their 2D bounding boxes. Minimum overlap is the criterion for matching hypotheses to ground truth.</p>
+<p>The number of individual points will correspond to the number of (different) weights of supplied hypotheses for
+nPoints&lt;=0 or their minimum weights will be linearly spaced between minimum and maximum weights of those
+hypotheses for nPoints&gt;0.</p>
+<p>Minimum recall values for averaging will be drawn from all available points for nRecallIntervals&lt;=0 or will be linearly spaced
+between 0.0 and 1.0 (e.g. 10 intervals for nRecallIntervals=10: minimum recall = 0.0, 0.1, ..., 0.9, 1.0) for nRecallIntervals&gt;0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>minOverlap: float, optional</dt>
+<dd><p class="first last">Minimum overlap between ground truth and hypothesis to match them to each other, <em>0.5</em> by default</p>
+</dd>
+<dt>nPoints: int, optional</dt>
+<dd><p class="first last">Number of individual points to evaluate, <em>0</em> by default</p>
+</dd>
+<dt>nRecallIntervals: int, optional</dt>
+<dd><p class="first last">Number of intervals for average measures, <em>0</em> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.evaluation.evaluation.Evaluator.addFrame">
+<code class="descname">addFrame</code><span class="sig-paren">(</span><em>groundTruth</em>, <em>groundTruthOpt</em>, <em>hypotheses</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.evaluation.evaluation.Evaluator.addFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add frame for evaluation</p>
+<p>Function expects everything as list of labels (see <a class="reference internal" href="datasets.html#pydriver.datasets.base.BaseReader" title="pydriver.datasets.base.BaseReader"><code class="xref py py-class docutils literal"><span class="pre">BaseReader</span></code></a> for format description).</p>
+<p>The cached points will be updated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>groundTruth <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">Labels with mandatory ground truth</p>
+</dd>
+<dt>groundTruthOpt <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">Labels with optional ground truth</p>
+</dd>
+<dt>hypotheses <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">Labels with hypotheses, must contain &#8216;info&#8217; dictionary with &#8216;weight&#8217; key</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.evaluation.evaluation.Evaluator.aos">
+<code class="descname">aos</code><a class="headerlink" href="#pydriver.evaluation.evaluation.Evaluator.aos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Average orientation similarity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.evaluation.evaluation.Evaluator.aprecision">
+<code class="descname">aprecision</code><a class="headerlink" href="#pydriver.evaluation.evaluation.Evaluator.aprecision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Average precision</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.evaluation.evaluation.Evaluator.getPoint">
+<code class="descname">getPoint</code><span class="sig-paren">(</span><em>minWeight</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.evaluation.evaluation.Evaluator.getPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get <a class="reference internal" href="#pydriver.evaluation.evaluation.EvaluatorPoint" title="pydriver.evaluation.evaluation.EvaluatorPoint"><code class="xref py py-class docutils literal"><span class="pre">EvaluatorPoint</span></code></a> corresponding to all hypotheses above given minimum weight</p>
+<p>The result will be cached.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.evaluation.evaluation.Evaluator.getPoints">
+<code class="descname">getPoints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.evaluation.evaluation.Evaluator.getPoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all points according to self._nPoints as list of <a class="reference internal" href="#pydriver.evaluation.evaluation.EvaluatorPoint" title="pydriver.evaluation.evaluation.EvaluatorPoint"><code class="xref py py-class docutils literal"><span class="pre">EvaluatorPoint</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.evaluation.evaluation.Evaluator.getValues">
+<code class="descname">getValues</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.evaluation.evaluation.Evaluator.getValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get recall, precision and OS values suitable for plotting</p>
+<p>The function returns a dictionary with keys &#8216;recall&#8217;, &#8216;precision&#8217; and &#8216;OS&#8217;. Each of them contains
+a list with respective values sorted by recall. The produced recall/measure curves are convex.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydriver.evaluation.evaluation.EvaluatorPoint">
+<em class="property">class </em><code class="descclassname">pydriver.evaluation.evaluation.</code><code class="descname">EvaluatorPoint</code><span class="sig-paren">(</span><em>minOverlap=0.5</em>, <em>minWeight=0.0</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.evaluation.evaluation.EvaluatorPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluation point representation</p>
+<dl class="method">
+<dt id="pydriver.evaluation.evaluation.EvaluatorPoint.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>minOverlap=0.5</em>, <em>minWeight=0.0</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.evaluation.evaluation.EvaluatorPoint.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Evaluator instance</p>
+<p>Overlapping is computed as <em>intersection(ground truth, hypothesis) / union(ground truth, hypothesis)</em> considering
+their 2D bounding boxes. Minimum overlap is the criterion for matching hypotheses to ground truth.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>minOverlap: float, optional</dt>
+<dd><p class="first last">Minimum overlap between ground truth and hypothesis to count the latter as true positive, <em>0.5</em> by default</p>
+</dd>
+<dt>minWeight: float, optional</dt>
+<dd><p class="first last">Dismiss hypotheses with lesser weight, <em>0.0</em> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.evaluation.evaluation.EvaluatorPoint.addFrame">
+<code class="descname">addFrame</code><span class="sig-paren">(</span><em>groundTruth</em>, <em>groundTruthOpt</em>, <em>hypotheses</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.evaluation.evaluation.EvaluatorPoint.addFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add frame for evaluation</p>
+<p>Function expects everything as list of labels (see <a class="reference internal" href="datasets.html#pydriver.datasets.base.BaseReader" title="pydriver.datasets.base.BaseReader"><code class="xref py py-class docutils literal"><span class="pre">BaseReader</span></code></a> for format description).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>groundTruth <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">Labels with mandatory ground truth</p>
+</dd>
+<dt>groundTruthOpt <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">Labels with optional ground truth</p>
+</dd>
+<dt>hypotheses <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">Labels with hypotheses, must contain &#8216;info&#8217; dictionary with &#8216;weight&#8217; key</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.evaluation.evaluation.EvaluatorPoint.detections">
+<code class="descname">detections</code><a class="headerlink" href="#pydriver.evaluation.evaluation.EvaluatorPoint.detections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of detections (true and false)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.evaluation.evaluation.EvaluatorPoint.objects">
+<code class="descname">objects</code><a class="headerlink" href="#pydriver.evaluation.evaluation.EvaluatorPoint.objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of ground truth objects (detected and missed)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.evaluation.evaluation.EvaluatorPoint.os">
+<code class="descname">os</code><a class="headerlink" href="#pydriver.evaluation.evaluation.EvaluatorPoint.os" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalized orientation similarity</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.evaluation.evaluation.EvaluatorPoint.precision">
+<code class="descname">precision</code><a class="headerlink" href="#pydriver.evaluation.evaluation.EvaluatorPoint.precision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Precision</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.evaluation.evaluation.EvaluatorPoint.recall">
+<code class="descname">recall</code><a class="headerlink" href="#pydriver.evaluation.evaluation.EvaluatorPoint.recall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recall</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="reference.html">Reference</a><ul>
+      <li>Previous: <a href="detectors.html" title="previous chapter">The <code class="docutils literal"><span class="pre">detectors</span></code> Module</a></li>
+      <li>Next: <a href="features.html" title="next chapter">The <code class="docutils literal"><span class="pre">features</span></code> Module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/evaluation.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+      
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/evaluation.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

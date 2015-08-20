@@ -1,0 +1,292 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Basic Usage Example &mdash; PyDriver 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyDriver 0.1.0 documentation" href="index.html" />
+    <link rel="next" title="Reference" href="reference.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="basic-usage-example">
+<h1>Basic Usage Example<a class="headerlink" href="#basic-usage-example" title="Permalink to this headline">¶</a></h1>
+<p>This example shows PyDriver training and evaluation steps using the &#8220;Objects&#8221; dataset of
+the <a class="reference external" href="http://www.cvlibs.net/datasets/kitti/eval_object.php">KITTI Vision Benchmark Suite</a>.
+You will need Velodyne point clouds, camera calibration matrices, training labels and
+optionally both left and right color images if you set USE_IMAGE_COLOR to True. The only
+required adjustment is to set the correct path to KITTI training data on your system.</p>
+<p>You can find this code in the &#8220;examples&#8221; directory.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># basic example for using the PyDriver framework with KITTI objects dataset</span>
+<span class="c"># this code performs classifier training on one half of the dataset and evaluates it on the other</span>
+
+<span class="c"># adjust this path to point to the training directory of KITTI objects dataset</span>
+<span class="n">PATH_TO_KITTI</span> <span class="o">=</span> <span class="s">&#39;path_to_KITTI/objects/training&#39;</span>
+
+<span class="kn">import</span> <span class="nn">copy</span><span class="o">,</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">sklearn</span><span class="o">,</span> <span class="nn">sklearn.cluster</span><span class="o">,</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="c"># import the PyDriver framework</span>
+<span class="kn">import</span> <span class="nn">pydriver</span>
+
+<span class="c"># training and testing</span>
+<span class="n">TRAINING_FRAMES</span> <span class="o">=</span> <span class="mi">3740</span>
+<span class="n">TESTING_FRAMES</span> <span class="o">=</span> <span class="mi">3741</span>
+<span class="n">SHOT_RADIUS</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="c"># point cloud coloring (False: reflectance, True: camera)</span>
+<span class="n">USE_IMAGE_COLOR</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="c"># evaluation</span>
+<span class="c"># mandatory ground truth categories</span>
+<span class="n">DETECTION_CATEGORIES</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;car&#39;</span><span class="p">,]</span>
+<span class="c"># optional ground truth categories</span>
+<span class="n">DETECTION_CATEGORIES_OPT</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;van&#39;</span><span class="p">,]</span>
+<span class="n">MIN_OVERLAP</span> <span class="o">=</span> <span class="mf">0.7</span>               <span class="c"># minimal overlap between 2D boxes</span>
+<span class="n">EVALUATION_MODE</span> <span class="o">=</span> <span class="s">&#39;moderate&#39;</span>    <span class="c"># mode (easy, moderate, hard)</span>
+<span class="n">VISUALIZE3D</span> <span class="o">=</span> <span class="bp">False</span>             <span class="c"># show 3D visualization of detections</span>
+
+<span class="c"># initialize reader for KITTI objects dataset</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">pydriver</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">kitti</span><span class="o">.</span><span class="n">KITTIObjectsReader</span><span class="p">(</span><span class="n">PATH_TO_KITTI</span><span class="p">)</span>
+<span class="c"># initialize lidar reconstructor</span>
+<span class="n">reconstructor</span> <span class="o">=</span> <span class="n">pydriver</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">LidarReconstructor</span><span class="p">(</span><span class="n">useImageColor</span><span class="o">=</span><span class="n">USE_IMAGE_COLOR</span><span class="p">,</span> <span class="n">removeInvisible</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c"># default preprocessor</span>
+<span class="n">preprocessor</span> <span class="o">=</span> <span class="n">pydriver</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">Preprocessor</span><span class="p">(</span><span class="n">reconstructor</span><span class="p">)</span>
+<span class="n">keypointExtractor</span> <span class="o">=</span> <span class="n">pydriver</span><span class="o">.</span><span class="n">keypoints</span><span class="o">.</span><span class="n">ISSExtractor</span><span class="p">(</span><span class="n">salientRadius</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">nonMaxRadius</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">featureExtractor</span> <span class="o">=</span> <span class="n">pydriver</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">SHOTColorExtractor</span><span class="p">(</span><span class="n">shotRadius</span><span class="o">=</span><span class="n">SHOT_RADIUS</span><span class="p">,</span> <span class="n">fixedY</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="c"># list with feature types (arbitrary unique name) to use and their dimensionality</span>
+<span class="n">featureTypes</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;myfeature&#39;</span><span class="p">,</span> <span class="n">featureExtractor</span><span class="o">.</span><span class="n">dims</span><span class="p">),]</span>
+
+<span class="c"># function the vocabularies will use to create category storages</span>
+<span class="k">def</span> <span class="nf">storageGenerator</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    <span class="n">sto</span> <span class="o">=</span> <span class="n">pydriver</span><span class="o">.</span><span class="n">detectors</span><span class="o">.</span><span class="n">vocabularies</span><span class="o">.</span><span class="n">Storage</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span>
+        <span class="n">preprocessors</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">regressor</span><span class="o">=</span><span class="n">sklearn</span><span class="o">.</span><span class="n">neighbors</span><span class="o">.</span><span class="n">KNeighborsRegressor</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">sto</span>
+
+<span class="c"># function the detector will use to create vocabularies</span>
+<span class="k">def</span> <span class="nf">vocabularyGenerator</span><span class="p">(</span><span class="n">dimensions</span><span class="p">,</span> <span class="n">featureName</span><span class="p">):</span>
+    <span class="n">voc</span> <span class="o">=</span> <span class="n">pydriver</span><span class="o">.</span><span class="n">detectors</span><span class="o">.</span><span class="n">vocabularies</span><span class="o">.</span><span class="n">Vocabulary</span><span class="p">(</span>
+        <span class="n">dimensions</span><span class="p">,</span>
+        <span class="n">preprocessors</span><span class="o">=</span><span class="p">[</span>
+            <span class="n">sklearn</span><span class="o">.</span><span class="n">cluster</span><span class="o">.</span><span class="n">MiniBatchKMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span>
+            <span class="p">],</span>
+        <span class="n">classifier</span><span class="o">=</span><span class="n">sklearn</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">AdaBoostClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">75</span><span class="p">),</span>
+        <span class="n">storageGenerator</span><span class="o">=</span><span class="n">storageGenerator</span><span class="p">,</span>
+        <span class="n">balanceNegatives</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">voc</span>
+
+<span class="c"># initialize detector that will perform learning and recognition</span>
+<span class="n">detector</span> <span class="o">=</span> <span class="n">pydriver</span><span class="o">.</span><span class="n">detectors</span><span class="o">.</span><span class="n">Detector</span><span class="p">(</span><span class="n">featureTypes</span><span class="p">,</span> <span class="n">vocabularyGenerator</span><span class="o">=</span><span class="n">vocabularyGenerator</span><span class="p">)</span>
+
+<span class="c"># perform training with some frames in the dataset</span>
+<span class="n">time_start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">reader</span><span class="o">.</span><span class="n">getFramesInfo</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">TRAINING_FRAMES</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Training on frame </span><span class="si">%d</span><span class="s">...&#39;</span> <span class="o">%</span> <span class="n">frame</span><span class="p">[</span><span class="s">&#39;frameId&#39;</span><span class="p">])</span>
+    <span class="c"># reconstruct scene</span>
+    <span class="n">scene</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+    <span class="c"># get keypoints</span>
+    <span class="n">keypointCloud</span> <span class="o">=</span> <span class="n">keypointExtractor</span><span class="o">.</span><span class="n">getKeypointCloud</span><span class="p">(</span><span class="n">scene</span><span class="p">)</span>
+    <span class="c"># get lists with labels containing mandatory/optional ground truth</span>
+    <span class="n">groundTruth</span><span class="p">,</span> <span class="n">groundTruthOpt</span> <span class="o">=</span> <span class="n">pydriver</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">kitti</span><span class="o">.</span><span class="n">getKITTIGroundTruth</span><span class="p">(</span>
+        <span class="n">frame</span><span class="p">[</span><span class="s">&#39;labels&#39;</span><span class="p">],</span>
+        <span class="n">DETECTION_CATEGORIES</span><span class="p">,</span>
+        <span class="n">DETECTION_CATEGORIES_OPT</span><span class="p">,</span>
+        <span class="n">mode</span><span class="o">=</span><span class="s">&#39;moderate&#39;</span><span class="p">,</span>    <span class="c"># use moderate mode for training</span>
+        <span class="p">)</span>
+
+    <span class="c"># initialize list of boxes that will contain non-negative examples</span>
+    <span class="c"># it will be used later to extract negative examples</span>
+    <span class="n">boxes3D_exclude</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">groundTruth</span> <span class="o">+</span> <span class="n">groundTruthOpt</span><span class="p">:</span>
+        <span class="c"># adjust labeled 3D box to applied scene transformations</span>
+        <span class="c"># in this setup the only transformation is ground plane adjustment</span>
+        <span class="n">box3D</span> <span class="o">=</span> <span class="n">pydriver</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">transform3DBox</span><span class="p">(</span><span class="n">label</span><span class="p">[</span><span class="s">&#39;box3D&#39;</span><span class="p">],</span> <span class="n">scene</span><span class="p">[</span><span class="s">&#39;transformation&#39;</span><span class="p">])</span>
+
+        <span class="c"># avoid training with non-negative examples</span>
+        <span class="c"># the box is made bigger so SHOT features used as negatives</span>
+        <span class="c"># don&#39;t capture parts of the object</span>
+        <span class="n">box3D_exclude</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">box3D</span><span class="p">)</span>
+        <span class="n">box3D_exclude</span><span class="p">[</span><span class="s">&#39;dimensions&#39;</span><span class="p">][</span><span class="s">&#39;height&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">*</span><span class="n">SHOT_RADIUS</span>
+        <span class="n">box3D_exclude</span><span class="p">[</span><span class="s">&#39;dimensions&#39;</span><span class="p">][</span><span class="s">&#39;width&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">*</span><span class="n">SHOT_RADIUS</span>
+        <span class="n">box3D_exclude</span><span class="p">[</span><span class="s">&#39;dimensions&#39;</span><span class="p">][</span><span class="s">&#39;length&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">*</span><span class="n">SHOT_RADIUS</span>
+        <span class="n">boxes3D_exclude</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box3D_exclude</span><span class="p">)</span>
+
+        <span class="c"># only use mandatory ground truth for training</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">groundTruth</span><span class="p">:</span>
+            <span class="c"># get keypoints which lie inside the labeled object box</span>
+            <span class="n">boxKeypointCloud</span> <span class="o">=</span> <span class="n">keypointCloud</span><span class="o">.</span><span class="n">extractOrientedBoxes</span><span class="p">([</span><span class="n">box3D</span><span class="p">])</span>
+            <span class="c"># extract features at these keypoints (and get new keypoints</span>
+            <span class="c"># which depend on the feature extractor)</span>
+            <span class="n">fkeypoints</span><span class="p">,</span> <span class="n">features</span> <span class="o">=</span> <span class="n">featureExtractor</span><span class="o">.</span><span class="n">getFeatures</span><span class="p">(</span><span class="n">scene</span><span class="p">,</span> <span class="n">boxKeypointCloud</span><span class="p">)</span>
+            <span class="c"># learn new features and relations between features and objects</span>
+            <span class="n">detector</span><span class="o">.</span><span class="n">addWords</span><span class="p">(</span><span class="n">label</span><span class="p">[</span><span class="s">&#39;category&#39;</span><span class="p">],</span> <span class="s">&#39;myfeature&#39;</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">fkeypoints</span><span class="p">,</span> <span class="n">box3D</span><span class="p">)</span>
+    <span class="c"># get keypoints which lie outside of labeled object boxes</span>
+    <span class="n">negativeKeypointCloud</span> <span class="o">=</span> <span class="n">keypointCloud</span><span class="o">.</span><span class="n">extractOrientedBoxes</span><span class="p">(</span><span class="n">boxes3D_exclude</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="c"># extract features at these keypoints</span>
+    <span class="n">fkeypoints</span><span class="p">,</span> <span class="n">features</span> <span class="o">=</span> <span class="n">featureExtractor</span><span class="o">.</span><span class="n">getFeatures</span><span class="p">(</span><span class="n">scene</span><span class="p">,</span> <span class="n">negativeKeypointCloud</span><span class="p">)</span>
+    <span class="c"># learn features associated with absence of objects</span>
+    <span class="n">detector</span><span class="o">.</span><span class="n">addWords</span><span class="p">(</span><span class="s">&#39;negative&#39;</span><span class="p">,</span> <span class="s">&#39;myfeature&#39;</span><span class="p">,</span> <span class="n">features</span><span class="p">)</span>
+<span class="n">time_training</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_start</span>
+
+<span class="c"># perform learning on stored data</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&#39;Learning...&#39;</span><span class="p">)</span>
+<span class="n">time_start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="n">detector</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span><span class="n">nStorageMaxRandomSamples</span><span class="o">=</span><span class="mi">25000</span><span class="p">)</span>
+<span class="n">time_learning</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_start</span>
+
+<span class="c"># initialize evaluator</span>
+<span class="n">evaluator</span> <span class="o">=</span> <span class="n">pydriver</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">Evaluator</span><span class="p">(</span><span class="n">minOverlap</span><span class="o">=</span><span class="n">MIN_OVERLAP</span><span class="p">,</span> <span class="n">nPoints</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="c"># perform testing with frames which were not used for training</span>
+<span class="n">firstFrame</span> <span class="o">=</span> <span class="n">TRAINING_FRAMES</span>
+<span class="n">lastFrame</span> <span class="o">=</span> <span class="n">TRAINING_FRAMES</span> <span class="o">+</span> <span class="n">TESTING_FRAMES</span>
+<span class="n">time_start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">reader</span><span class="o">.</span><span class="n">getFramesInfo</span><span class="p">(</span><span class="n">firstFrame</span><span class="p">,</span> <span class="n">lastFrame</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Testing on frame </span><span class="si">%d</span><span class="s">...&#39;</span> <span class="o">%</span> <span class="n">frame</span><span class="p">[</span><span class="s">&#39;frameId&#39;</span><span class="p">])</span>
+    <span class="c"># see the training part above</span>
+    <span class="n">scene</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+    <span class="n">keypointCloud</span> <span class="o">=</span> <span class="n">keypointExtractor</span><span class="o">.</span><span class="n">getKeypointCloud</span><span class="p">(</span><span class="n">scene</span><span class="p">)</span>
+    <span class="n">groundTruth</span><span class="p">,</span> <span class="n">groundTruthOpt</span> <span class="o">=</span> <span class="n">pydriver</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">kitti</span><span class="o">.</span><span class="n">getKITTIGroundTruth</span><span class="p">(</span>
+        <span class="n">frame</span><span class="p">[</span><span class="s">&#39;labels&#39;</span><span class="p">],</span>
+        <span class="n">DETECTION_CATEGORIES</span><span class="p">,</span>
+        <span class="n">DETECTION_CATEGORIES_OPT</span><span class="p">,</span>
+        <span class="n">mode</span><span class="o">=</span><span class="n">EVALUATION_MODE</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c"># extract keypoints and features for the whole scene</span>
+    <span class="n">fkeypoints</span><span class="p">,</span> <span class="n">features</span> <span class="o">=</span> <span class="n">featureExtractor</span><span class="o">.</span><span class="n">getFeatures</span><span class="p">(</span><span class="n">scene</span><span class="p">,</span> <span class="n">keypointCloud</span><span class="p">)</span>
+    <span class="c"># perform recognition on extracted features</span>
+    <span class="n">detections</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">recognize</span><span class="p">({</span><span class="s">&#39;myfeature&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">fkeypoints</span><span class="p">,</span><span class="n">features</span><span class="p">)})</span>
+
+    <span class="c"># convert 3D detections (NumPy array) to labels (list of</span>
+    <span class="c"># dictionaries) that include 2D box projections used for evaluation</span>
+    <span class="c"># and revert the transformation of the scene, so they have the same</span>
+    <span class="c"># coordinate system as the original KITTI labels</span>
+    <span class="n">detections_labels</span> <span class="o">=</span> <span class="n">pydriver</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">detections2labels</span><span class="p">(</span>
+        <span class="n">detections</span><span class="p">,</span>
+        <span class="n">scene</span><span class="p">[</span><span class="s">&#39;transformation&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">I</span><span class="p">,</span>    <span class="c"># inverse matrix</span>
+        <span class="n">frame</span><span class="p">[</span><span class="s">&#39;calibration&#39;</span><span class="p">][</span><span class="s">&#39;projection_left&#39;</span><span class="p">],</span>
+        <span class="n">scene</span><span class="p">[</span><span class="s">&#39;img_left&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="c"># exclude detections which are always considered optional by</span>
+    <span class="c"># KITTI (i.e. in &#39;hard&#39; mode) and will not positively contribute</span>
+    <span class="c"># to performance</span>
+    <span class="n">detections_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">detections_labels</span> <span class="k">if</span> \
+                          <span class="n">l</span><span class="p">[</span><span class="s">&#39;info&#39;</span><span class="p">][</span><span class="s">&#39;truncated&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mf">0.5</span> <span class="ow">and</span> \
+                          <span class="n">l</span><span class="p">[</span><span class="s">&#39;box2D&#39;</span><span class="p">][</span><span class="s">&#39;bottom&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">l</span><span class="p">[</span><span class="s">&#39;box2D&#39;</span><span class="p">][</span><span class="s">&#39;top&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">25.0</span>
+                        <span class="p">]</span>
+
+    <span class="c"># add frame recognition results to evaluator</span>
+    <span class="n">evaluator</span><span class="o">.</span><span class="n">addFrame</span><span class="p">(</span><span class="n">groundTruth</span><span class="p">,</span> <span class="n">groundTruthOpt</span><span class="p">,</span> <span class="n">detections_labels</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">VISUALIZE3D</span><span class="p">:</span>
+        <span class="c"># perform visualization in the transformed cloud</span>
+        <span class="n">groundTruthDetections</span> <span class="o">=</span> <span class="n">pydriver</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">labels2detections</span><span class="p">(</span><span class="n">groundTruth</span><span class="p">,</span> <span class="n">scene</span><span class="p">[</span><span class="s">&#39;transformation&#39;</span><span class="p">])</span>
+        <span class="n">groundTruthDetectionsOpt</span> <span class="o">=</span> <span class="n">pydriver</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">labels2detections</span><span class="p">(</span><span class="n">groundTruthOpt</span><span class="p">,</span> <span class="n">scene</span><span class="p">[</span><span class="s">&#39;transformation&#39;</span><span class="p">])</span>
+        <span class="n">scene</span><span class="p">[</span><span class="s">&#39;cloud&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">visualizeDetections</span><span class="p">(</span><span class="n">detections</span><span class="p">,</span> <span class="n">groundTruthDetections</span><span class="p">,</span> <span class="n">groundTruthDetectionsOpt</span><span class="p">)</span>
+<span class="n">time_evaluation</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_start</span>
+
+<span class="c"># show evaluation results</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Training time: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">time_training</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Learning time: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">time_learning</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Evaluation time: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">time_evaluation</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Average precision: </span><span class="si">%.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">aprecision</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Average orientation similarity: </span><span class="si">%.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">aos</span><span class="p">)</span>
+<span class="n">values</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">getValues</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s">&#39;recall&#39;</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="s">&#39;precision&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;Precision (AP </span><span class="si">%0.2f</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">aprecision</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s">&#39;recall&#39;</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="s">&#39;OS&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;Orientation similarity (AOS </span><span class="si">%0.2f</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">aos</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;Recall&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;Precision / OS&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">&quot;upper right&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="installation.html" title="previous chapter">Installation</a></li>
+      <li>Next: <a href="reference.html" title="next chapter">Reference</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/usage.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+      
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/usage.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

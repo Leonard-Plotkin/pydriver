@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The geometry Module &mdash; PyDriver 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyDriver 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="Reference" href="reference.html" />
+    <link rel="next" title="The keypoints Module" href="keypoints.html" />
+    <link rel="prev" title="The features Module" href="features.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pydriver.geometry">
+<span id="the-geometry-module"></span><h1>The <a class="reference internal" href="#module-pydriver.geometry" title="pydriver.geometry"><code class="xref py py-mod docutils literal"><span class="pre">geometry</span></code></a> Module<a class="headerlink" href="#module-pydriver.geometry" title="Permalink to this headline">¶</a></h1>
+<p>Geometry module for coordinate transformations and segmentation.</p>
+<span class="target" id="module-pydriver.geometry.geometry"></span><dl class="function">
+<dt id="pydriver.geometry.geometry.affineTransform">
+<code class="descclassname">pydriver.geometry.geometry.</code><code class="descname">affineTransform</code><span class="sig-paren">(</span><em>ndarray carCoords</em>, <em>ndarray transformation</em><span class="sig-paren">)</span> &rarr; ndarray<a class="headerlink" href="#pydriver.geometry.geometry.affineTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply affine transformation to cartesian coordinates</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>carCoords: np.ndarray[FLOAT_dtype, ndim=2]</dt>
+<dd><p class="first last">Array with cartesian coordinates</p>
+</dd>
+<dt>transformation: np.ndarray[FLOAT_dtype, ndim=2]</dt>
+<dd><p class="first last">Transformation matrix</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Array with transformed coordinates</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">np.ndarray[FLOAT_dtype, ndim=2]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydriver.geometry.geometry.cartesian2homogenuous">
+<code class="descclassname">pydriver.geometry.geometry.</code><code class="descname">cartesian2homogenuous</code><span class="sig-paren">(</span><em>ndarray carCoords</em><span class="sig-paren">)</span> &rarr; ndarray<a class="headerlink" href="#pydriver.geometry.geometry.cartesian2homogenuous" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform cartesian coordinates to homogenuous coordinates</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydriver.geometry.geometry.extractNormalizedOrientedBoxes">
+<code class="descclassname">pydriver.geometry.geometry.</code><code class="descname">extractNormalizedOrientedBoxes</code><span class="sig-paren">(</span><em>__Pyx_memviewslice xyz</em>, <em>__Pyx_memviewslice rgb</em>, <em>list boxes</em><span class="sig-paren">)</span> &rarr; list<a class="headerlink" href="#pydriver.geometry.geometry.extractNormalizedOrientedBoxes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract normalized oriented boxes at specified location from data</p>
+<p>Normalization means that <em>rotation_y</em> of the box will be compensated to 0 and box center will be at (0, 0, 0).</p>
+<p>Function is optimized for speed and parallelized to extract boxes simultaneously. <em>NaN</em> values will be removed. For maximum speed, remove all <em>NaN</em> values before
+calling this function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>xyz: FLOAT_dtype[:, :]</dt>
+<dd><p class="first last">Input array with xyz data</p>
+</dd>
+<dt>rgb: np.uint8[:, :]</dt>
+<dd><p class="first last">Input array with rgb data</p>
+</dd>
+<dt>boxes: list of dicts</dt>
+<dd><p class="first last">List with dictionaries describing the 3D boxes, see <a class="reference internal" href="datasets.html#pydriver.datasets.base.BaseReader" title="pydriver.datasets.base.BaseReader"><code class="xref py py-class docutils literal"><span class="pre">BaseReader</span></code></a> for box format description</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List with tuples(xyz, rgb)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">list(tuple(np.ndarray[FLOAT_dtype, ndim=2], np.ndarray[np.uint8, ndim=2]))</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydriver.geometry.geometry.get3DBoxVertices">
+<code class="descclassname">pydriver.geometry.geometry.</code><code class="descname">get3DBoxVertices</code><span class="sig-paren">(</span><em>dict box3D</em><span class="sig-paren">)</span> &rarr; ndarray<a class="headerlink" href="#pydriver.geometry.geometry.get3DBoxVertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get array with 8 vertex coordinates of the given 3D box</p>
+<p>Blocks of 4 vertices have the same Y and blocks of 2 have the same X coordinate. Coordinates of blocks are increasing.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydriver.geometry.geometry.getNormalizationTransformation">
+<code class="descclassname">pydriver.geometry.geometry.</code><code class="descname">getNormalizationTransformation</code><span class="sig-paren">(</span><em>dict box3D</em><span class="sig-paren">)</span> &rarr; ndarray<a class="headerlink" href="#pydriver.geometry.geometry.getNormalizationTransformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get NumPy matrix with affine transformation required to normalize a 3D box</p>
+<p>Normalization means that <em>rotation_y</em> of the box will be compensated to 0 and box center will be at (0, 0, 0).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>box3D: dict</dt>
+<dd><p class="first last">Dictionary with 3D box information, see <a class="reference internal" href="datasets.html#pydriver.datasets.base.BaseReader" title="pydriver.datasets.base.BaseReader"><code class="xref py py-class docutils literal"><span class="pre">BaseReader</span></code></a> for box format description</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">transformation matrix</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">np.matrix</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydriver.geometry.geometry.homogenuous2cartesian">
+<code class="descclassname">pydriver.geometry.geometry.</code><code class="descname">homogenuous2cartesian</code><span class="sig-paren">(</span><em>ndarray homCoords</em>, <em>bool inplace=False</em><span class="sig-paren">)</span> &rarr; ndarray<a class="headerlink" href="#pydriver.geometry.geometry.homogenuous2cartesian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform homogenuous coordinates to cartesian coordinates</p>
+<p>If <em>inplace</em> is <em>True</em> the data will not be copied and the input array will be modified.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydriver.geometry.geometry.image2space">
+<code class="descclassname">pydriver.geometry.geometry.</code><code class="descname">image2space</code><span class="sig-paren">(</span><em>ndarray disparityMap</em>, <em>ndarray reprojection</em><span class="sig-paren">)</span> &rarr; ndarray<a class="headerlink" href="#pydriver.geometry.geometry.image2space" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reproject a full image to 3D space</p>
+<p>Function tries to use following implementations in this order:</p>
+<ol class="arabic simple">
+<li>own OpenCL implementation (uses the best available device such as GPU or CPU)</li>
+<li>OpenCV</li>
+<li>own CPU implementation</li>
+</ol>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>disparityMap: np.ndarray[ndim=2]</dt>
+<dd><p class="first last">Disparity map of any float type</p>
+</dd>
+<dt>reprojection: np.ndarray[FLOAT_dtype, ndim=2]</dt>
+<dd><p class="first last">Matrix used for reprojection</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Array with reprojected x, y and z coordinates</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">np.ndarray[FLOAT_dtype, ndim=2]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydriver.geometry.geometry.project3DBox">
+<code class="descclassname">pydriver.geometry.geometry.</code><code class="descname">project3DBox</code><span class="sig-paren">(</span><em>dict box3D</em>, <em>ndarray projection</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#pydriver.geometry.geometry.project3DBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get 2D bounding rectangle for a 3D box given the projection matrix</p>
+<p>See <a class="reference internal" href="datasets.html#pydriver.datasets.base.BaseReader" title="pydriver.datasets.base.BaseReader"><code class="xref py py-class docutils literal"><span class="pre">BaseReader</span></code></a> for box format description.</p>
+<p>The resulting dictionary contains the keys <em>&#8216;left&#8217;</em>, <em>&#8216;top&#8217;</em>, <em>&#8216;right&#8217;</em> and <em>&#8216;bottom&#8217;</em>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydriver.geometry.geometry.transform3DBox">
+<code class="descclassname">pydriver.geometry.geometry.</code><code class="descname">transform3DBox</code><span class="sig-paren">(</span><em>dict box3D</em>, <em>ndarray transformation</em><span class="sig-paren">)</span> &rarr; dict<a class="headerlink" href="#pydriver.geometry.geometry.transform3DBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get transformed 3D box using the given affine transformation</p>
+<p>See <a class="reference internal" href="datasets.html#pydriver.datasets.base.BaseReader" title="pydriver.datasets.base.BaseReader"><code class="xref py py-class docutils literal"><span class="pre">BaseReader</span></code></a> for box format description.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="reference.html">Reference</a><ul>
+      <li>Previous: <a href="features.html" title="previous chapter">The <code class="docutils literal"><span class="pre">features</span></code> Module</a></li>
+      <li>Next: <a href="keypoints.html" title="next chapter">The <code class="docutils literal"><span class="pre">keypoints</span></code> Module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/geometry.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+      
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/geometry.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

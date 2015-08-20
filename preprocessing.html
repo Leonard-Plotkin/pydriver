@@ -1,0 +1,379 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The preprocessing Module &mdash; PyDriver 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyDriver 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="Reference" href="reference.html" />
+    <link rel="next" title="The stereo Module" href="stereo.html" />
+    <link rel="prev" title="The pcl Module" href="pcl.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pydriver.preprocessing">
+<span id="the-preprocessing-module"></span><h1>The <a class="reference internal" href="#module-pydriver.preprocessing" title="pydriver.preprocessing"><code class="xref py py-mod docutils literal"><span class="pre">preprocessing</span></code></a> Module<a class="headerlink" href="#module-pydriver.preprocessing" title="Permalink to this headline">¶</a></h1>
+<p>Module for preprocessing frames returned by <a class="reference internal" href="datasets.html#module-pydriver.datasets" title="pydriver.datasets"><code class="xref py py-mod docutils literal"><span class="pre">datasets</span></code></a> module and extracting (3D) scene information on which the detection algorithms (<a class="reference internal" href="keypoints.html#module-pydriver.keypoints" title="pydriver.keypoints"><code class="xref py py-mod docutils literal"><span class="pre">keypoints</span></code></a>, <a class="reference internal" href="features.html#module-pydriver.features" title="pydriver.features"><code class="xref py py-mod docutils literal"><span class="pre">features</span></code></a>, etc.) will operate.</p>
+<p>The class <a class="reference internal" href="#pydriver.preprocessing.preprocessing.Preprocessor" title="pydriver.preprocessing.preprocessing.Preprocessor"><code class="xref py py-class docutils literal"><span class="pre">Preprocessor</span></code></a> implements a preprocessing pipeline whereas <a class="reference internal" href="#pydriver.preprocessing.preprocessing.CloudProcessor" title="pydriver.preprocessing.preprocessing.CloudProcessor"><code class="xref py py-class docutils literal"><span class="pre">CloudProcessor</span></code></a> and its
+derived classes offer various cloud modifications which can be combined in the <a class="reference internal" href="#pydriver.preprocessing.preprocessing.Preprocessor" title="pydriver.preprocessing.preprocessing.Preprocessor"><code class="xref py py-class docutils literal"><span class="pre">Preprocessor</span></code></a>.</p>
+<span class="target" id="module-pydriver.preprocessing.preprocessing"></span><dl class="class">
+<dt id="pydriver.preprocessing.preprocessing.CloudProcessor">
+<em class="property">class </em><code class="descclassname">pydriver.preprocessing.preprocessing.</code><code class="descname">CloudProcessor</code><a class="headerlink" href="#pydriver.preprocessing.preprocessing.CloudProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for cloud processors</p>
+<dl class="method">
+<dt id="pydriver.preprocessing.preprocessing.CloudProcessor.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.preprocessing.preprocessing.CloudProcessor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize cloud processor</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.preprocessing.preprocessing.CloudProcessor.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>self</em>, <em>scene</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.preprocessing.preprocessing.CloudProcessor.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process scene inplace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>scene: dict</dt>
+<dd><p class="first last">Scene information as described in <a class="reference internal" href="#pydriver.preprocessing.preprocessing.Preprocessor" title="pydriver.preprocessing.preprocessing.Preprocessor"><code class="xref py py-class docutils literal"><span class="pre">Preprocessor</span></code></a> documentation</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydriver.preprocessing.preprocessing.DownsampleProcessor">
+<em class="property">class </em><code class="descclassname">pydriver.preprocessing.preprocessing.</code><code class="descname">DownsampleProcessor</code><a class="headerlink" href="#pydriver.preprocessing.preprocessing.DownsampleProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downsample cloud</p>
+<p>The resulting cloud will be <strong>not</strong> organized.</p>
+<p>Required scene information: cloud.</p>
+<p>Modified scene information: cloud.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>leafSize: float, optional</dt>
+<dd><p class="first last">Voxel grid leaf size, <em>0.1</em> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pydriver.preprocessing.preprocessing.DownsampleProcessor.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.preprocessing.preprocessing.DownsampleProcessor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize cloud processor</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.preprocessing.preprocessing.DownsampleProcessor.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>self</em>, <em>scene</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.preprocessing.preprocessing.DownsampleProcessor.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydriver.preprocessing.preprocessing.GroundPlaneProcessor">
+<em class="property">class </em><code class="descclassname">pydriver.preprocessing.preprocessing.</code><code class="descname">GroundPlaneProcessor</code><a class="headerlink" href="#pydriver.preprocessing.preprocessing.GroundPlaneProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect and remove ground plane, adjust cloud to have ground plane at y=0</p>
+<p>The given viewport will be used to extract a smaller portion of the cloud for ground plane detection. This speeds up
+ground detection and decreases wrong detections. The ground is expected anywhere between 0 and 4 meters below the
+camera by default, restrict this range according to your scenario to get faster and more reliable detections.</p>
+<p>Required scene information: cloud, transformation.</p>
+<p>Modified scene information: cloud, transformation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>viewport: tuple, optional</dt>
+<dd><p class="first last">Tuple of 3 tuples with coordinate ranges for x-, y-, and z-coordinates, <em>None</em> to disable, <em>((-10,10), (0,4), (5,35))</em> by default</p>
+</dd>
+<dt>leafSize: float, optional</dt>
+<dd><p class="first last">Downsample cloud for faster ground plane detection, <em>0</em> to disable, <em>0.3</em> by default</p>
+</dd>
+<dt>maxAngle: float, optional</dt>
+<dd><p class="first last">Maximal angle (in radian) between detected ground plane and xz plane, <em>Pi/4</em> by default</p>
+</dd>
+<dt>maxDistance: float, optional</dt>
+<dd><p class="first last">Maximal distance to the plane for a point to be considered an inlier (RANSAC parameter), <em>0.1</em> by default</p>
+</dd>
+<dt>remove: bool, optional</dt>
+<dd><p class="first last">Remove ground plane after detection, <em>True</em> by default</p>
+</dd>
+<dt>adjust: bool, optional</dt>
+<dd><p class="first last">Adjust cloud to have ground plane at y=0, <em>True</em> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pydriver.preprocessing.preprocessing.GroundPlaneProcessor.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.preprocessing.preprocessing.GroundPlaneProcessor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize cloud processor</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.preprocessing.preprocessing.GroundPlaneProcessor.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>self</em>, <em>scene</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.preprocessing.preprocessing.GroundPlaneProcessor.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydriver.preprocessing.preprocessing.LidarReconstructor">
+<em class="property">class </em><code class="descclassname">pydriver.preprocessing.preprocessing.</code><code class="descname">LidarReconstructor</code><a class="headerlink" href="#pydriver.preprocessing.preprocessing.LidarReconstructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for reconstructing point clouds with lidar and optionally image data</p>
+<p>Required scene information: lidar[&#8216;XYZ&#8217;].</p>
+<p>Optional scene information: lidar[&#8216;RGB&#8217;], img_left, img_right, calibration[&#8216;projection_left&#8217;], calibration[&#8216;projection_right&#8217;].</p>
+<p>Provided scene information: cloud.</p>
+<dl class="method">
+<dt id="pydriver.preprocessing.preprocessing.LidarReconstructor.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>useImageColor=False</em>, <em>removeInvisible=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.preprocessing.preprocessing.LidarReconstructor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize reconstructor</p>
+<p>The reconstructor will use scene[&#8216;lidar&#8217;][&#8216;XYZ&#8217;] for point coordinates and scene[&#8216;lidar&#8217;][&#8216;RGB&#8217;] as coloring
+information if available. If <em>useImageColor</em> is True the color of points visible in the images will be overwritten
+by image color using the &#8216;projection_left&#8217; and &#8216;projection_right&#8217; matrices in scene[&#8216;calibration&#8217;].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>useImageColor: bool, optional</dt>
+<dd><p class="first last">Flag whether to use color images for color reconstruction, <em>False</em> by default</p>
+</dd>
+<dt>removeInvisible: bool, optional</dt>
+<dd><p class="first last">Flag whether to remove points which are not visible in images, <em>False</em> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.preprocessing.preprocessing.LidarReconstructor.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>self</em>, <em>scene</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.preprocessing.preprocessing.LidarReconstructor.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydriver.preprocessing.preprocessing.Preprocessor">
+<em class="property">class </em><code class="descclassname">pydriver.preprocessing.preprocessing.</code><code class="descname">Preprocessor</code><a class="headerlink" href="#pydriver.preprocessing.preprocessing.Preprocessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Frame preprocessing pipeline</p>
+<dl class="method">
+<dt id="pydriver.preprocessing.preprocessing.Preprocessor.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>reconstructor='default'</em>, <em>processors=None</em>, <em>dirCache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.preprocessing.preprocessing.Preprocessor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize preprocessor</p>
+<p>If cache directory is given and valid, cached frames will be loaded from cache and uncached frames will be cached.</p>
+<p>In case you don&#8217;t want to utilize a reconstructor, pass a None value explicitly (explicit value for default reconstructor
+is the string &#8216;default&#8217;). For disabling processors pass an empty tuple.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">There is no verification whether current preprocessing pipeline is identical to the one used to cache
+the frame, so pay attention to not to use the cache directory of a different configuration or you will get misleading results.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>reconstructor: object, optional</dt>
+<dd><p class="first last">Reconstructor object instance which provides a <em>process(scene)</em> function returning a dictionary to include in scene information, <a class="reference internal" href="stereo.html#pydriver.stereo.stereo.StereoReconstructor" title="pydriver.stereo.stereo.StereoReconstructor"><code class="xref py py-class docutils literal"><span class="pre">StereoReconstructor()</span></code></a> by default</p>
+</dd>
+<dt>processors: tuple of <a class="reference internal" href="#pydriver.preprocessing.preprocessing.CloudProcessor" title="pydriver.preprocessing.preprocessing.CloudProcessor"><code class="xref py py-class docutils literal"><span class="pre">cloud</span> <span class="pre">processors</span></code></a>, optional</dt>
+<dd><p class="first last">Cloud processors to apply after initial cloud reconstruction, (<a class="reference internal" href="#pydriver.preprocessing.preprocessing.GroundPlaneProcessor" title="pydriver.preprocessing.preprocessing.GroundPlaneProcessor"><code class="xref py py-class docutils literal"><span class="pre">GroundPlaneProcessor</span></code></a>, <a class="reference internal" href="#pydriver.preprocessing.preprocessing.RemoveNaNProcessor" title="pydriver.preprocessing.preprocessing.RemoveNaNProcessor"><code class="xref py py-class docutils literal"><span class="pre">RemoveNaNProcessor</span></code></a>) by default</p>
+</dd>
+<dt>dirCache: str, optional</dt>
+<dd><p class="first last">Cache directory, disabled by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.preprocessing.preprocessing.Preprocessor.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>self</em>, <em>frame</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.preprocessing.preprocessing.Preprocessor.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process frame and get the processed scene information</p>
+<p>See <a class="reference internal" href="datasets.html#pydriver.datasets.base.BaseReader" title="pydriver.datasets.base.BaseReader"><code class="xref py py-class docutils literal"><span class="pre">BaseReader</span></code></a> for frame format description. The keys &#8216;dataset&#8217; and &#8216;frameId&#8217; are only
+required when using cache. Other requirements depend on utilized reconstructor and processors.</p>
+<p>Extracted scene information will be stored in a dictionary. It contains the frame information as well as any keys and
+values produced by the reconstructor and processors. The transformation applied to the cloud is stored as a 4x4 matrix
+in key &#8216;transformation&#8217; which is an identity matrix by default.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>frame: dict</dt>
+<dd><p class="first last">Dictionary with frame information</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">scene</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydriver.preprocessing.preprocessing.RemoveNaNProcessor">
+<em class="property">class </em><code class="descclassname">pydriver.preprocessing.preprocessing.</code><code class="descname">RemoveNaNProcessor</code><a class="headerlink" href="#pydriver.preprocessing.preprocessing.RemoveNaNProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove <em>NaN</em> values</p>
+<p>The resulting cloud will be <strong>not</strong> organized. Useful for decreasing cloud size and improving performance if organized clouds are not required.</p>
+<p>Required scene information: cloud.</p>
+<p>Modified scene information: cloud.</p>
+<dl class="method">
+<dt id="pydriver.preprocessing.preprocessing.RemoveNaNProcessor.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.preprocessing.preprocessing.RemoveNaNProcessor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize cloud processor</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.preprocessing.preprocessing.RemoveNaNProcessor.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>self</em>, <em>scene</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.preprocessing.preprocessing.RemoveNaNProcessor.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydriver.preprocessing.preprocessing.ViewportProcessor">
+<em class="property">class </em><code class="descclassname">pydriver.preprocessing.preprocessing.</code><code class="descname">ViewportProcessor</code><a class="headerlink" href="#pydriver.preprocessing.preprocessing.ViewportProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restrict viewport</p>
+<p>Required scene information: cloud.</p>
+<p>Modified scene information: cloud.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>viewport: tuple, optional</dt>
+<dd><p class="first last">Tuple of 3 tuples with coordinate ranges for x-, y-, and z-coordinates, <em>((-50,50), (-4,0), (0,100))</em> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pydriver.preprocessing.preprocessing.ViewportProcessor.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.preprocessing.preprocessing.ViewportProcessor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize cloud processor</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.preprocessing.preprocessing.ViewportProcessor.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>self</em>, <em>scene</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.preprocessing.preprocessing.ViewportProcessor.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="reference.html">Reference</a><ul>
+      <li>Previous: <a href="pcl.html" title="previous chapter">The <code class="docutils literal"><span class="pre">pcl</span></code> Module</a></li>
+      <li>Next: <a href="stereo.html" title="next chapter">The <code class="docutils literal"><span class="pre">stereo</span></code> Module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/preprocessing.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+      
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/preprocessing.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The keypoints Module &mdash; PyDriver 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyDriver 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="Reference" href="reference.html" />
+    <link rel="next" title="The pcl Module" href="pcl.html" />
+    <link rel="prev" title="The geometry Module" href="geometry.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pydriver.keypoints">
+<span id="the-keypoints-module"></span><h1>The <a class="reference internal" href="#module-pydriver.keypoints" title="pydriver.keypoints"><code class="xref py py-mod docutils literal"><span class="pre">keypoints</span></code></a> Module<a class="headerlink" href="#module-pydriver.keypoints" title="Permalink to this headline">¶</a></h1>
+<p>Keypoint extractors.</p>
+<div class="section" id="module-pydriver.keypoints.base">
+<span id="base"></span><h2>Base<a class="headerlink" href="#module-pydriver.keypoints.base" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pydriver.keypoints.base.KeypointExtractor">
+<em class="property">class </em><code class="descclassname">pydriver.keypoints.base.</code><code class="descname">KeypointExtractor</code><a class="headerlink" href="#pydriver.keypoints.base.KeypointExtractor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for keypoint extractors</p>
+<dl class="method">
+<dt id="pydriver.keypoints.base.KeypointExtractor.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.keypoints.base.KeypointExtractor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize keypoint extractor</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.keypoints.base.KeypointExtractor.getKeypointCloud">
+<code class="descname">getKeypointCloud</code><span class="sig-paren">(</span><em>self</em>, <em>dict scene</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.keypoints.base.KeypointExtractor.getKeypointCloud" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract keypoints from scene</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>scene: dict</dt>
+<dd><p class="first last">Scene information as described in <a class="reference internal" href="preprocessing.html#pydriver.preprocessing.preprocessing.Preprocessor" title="pydriver.preprocessing.preprocessing.Preprocessor"><code class="xref py py-class docutils literal"><span class="pre">Preprocessor</span></code></a> documentation</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">cloud with keypoints</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pcl.html#pydriver.pcl.pcl.PCLHelper" title="pydriver.pcl.pcl.PCLHelper"><code class="xref py py-class docutils literal"><span class="pre">PCLHelper</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pydriver.keypoints.base.normals2lrfs">
+<code class="descclassname">pydriver.keypoints.base.</code><code class="descname">normals2lrfs</code><span class="sig-paren">(</span><em>ndarray keypoints</em>, <em>ndarray normals</em><span class="sig-paren">)</span> &rarr; ndarray<a class="headerlink" href="#pydriver.keypoints.base.normals2lrfs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute local reference frames for keypoints and their normals</p>
+<p>The LRF will be computed to point to (0,0,0) to resolve ambiguity. For normals pointing along the y-axis
+the resulting LRF will be 0.</p>
+<p>Keypoints and normals must have the shape <em>(number of keypoints, 3)</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>keypoints: np.ndarray[FLOAT_dtype, ndim=2]</dt>
+<dd><p class="first last">Array of keypoint coordinates</p>
+</dd>
+<dt>normals: np.ndarray[FLOAT_dtype, ndim=2]</dt>
+<dd><p class="first last">Array of keypoint normals</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">rotation angles around y-axis of normals projected to xz plane</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">np.ndarray[FLOAT_dtype]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pydriver.keypoints.harris">
+<span id="harris"></span><h2>Harris<a class="headerlink" href="#module-pydriver.keypoints.harris" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pydriver.keypoints.harris.HarrisExtractor">
+<em class="property">class </em><code class="descclassname">pydriver.keypoints.harris.</code><code class="descname">HarrisExtractor</code><a class="headerlink" href="#pydriver.keypoints.harris.HarrisExtractor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Harris keypoint extractor</p>
+<p>If <em>leafSize</em> is given the cloud will be downsampled before keypoint extraction.</p>
+<p>See <a class="reference internal" href="pcl.html#pydriver.pcl.pcl.PCLHelper.getHarrisPoints" title="pydriver.pcl.pcl.PCLHelper.getHarrisPoints"><code class="xref py py-meth docutils literal"><span class="pre">getHarrisPoints()</span></code></a> for parameter details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>radius: float</dt>
+<dd><p class="first last">Radius for normal estimation and non maxima suppression</p>
+</dd>
+<dt>refine: bool, optional</dt>
+<dd><p class="first last">Flag whether to refine keypoints</p>
+</dd>
+<dt>threshold: FLOAT_dtype, optional</dt>
+<dd><p class="first last">Threshold value for detecting corners</p>
+</dd>
+<dt>method: int, optional</dt>
+<dd><p class="first last">Method to use (1-5)</p>
+</dd>
+<dt>leafSize: float, optional</dt>
+<dd><p class="first last">Voxel grid leaf size, disabled by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>See <a class="reference internal" href="#pydriver.keypoints.base.KeypointExtractor" title="pydriver.keypoints.base.KeypointExtractor"><code class="xref py py-class docutils literal"><span class="pre">KeypointExtractor</span></code></a> for further information.</p>
+<dl class="method">
+<dt id="pydriver.keypoints.harris.HarrisExtractor.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.keypoints.harris.HarrisExtractor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize keypoint extractor</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.keypoints.harris.HarrisExtractor.getKeypointCloud">
+<code class="descname">getKeypointCloud</code><span class="sig-paren">(</span><em>self</em>, <em>dict scene</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.keypoints.harris.HarrisExtractor.getKeypointCloud" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pydriver.keypoints.iss">
+<span id="iss"></span><h2>ISS<a class="headerlink" href="#module-pydriver.keypoints.iss" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pydriver.keypoints.iss.ISSExtractor">
+<em class="property">class </em><code class="descclassname">pydriver.keypoints.iss.</code><code class="descname">ISSExtractor</code><a class="headerlink" href="#pydriver.keypoints.iss.ISSExtractor" title="Permalink to this definition">¶</a></dt>
+<dd><p>ISS keypoint extractor</p>
+<p>If <em>leafSize</em> is given the cloud will be downsampled before keypoint extraction.</p>
+<p>See <a class="reference internal" href="pcl.html#pydriver.pcl.pcl.PCLHelper.getISSPoints" title="pydriver.pcl.pcl.PCLHelper.getISSPoints"><code class="xref py py-meth docutils literal"><span class="pre">getISSPoints()</span></code></a> for parameter details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>salientRadius: float</dt>
+<dd><p class="first last">ISS salient radius</p>
+</dd>
+<dt>nonMaxRadius: float</dt>
+<dd><p class="first last">Non maxima suppression radius</p>
+</dd>
+<dt>minNeighbors: int, optional</dt>
+<dd><p class="first last">Minimum neighbors for ISS keypoint</p>
+</dd>
+<dt>threshold21: float, optional</dt>
+<dd><p class="first last">Upper bound on the ratio between the second and the first eigenvalue</p>
+</dd>
+<dt>threshold32: float, optional</dt>
+<dd><p class="first last">Upper bound on the ratio between the third and the second eigenvalue</p>
+</dd>
+<dt>angleThreshold: float, optional</dt>
+<dd><p class="first last">Angle threshold that marks points as boundary or regular, only for boundary detection version</p>
+</dd>
+<dt>normalRadius: float, optional</dt>
+<dd><p class="first last">Radius for surface normal estimation, only for boundary detection version</p>
+</dd>
+<dt>borderRadius: float, optional</dt>
+<dd><p class="first last">Radius for boundary estimation, only for boundary detection version</p>
+</dd>
+<dt>leafSize: float, optional</dt>
+<dd><p class="first last">Voxel grid leaf size, disabled by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>See <a class="reference internal" href="#pydriver.keypoints.base.KeypointExtractor" title="pydriver.keypoints.base.KeypointExtractor"><code class="xref py py-class docutils literal"><span class="pre">KeypointExtractor</span></code></a> for further information.</p>
+<dl class="method">
+<dt id="pydriver.keypoints.iss.ISSExtractor.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.keypoints.iss.ISSExtractor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize keypoint extractor</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.keypoints.iss.ISSExtractor.getKeypointCloud">
+<code class="descname">getKeypointCloud</code><span class="sig-paren">(</span><em>self</em>, <em>dict scene</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.keypoints.iss.ISSExtractor.getKeypointCloud" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The <code class="docutils literal"><span class="pre">keypoints</span></code> Module</a><ul>
+<li><a class="reference internal" href="#module-pydriver.keypoints.base">Base</a></li>
+<li><a class="reference internal" href="#module-pydriver.keypoints.harris">Harris</a></li>
+<li><a class="reference internal" href="#module-pydriver.keypoints.iss">ISS</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="reference.html">Reference</a><ul>
+      <li>Previous: <a href="geometry.html" title="previous chapter">The <code class="docutils literal"><span class="pre">geometry</span></code> Module</a></li>
+      <li>Next: <a href="pcl.html" title="next chapter">The <code class="docutils literal"><span class="pre">pcl</span></code> Module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/keypoints.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+      
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/keypoints.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

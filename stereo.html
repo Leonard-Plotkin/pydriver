@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The stereo Module &mdash; PyDriver 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyDriver 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="Reference" href="reference.html" />
+    <link rel="prev" title="The preprocessing Module" href="preprocessing.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pydriver.stereo">
+<span id="the-stereo-module"></span><h1>The <a class="reference internal" href="#module-pydriver.stereo" title="pydriver.stereo"><code class="xref py py-mod docutils literal"><span class="pre">stereo</span></code></a> Module<a class="headerlink" href="#module-pydriver.stereo" title="Permalink to this headline">¶</a></h1>
+<p>Module for extracting 3D information from stereo image pairs.</p>
+<p>The class <a class="reference internal" href="#pydriver.stereo.stereo.StereoReconstructor" title="pydriver.stereo.stereo.StereoReconstructor"><code class="xref py py-class docutils literal"><span class="pre">StereoReconstructor</span></code></a> implements the reconstructing pipeline whereas <a class="reference internal" href="#pydriver.stereo.stereo.OpenCVMatcher" title="pydriver.stereo.stereo.OpenCVMatcher"><code class="xref py py-class docutils literal"><span class="pre">OpenCVMatcher</span></code></a>
+is an implementation of a specific disparity computation method.</p>
+<div class="section" id="module-pydriver.stereo.stereo">
+<span id="stereo"></span><h2>Stereo<a class="headerlink" href="#module-pydriver.stereo.stereo" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pydriver.stereo.stereo.OpenCVMatcher">
+<em class="property">class </em><code class="descclassname">pydriver.stereo.stereo.</code><code class="descname">OpenCVMatcher</code><a class="headerlink" href="#pydriver.stereo.stereo.OpenCVMatcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disparity computation with <a class="reference external" href="http://opencv.org/">OpenCV</a> <em>StereoSGBM</em> class</p>
+<p>Initialization raises an <em>ImportError</em> if <em>cv2</em> can not be imported.</p>
+<dl class="method">
+<dt id="pydriver.stereo.stereo.OpenCVMatcher.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.stereo.stereo.OpenCVMatcher.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize OpenCVMatcher instance</p>
+<p>Keyword arguments are the non-default parameters to pass to <em>cv2.StereoSGBM()</em>.</p>
+<p>The class uses its own default parameters which do not match OpenCV defaults.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.stereo.stereo.OpenCVMatcher.computeDisparity">
+<code class="descname">computeDisparity</code><span class="sig-paren">(</span><em>self</em>, <em>ndarray img_left</em>, <em>ndarray img_right</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.stereo.stereo.OpenCVMatcher.computeDisparity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute left disparity map for a pair of left and right images</p>
+<p>Input images can have any type. They must be of same size and have 2 or 3 dimensions (3 channels if 3-dimensional).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>img_left: np.ndarray[ndim=2 or 3]</dt>
+<dd><p class="first last">Array with left image data</p>
+</dd>
+<dt>img_right: np.ndarray[ndim=2 or 3]</dt>
+<dd><p class="first last">Array with right image data</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Array with disparity map (shape equals to height and width of input images)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">np.ndarray[FLOAT_dtype, ndim=2]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydriver.stereo.stereo.StereoReconstructor">
+<em class="property">class </em><code class="descclassname">pydriver.stereo.stereo.</code><code class="descname">StereoReconstructor</code><a class="headerlink" href="#pydriver.stereo.stereo.StereoReconstructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pipeline for reconstructing 3D point clouds from stereo images</p>
+<p>The class preprocesses the input images and then uses matchers (e.g. <a class="reference internal" href="#pydriver.stereo.stereo.OpenCVMatcher" title="pydriver.stereo.stereo.OpenCVMatcher"><code class="xref py py-class docutils literal"><span class="pre">OpenCVMatcher</span></code></a>) in the specified order
+to produce the final disparity map out of their results.</p>
+<p>The function <a class="reference internal" href="#pydriver.stereo.stereo.StereoReconstructor.computeDisparity" title="pydriver.stereo.stereo.StereoReconstructor.computeDisparity"><code class="xref py py-meth docutils literal"><span class="pre">computeDisparity()</span></code></a> is implemented so a <a class="reference internal" href="#pydriver.stereo.stereo.StereoReconstructor" title="pydriver.stereo.stereo.StereoReconstructor"><code class="xref py py-class docutils literal"><span class="pre">StereoReconstructor</span></code></a> can also be used as a matcher in another <a class="reference internal" href="#pydriver.stereo.stereo.StereoReconstructor" title="pydriver.stereo.stereo.StereoReconstructor"><code class="xref py py-class docutils literal"><span class="pre">StereoReconstructor</span></code></a>.</p>
+<p>Required scene information: img_left, img_right, calibration[&#8216;reprojection&#8217;].</p>
+<p>Provided scene information: cloud, disparityMap_left, depthMap_left.</p>
+<dl class="method">
+<dt id="pydriver.stereo.stereo.StereoReconstructor.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>tuple matchers=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.stereo.stereo.StereoReconstructor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize <em>StereoReconstructor</em> instance</p>
+<p>Given matchers must implement the <em>computeDisparity(img_left, img_right)</em> function which returns the disparity map. Invalid
+disparity values must be negative (<strong>NOT</strong> <em>NaN</em>).</p>
+<p>If <em>matchers</em> is not given, <a class="reference internal" href="#pydriver.stereo.stereo.OpenCVMatcher" title="pydriver.stereo.stereo.OpenCVMatcher"><code class="xref py py-class docutils literal"><span class="pre">OpenCVMatcher()</span></code></a> will be used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>matchers: tuple, optional</dt>
+<dd><p class="first last">Instances of matchers to use, their results will be fused</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.stereo.stereo.StereoReconstructor.computeDisparity">
+<code class="descname">computeDisparity</code><span class="sig-paren">(</span><em>self</em>, <em>ndarray img_left</em>, <em>ndarray img_right</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.stereo.stereo.StereoReconstructor.computeDisparity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute left disparity map for a pair of left and right images</p>
+<p>Image data type and number of channels must be accepted by all matchers.</p>
+<p>This function allows a <a class="reference internal" href="#pydriver.stereo.stereo.StereoReconstructor" title="pydriver.stereo.stereo.StereoReconstructor"><code class="xref py py-class docutils literal"><span class="pre">StereoReconstructor</span></code></a> instance to be used as a matcher in another <a class="reference internal" href="#pydriver.stereo.stereo.StereoReconstructor" title="pydriver.stereo.stereo.StereoReconstructor"><code class="xref py py-class docutils literal"><span class="pre">StereoReconstructor</span></code></a> instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>img_left: np.ndarray[ndim=2 or 3]</dt>
+<dd><p class="first last">Array with left image data</p>
+</dd>
+<dt>img_right: np.ndarray[ndim=2 or 3]</dt>
+<dd><p class="first last">Array with right image data</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Array with disparity map (shape equals to height and width of input images)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">np.ndarray[FLOAT_dtype, ndim=2]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.stereo.stereo.StereoReconstructor.process">
+<code class="descname">process</code><span class="sig-paren">(</span><em>self</em>, <em>scene</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.stereo.stereo.StereoReconstructor.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process scene and return 3D information</p>
+<p>The returned perspective is that of the left image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>scene: dict</dt>
+<dd><p class="first last">Scene information</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">dictionary with cloud, disparity map and depth map</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">dict{&#8216;cloud&#8217;: <a class="reference internal" href="pcl.html#pydriver.pcl.pcl.PCLHelper" title="pydriver.pcl.pcl.PCLHelper"><code class="xref py py-class docutils literal"><span class="pre">PCLHelper</span></code></a>, &#8216;disparityMap_left&#8217;: np.ndarray[FLOAT_dtype, ndim=2], &#8216;depthMap_left&#8217;: np.ndarray[FLOAT_dtype, ndim=2]}</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pydriver.stereo.stereo.depth2disparity">
+<code class="descclassname">pydriver.stereo.stereo.</code><code class="descname">depth2disparity</code><span class="sig-paren">(</span><em>ndarray depthMap</em>, <em>ndarray reprojection</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.stereo.stereo.depth2disparity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute disparity map from depth map and reprojection matrix</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydriver.stereo.stereo.disparity2depth">
+<code class="descclassname">pydriver.stereo.stereo.</code><code class="descname">disparity2depth</code><span class="sig-paren">(</span><em>ndarray disparityMap</em>, <em>ndarray reprojection</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.stereo.stereo.disparity2depth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute depth map from disparity map and reprojection matrix</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The <code class="docutils literal"><span class="pre">stereo</span></code> Module</a><ul>
+<li><a class="reference internal" href="#module-pydriver.stereo.stereo">Stereo</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="reference.html">Reference</a><ul>
+      <li>Previous: <a href="preprocessing.html" title="previous chapter">The <code class="docutils literal"><span class="pre">preprocessing</span></code> Module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/stereo.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+      
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/stereo.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

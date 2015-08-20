@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Basics &mdash; PyDriver 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyDriver 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="Reference" href="reference.html" />
+    <link rel="next" title="The datasets Module" href="datasets.html" />
+    <link rel="prev" title="Reference" href="reference.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pydriver">
+<span id="basics"></span><h1>Basics<a class="headerlink" href="#module-pydriver" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="coordinate-system">
+<h2>Coordinate system<a class="headerlink" href="#coordinate-system" title="Permalink to this headline">¶</a></h2>
+<p>The coordinate system is right-handed with positive x-axis pointing right, y-axis pointing down and z-axis pointing away from the viewer.</p>
+</div>
+<div class="section" id="numpy-array-types">
+<h2>NumPy array types<a class="headerlink" href="#numpy-array-types" title="Permalink to this headline">¶</a></h2>
+<dl class="data">
+<dt id="pydriver.FLOAT_dtype">
+<code class="descclassname">pydriver.</code><code class="descname">FLOAT_dtype</code><a class="headerlink" href="#pydriver.FLOAT_dtype" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">Alias for the NumPy float type used in the library</code></dt>
+<dd><p>Use this type for your data to reduce conversions between float data types.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pydriver.Position_dtype">
+<code class="descclassname">pydriver.</code><code class="descname">Position_dtype</code><a class="headerlink" href="#pydriver.Position_dtype" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">Structure for object and keypoint positions</code></dt>
+<dd><dl class="docutils">
+<dt>x: <a class="reference internal" href="#pydriver.FLOAT_dtype" title="pydriver.FLOAT_dtype"><code class="xref py py-const docutils literal"><span class="pre">FLOAT_dtype</span></code></a></dt>
+<dd>x-coordinate</dd>
+<dt>y: <a class="reference internal" href="#pydriver.FLOAT_dtype" title="pydriver.FLOAT_dtype"><code class="xref py py-const docutils literal"><span class="pre">FLOAT_dtype</span></code></a></dt>
+<dd>y-coordinate</dd>
+<dt>z: <a class="reference internal" href="#pydriver.FLOAT_dtype" title="pydriver.FLOAT_dtype"><code class="xref py py-const docutils literal"><span class="pre">FLOAT_dtype</span></code></a></dt>
+<dd>z-coordinate</dd>
+<dt>rotation_y: <a class="reference internal" href="#pydriver.FLOAT_dtype" title="pydriver.FLOAT_dtype"><code class="xref py py-const docutils literal"><span class="pre">FLOAT_dtype</span></code></a></dt>
+<dd>Rotation around y-axis in radian, 0 points to the positive x-direction</dd>
+</dl>
+</dd></dl>
+
+<dl class="data">
+<dt id="pydriver.Detection_dtype">
+<code class="descclassname">pydriver.</code><code class="descname">Detection_dtype</code><a class="headerlink" href="#pydriver.Detection_dtype" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">Structure for detections</code></dt>
+<dd><dl class="docutils">
+<dt>category: str</dt>
+<dd>Object category, <em>&#8216;negative&#8217;</em> for negative detections</dd>
+<dt>position: <a class="reference internal" href="#pydriver.Position_dtype" title="pydriver.Position_dtype"><code class="xref py py-const docutils literal"><span class="pre">Position_dtype</span></code></a></dt>
+<dd>Object position</dd>
+<dt>height: <a class="reference internal" href="#pydriver.FLOAT_dtype" title="pydriver.FLOAT_dtype"><code class="xref py py-const docutils literal"><span class="pre">FLOAT_dtype</span></code></a></dt>
+<dd>Object height</dd>
+<dt>width: <a class="reference internal" href="#pydriver.FLOAT_dtype" title="pydriver.FLOAT_dtype"><code class="xref py py-const docutils literal"><span class="pre">FLOAT_dtype</span></code></a></dt>
+<dd>Object width</dd>
+<dt>length: <a class="reference internal" href="#pydriver.FLOAT_dtype" title="pydriver.FLOAT_dtype"><code class="xref py py-const docutils literal"><span class="pre">FLOAT_dtype</span></code></a></dt>
+<dd>Object length</dd>
+<dt>weight: <a class="reference internal" href="#pydriver.FLOAT_dtype" title="pydriver.FLOAT_dtype"><code class="xref py py-const docutils literal"><span class="pre">FLOAT_dtype</span></code></a></dt>
+<dd>Detection weight</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Basics</a><ul>
+<li><a class="reference internal" href="#coordinate-system">Coordinate system</a></li>
+<li><a class="reference internal" href="#numpy-array-types">NumPy array types</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="reference.html">Reference</a><ul>
+      <li>Previous: <a href="reference.html" title="previous chapter">Reference</a></li>
+      <li>Next: <a href="datasets.html" title="next chapter">The <code class="docutils literal"><span class="pre">datasets</span></code> Module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/main.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+      
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/main.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,884 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The datasets Module &mdash; PyDriver 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyDriver 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="Reference" href="reference.html" />
+    <link rel="next" title="The detectors Module" href="detectors.html" />
+    <link rel="prev" title="Basics" href="main.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pydriver.datasets">
+<span id="the-datasets-module"></span><h1>The <a class="reference internal" href="#module-pydriver.datasets" title="pydriver.datasets"><code class="xref py py-mod docutils literal"><span class="pre">datasets</span></code></a> Module<a class="headerlink" href="#module-pydriver.datasets" title="Permalink to this headline">¶</a></h1>
+<p>Module for extracting data from datasets. Every dataset submodule should implement a class derived from <a class="reference internal" href="#pydriver.datasets.base.BaseReader" title="pydriver.datasets.base.BaseReader"><code class="xref py py-class docutils literal"><span class="pre">BaseReader</span></code></a>.</p>
+<div class="section" id="module-pydriver.datasets.base">
+<span id="base"></span><h2>Base<a class="headerlink" href="#module-pydriver.datasets.base" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pydriver.datasets.base.BaseReader">
+<em class="property">class </em><code class="descclassname">pydriver.datasets.base.</code><code class="descname">BaseReader</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.base.BaseReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for data extractor interfaces</p>
+<p>Frame IDs should be implemented as integers, dataset IDs as strings (or <em>None</em> if not applicable).</p>
+<p>See <a class="reference internal" href="#pydriver.datasets.base.BaseReader.getFrameInfo" title="pydriver.datasets.base.BaseReader.getFrameInfo"><code class="xref py py-meth docutils literal"><span class="pre">getFrameInfo()</span></code></a> for frame format description.</p>
+<dl class="method">
+<dt id="pydriver.datasets.base.BaseReader.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.base.BaseReader.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize data extractor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>directory: string</dt>
+<dd><p class="first last">Data directory</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.datasets.base.BaseReader.getDatasets">
+<code class="descname">getDatasets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.base.BaseReader.getDatasets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get sorted list of datasets</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.datasets.base.BaseReader.getFrameIds">
+<code class="descname">getFrameIds</code><span class="sig-paren">(</span><em>dataset=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.base.BaseReader.getFrameIds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get sorted list of frame IDs of the optionally specified dataset (if reader supports multiple datasets)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.datasets.base.BaseReader.getFrameInfo">
+<code class="descname">getFrameInfo</code><span class="sig-paren">(</span><em>frameId</em>, <em>dataset=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.base.BaseReader.getFrameInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information about a frame in the specified dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>frameId: int</dt>
+<dd><p class="first last">Frame ID of the requested frame</p>
+</dd>
+<dt>dataset: str or None, optional</dt>
+<dd><p class="first last">Dataset with the requested frame, only required by readers with multiple datasets</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dictionary with information about the frame:</p>
+<dl class="last docutils">
+<dt>&#8216;dataset&#8217;: str or None</dt>
+<dd><p class="first last">Dataset of the frame, <em>None</em> for readers without multiple datasets</p>
+</dd>
+<dt>&#8216;frameId&#8217;: int</dt>
+<dd><p class="first last">Frame ID</p>
+</dd>
+<dt>&#8216;img_left&#8217;: NumPy array</dt>
+<dd><p class="first last">Left image, can be None</p>
+</dd>
+<dt>&#8216;img_right&#8217;: NumPy array</dt>
+<dd><p class="first last">Right image, can be None</p>
+</dd>
+<dt>&#8216;calibration&#8217;: dict</dt>
+<dd><dl class="first last docutils">
+<dt>Calibration matrices</dt>
+<dd><dl class="first last docutils">
+<dt>&#8216;reprojection&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">3D reconstruction out of disparity, shape: (4, 4)</p>
+</dd>
+<dt>&#8216;projection_left&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">Projection of camera coordinates to left camera image, shape: (3, 4)</p>
+</dd>
+<dt>&#8216;projection_right&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">Projection of camera coordinates to right camera image, shape: (3, 4)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>&#8216;labels&#8217;: list of dictionaries</dt>
+<dd><dl class="first last docutils">
+<dt>List with labels in this frame. Each label contains the following keys:</dt>
+<dd><dl class="first last docutils">
+<dt>&#8216;category&#8217;: string</dt>
+<dd><p class="first last">Possible values depend on the Reader subclass</p>
+</dd>
+<dt>&#8216;box2D&#8217;: dict</dt>
+<dd><p class="first last">Bounding box in the left image, keys: <em>&#8216;left&#8217;</em>, <em>&#8216;top&#8217;</em>, <em>&#8216;right&#8217;</em>, <em>&#8216;bottom&#8217;</em></p>
+</dd>
+<dt>&#8216;box3D&#8217;: dict</dt>
+<dd><dl class="first last docutils">
+<dt>&#8216;location&#8217;: dict</dt>
+<dd><p class="first last">Center of the 3D box, keys: <em>&#8216;x&#8217;</em>, <em>&#8216;y&#8217;</em>, <em>&#8216;z&#8217;</em></p>
+</dd>
+<dt>&#8216;dimensions&#8217;: dict</dt>
+<dd><p class="first last">Size of the 3D box, keys: <em>&#8216;height&#8217;</em>, <em>&#8216;width&#8217;</em>, <em>&#8216;length&#8217;</em></p>
+</dd>
+<dt>&#8216;rotation_y&#8217;: float</dt>
+<dd><p class="first last">Object rotation around Y-axis in camera coordinates [-pi...pi], 0 = facing along X-axis</p>
+</dd>
+</dl>
+</dd>
+<dt>&#8216;info&#8217;: dict</dt>
+<dd><p class="first last">Information depending on the Reader subclass</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.datasets.base.BaseReader.getFramesInfo">
+<code class="descname">getFramesInfo</code><span class="sig-paren">(</span><em>frameStart=0</em>, <em>frameStop=None</em>, <em>frameStep=1</em>, <em>datasets=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.base.BaseReader.getFramesInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lazy generator function to get information about frames</p>
+<p>The function returns the same information as <a class="reference internal" href="#pydriver.datasets.base.BaseReader.getFrameInfo" title="pydriver.datasets.base.BaseReader.getFrameInfo"><code class="xref py py-func docutils literal"><span class="pre">getFrameInfo()</span></code></a>. A frame will not be processed until the generator reaches it.</p>
+<p>The parameters <em>frameStart</em>, <em>frameStop</em> and <em>frameStep</em> will be applied to each requested dataset separately.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>frameStart: int, optional</dt>
+<dd><p class="first last">First frame, 0 by default</p>
+</dd>
+<dt>frameStop: int, optional</dt>
+<dd><p class="first last">Frame at which to stop (will not be yielded), no end by default</p>
+</dd>
+<dt>frameStep: int, optional</dt>
+<dd><p class="first last">Yield every n-th frame of a dataset, 1 by default</p>
+</dd>
+<dt>datasets: list of str, optional</dt>
+<dd><p class="first last">Restrict generator to specified datasets, all datasets by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pydriver.datasets.base.loadImage">
+<code class="descclassname">pydriver.datasets.base.</code><code class="descname">loadImage</code><span class="sig-paren">(</span><em>filename</em>, <em>flatten=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.base.loadImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load image file into NumPy array</p>
+<p>The shape of the resulting array will be (height, width) and possibly one
+further dimension with 3 (RGB) or 4 (RGBA) values for channel information.</p>
+<p>See <code class="xref py py-func docutils literal"><span class="pre">scipy.misc.imread()</span></code> for further information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>filename: string</dt>
+<dd><p class="first last">File name of image to load</p>
+</dd>
+<dt>flatten: boolean, optional</dt>
+<dd><p class="first last">Convert output to grayscale, <em>False</em> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">NumPy array with image data</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">np.ndarray[np.uint8, ndim=2 or 3]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pydriver.datasets.kitti">
+<span id="kitti"></span><h2>KITTI<a class="headerlink" href="#module-pydriver.datasets.kitti" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pydriver.datasets.kitti.KITTIObjectsReader">
+<em class="property">class </em><code class="descclassname">pydriver.datasets.kitti.</code><code class="descname">KITTIObjectsReader</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.kitti.KITTIObjectsReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data extractor for KITTI objects dataset</p>
+<p>The data directory must contain the directories <em>&#8216;calib&#8217;</em>, <em>&#8216;image_2&#8217;</em> and/or <em>&#8216;image_3&#8217;</em> and optionally <em>&#8216;label_2&#8217;</em>.</p>
+<p>See <a class="reference internal" href="#pydriver.datasets.kitti.KITTIReader" title="pydriver.datasets.kitti.KITTIReader"><code class="xref py py-class docutils literal"><span class="pre">KITTIReader</span></code></a> for more information.</p>
+<dl class="method">
+<dt id="pydriver.datasets.kitti.KITTIObjectsReader.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.kitti.KITTIObjectsReader.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize data extractor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>directory: string</dt>
+<dd><p class="first last">Data directory</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.datasets.kitti.KITTIObjectsReader.getFrameInfo">
+<code class="descname">getFrameInfo</code><span class="sig-paren">(</span><em>frameId</em>, <em>dataset=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.kitti.KITTIObjectsReader.getFrameInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information about a frame in the specified dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>frameId: int</dt>
+<dd><p class="first last">Frame ID of the requested frame</p>
+</dd>
+<dt>dataset: str or None, optional</dt>
+<dd><p class="first last">Dataset with the requested frame, only required by <a class="reference internal" href="#pydriver.datasets.kitti.KITTITrackletsReader" title="pydriver.datasets.kitti.KITTITrackletsReader"><code class="xref py py-class docutils literal"><span class="pre">KITTITrackletsReader</span></code></a></p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dictionary with information about the frame:</p>
+<dl class="last docutils">
+<dt>&#8216;dataset&#8217;: str or None</dt>
+<dd><p class="first last">Dataset of the frame, <em>None</em> for <a class="reference internal" href="#pydriver.datasets.kitti.KITTIObjectsReader" title="pydriver.datasets.kitti.KITTIObjectsReader"><code class="xref py py-class docutils literal"><span class="pre">KITTIObjectsReader</span></code></a></p>
+</dd>
+<dt>&#8216;frameId&#8217;: int</dt>
+<dd><p class="first last">Frame ID</p>
+</dd>
+<dt>&#8216;img_left&#8217;: NumPy array</dt>
+<dd><p class="first last">Left image, can be None</p>
+</dd>
+<dt>&#8216;img_right&#8217;: NumPy array</dt>
+<dd><p class="first last">Right image, can be None</p>
+</dd>
+<dt>&#8216;lidar&#8217;: dict{&#8216;XYZ&#8217;: NumPy array, &#8216;RGB&#8217;: NumPy array}</dt>
+<dd><p class="first last">XYZ (transformed to camera coordinates, rectification matrix applied) and RGB (reflectance, gray) data from lidar sensor, can be None</p>
+</dd>
+<dt>&#8216;calibration&#8217;: dict</dt>
+<dd><dl class="first last docutils">
+<dt>Calibration matrices</dt>
+<dd><dl class="first last docutils">
+<dt>&#8216;reprojection&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">3D reconstruction out of disparity, shape: (4, 4)</p>
+</dd>
+<dt>&#8216;projection_left&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">Projection of camera coordinates to left camera image, shape: (3, 4)</p>
+</dd>
+<dt>&#8216;projection_right&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">Projection of camera coordinates to right camera image, shape: (3, 4)</p>
+</dd>
+<dt>&#8216;rect&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">Rectification matrix, shape: (4, 4)</p>
+</dd>
+<dt>&#8216;lidar2cam&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">Transformation from lidar to camera coordinates, shape: (4, 4)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>&#8216;labels&#8217;: list of dictionaries</dt>
+<dd><dl class="first last docutils">
+<dt>List with labels in this frame. Each label contains the following keys:</dt>
+<dd><dl class="first last docutils">
+<dt>&#8216;category&#8217;: string</dt>
+<dd><p class="first last">Possible values: &#8216;car&#8217;, &#8216;van&#8217;, &#8216;truck&#8217;, &#8216;pedestrian&#8217;, &#8216;person_sitting&#8217;, &#8216;cyclist&#8217;, &#8216;tram&#8217;, &#8216;misc&#8217;, &#8216;dontcare&#8217;</p>
+</dd>
+<dt>&#8216;box2D&#8217;: dict</dt>
+<dd><p class="first last">Bounding box in the left image, keys: <em>&#8216;left&#8217;</em>, <em>&#8216;top&#8217;</em>, <em>&#8216;right&#8217;</em>, <em>&#8216;bottom&#8217;</em></p>
+</dd>
+<dt>&#8216;box3D&#8217;: dict</dt>
+<dd><dl class="first last docutils">
+<dt>&#8216;location&#8217;: dict</dt>
+<dd><p class="first last">Center of the 3D box, keys: <em>&#8216;x&#8217;</em>, <em>&#8216;y&#8217;</em>, <em>&#8216;z&#8217;</em></p>
+</dd>
+<dt>&#8216;dimensions&#8217;: dict</dt>
+<dd><p class="first last">Size of the 3D box, keys: <em>&#8216;height&#8217;</em>, <em>&#8216;width&#8217;</em>, <em>&#8216;length&#8217;</em></p>
+</dd>
+<dt>&#8216;rotation_y&#8217;: float</dt>
+<dd><p class="first last">Object rotation around Y-axis in camera coordinates [-pi...pi], 0 = facing along X-axis</p>
+</dd>
+</dl>
+</dd>
+<dt>&#8216;info&#8217;: dict</dt>
+<dd><dl class="first last docutils">
+<dt>&#8216;truncated&#8217;: float</dt>
+<dd><p class="first last">Float from 0 (non-truncated) to 1 (truncated), where <em>truncated</em> refers to the object leaving image boundaries</p>
+</dd>
+<dt>&#8216;occluded&#8217;: int</dt>
+<dd><p class="first last">Occlusion status (0 = fully visible, 1 = partly occluded, 2 = largely occluded, 3 = unknown)</p>
+</dd>
+<dt>&#8216;trackId&#8217;: int, optional</dt>
+<dd><p class="first last">Unique tracking id of this object within this sequence, supplied only by <cite>KITTITrackletsReader</cite></p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.datasets.kitti.KITTIObjectsReader.getFramesInfo">
+<code class="descname">getFramesInfo</code><span class="sig-paren">(</span><em>frameStart=0</em>, <em>frameStop=None</em>, <em>frameStep=1</em>, <em>datasets=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.kitti.KITTIObjectsReader.getFramesInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lazy generator function to get information about frames</p>
+<p>The function returns the same information as <a class="reference internal" href="#pydriver.datasets.kitti.KITTIObjectsReader.getFrameInfo" title="pydriver.datasets.kitti.KITTIObjectsReader.getFrameInfo"><code class="xref py py-func docutils literal"><span class="pre">getFrameInfo()</span></code></a>. A frame will not be processed until the generator reaches it.</p>
+<p>The parameters <em>frameStart</em>, <em>frameStop</em> and <em>frameStep</em> will be applied to each requested dataset separately.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>frameStart: int, optional</dt>
+<dd><p class="first last">First frame, 0 by default</p>
+</dd>
+<dt>frameStop: int, optional</dt>
+<dd><p class="first last">Frame at which to stop (will not be yielded), no end by default</p>
+</dd>
+<dt>frameStep: int, optional</dt>
+<dd><p class="first last">Yield every n-th frame of a dataset, 1 by default</p>
+</dd>
+<dt>datasets: list of str, optional</dt>
+<dd><p class="first last">Restrict generator to specified datasets, all datasets by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydriver.datasets.kitti.KITTIReader">
+<em class="property">class </em><code class="descclassname">pydriver.datasets.kitti.</code><code class="descname">KITTIReader</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.kitti.KITTIReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract data extractor for <a class="reference external" href="http://www.cvlibs.net/datasets/kitti/">KITTI</a> datasets</p>
+<p>This class relies on presence of at least one image for every frame to detect available frames. Lidar data is optional.</p>
+<p>See <a class="reference internal" href="#pydriver.datasets.base.BaseReader" title="pydriver.datasets.base.BaseReader"><code class="xref py py-class docutils literal"><span class="pre">BaseReader</span></code></a> for more information.</p>
+<dl class="method">
+<dt id="pydriver.datasets.kitti.KITTIReader.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.kitti.KITTIReader.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize data extractor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>directory: string</dt>
+<dd><p class="first last">Data directory</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.datasets.kitti.KITTIReader.getFrameInfo">
+<code class="descname">getFrameInfo</code><span class="sig-paren">(</span><em>frameId</em>, <em>dataset=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.kitti.KITTIReader.getFrameInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information about a frame in the specified dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>frameId: int</dt>
+<dd><p class="first last">Frame ID of the requested frame</p>
+</dd>
+<dt>dataset: str or None, optional</dt>
+<dd><p class="first last">Dataset with the requested frame, only required by <a class="reference internal" href="#pydriver.datasets.kitti.KITTITrackletsReader" title="pydriver.datasets.kitti.KITTITrackletsReader"><code class="xref py py-class docutils literal"><span class="pre">KITTITrackletsReader</span></code></a></p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dictionary with information about the frame:</p>
+<dl class="last docutils">
+<dt>&#8216;dataset&#8217;: str or None</dt>
+<dd><p class="first last">Dataset of the frame, <em>None</em> for <a class="reference internal" href="#pydriver.datasets.kitti.KITTIObjectsReader" title="pydriver.datasets.kitti.KITTIObjectsReader"><code class="xref py py-class docutils literal"><span class="pre">KITTIObjectsReader</span></code></a></p>
+</dd>
+<dt>&#8216;frameId&#8217;: int</dt>
+<dd><p class="first last">Frame ID</p>
+</dd>
+<dt>&#8216;img_left&#8217;: NumPy array</dt>
+<dd><p class="first last">Left image, can be None</p>
+</dd>
+<dt>&#8216;img_right&#8217;: NumPy array</dt>
+<dd><p class="first last">Right image, can be None</p>
+</dd>
+<dt>&#8216;lidar&#8217;: dict{&#8216;XYZ&#8217;: NumPy array, &#8216;RGB&#8217;: NumPy array}</dt>
+<dd><p class="first last">XYZ (transformed to camera coordinates, rectification matrix applied) and RGB (reflectance, gray) data from lidar sensor, can be None</p>
+</dd>
+<dt>&#8216;calibration&#8217;: dict</dt>
+<dd><dl class="first last docutils">
+<dt>Calibration matrices</dt>
+<dd><dl class="first last docutils">
+<dt>&#8216;reprojection&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">3D reconstruction out of disparity, shape: (4, 4)</p>
+</dd>
+<dt>&#8216;projection_left&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">Projection of camera coordinates to left camera image, shape: (3, 4)</p>
+</dd>
+<dt>&#8216;projection_right&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">Projection of camera coordinates to right camera image, shape: (3, 4)</p>
+</dd>
+<dt>&#8216;rect&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">Rectification matrix, shape: (4, 4)</p>
+</dd>
+<dt>&#8216;lidar2cam&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">Transformation from lidar to camera coordinates, shape: (4, 4)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>&#8216;labels&#8217;: list of dictionaries</dt>
+<dd><dl class="first last docutils">
+<dt>List with labels in this frame. Each label contains the following keys:</dt>
+<dd><dl class="first last docutils">
+<dt>&#8216;category&#8217;: string</dt>
+<dd><p class="first last">Possible values: &#8216;car&#8217;, &#8216;van&#8217;, &#8216;truck&#8217;, &#8216;pedestrian&#8217;, &#8216;person_sitting&#8217;, &#8216;cyclist&#8217;, &#8216;tram&#8217;, &#8216;misc&#8217;, &#8216;dontcare&#8217;</p>
+</dd>
+<dt>&#8216;box2D&#8217;: dict</dt>
+<dd><p class="first last">Bounding box in the left image, keys: <em>&#8216;left&#8217;</em>, <em>&#8216;top&#8217;</em>, <em>&#8216;right&#8217;</em>, <em>&#8216;bottom&#8217;</em></p>
+</dd>
+<dt>&#8216;box3D&#8217;: dict</dt>
+<dd><dl class="first last docutils">
+<dt>&#8216;location&#8217;: dict</dt>
+<dd><p class="first last">Center of the 3D box, keys: <em>&#8216;x&#8217;</em>, <em>&#8216;y&#8217;</em>, <em>&#8216;z&#8217;</em></p>
+</dd>
+<dt>&#8216;dimensions&#8217;: dict</dt>
+<dd><p class="first last">Size of the 3D box, keys: <em>&#8216;height&#8217;</em>, <em>&#8216;width&#8217;</em>, <em>&#8216;length&#8217;</em></p>
+</dd>
+<dt>&#8216;rotation_y&#8217;: float</dt>
+<dd><p class="first last">Object rotation around Y-axis in camera coordinates [-pi...pi], 0 = facing along X-axis</p>
+</dd>
+</dl>
+</dd>
+<dt>&#8216;info&#8217;: dict</dt>
+<dd><dl class="first last docutils">
+<dt>&#8216;truncated&#8217;: float</dt>
+<dd><p class="first last">Float from 0 (non-truncated) to 1 (truncated), where <em>truncated</em> refers to the object leaving image boundaries</p>
+</dd>
+<dt>&#8216;occluded&#8217;: int</dt>
+<dd><p class="first last">Occlusion status (0 = fully visible, 1 = partly occluded, 2 = largely occluded, 3 = unknown)</p>
+</dd>
+<dt>&#8216;trackId&#8217;: int, optional</dt>
+<dd><p class="first last">Unique tracking id of this object within this sequence, supplied only by <cite>KITTITrackletsReader</cite></p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.datasets.kitti.KITTIReader.getFramesInfo">
+<code class="descname">getFramesInfo</code><span class="sig-paren">(</span><em>frameStart=0</em>, <em>frameStop=None</em>, <em>frameStep=1</em>, <em>datasets=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.kitti.KITTIReader.getFramesInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lazy generator function to get information about frames</p>
+<p>The function returns the same information as <a class="reference internal" href="#pydriver.datasets.kitti.KITTIReader.getFrameInfo" title="pydriver.datasets.kitti.KITTIReader.getFrameInfo"><code class="xref py py-func docutils literal"><span class="pre">getFrameInfo()</span></code></a>. A frame will not be processed until the generator reaches it.</p>
+<p>The parameters <em>frameStart</em>, <em>frameStop</em> and <em>frameStep</em> will be applied to each requested dataset separately.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>frameStart: int, optional</dt>
+<dd><p class="first last">First frame, 0 by default</p>
+</dd>
+<dt>frameStop: int, optional</dt>
+<dd><p class="first last">Frame at which to stop (will not be yielded), no end by default</p>
+</dd>
+<dt>frameStep: int, optional</dt>
+<dd><p class="first last">Yield every n-th frame of a dataset, 1 by default</p>
+</dd>
+<dt>datasets: list of str, optional</dt>
+<dd><p class="first last">Restrict generator to specified datasets, all datasets by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydriver.datasets.kitti.KITTITrackletsReader">
+<em class="property">class </em><code class="descclassname">pydriver.datasets.kitti.</code><code class="descname">KITTITrackletsReader</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.kitti.KITTITrackletsReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data extractor for KITTI tracklets dataset</p>
+<p>The data directory must contain the directories <em>&#8216;calib&#8217;</em>, <em>&#8216;image_02&#8217;</em> and/or <em>&#8216;image_03&#8217;</em> and optionally <em>&#8216;label_02&#8217;</em>.</p>
+<p>See <a class="reference internal" href="#pydriver.datasets.kitti.KITTIReader" title="pydriver.datasets.kitti.KITTIReader"><code class="xref py py-class docutils literal"><span class="pre">KITTIReader</span></code></a> for more information.</p>
+<dl class="method">
+<dt id="pydriver.datasets.kitti.KITTITrackletsReader.getFrameInfo">
+<code class="descname">getFrameInfo</code><span class="sig-paren">(</span><em>frameId</em>, <em>dataset=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.kitti.KITTITrackletsReader.getFrameInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information about a frame in the specified dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>frameId: int</dt>
+<dd><p class="first last">Frame ID of the requested frame</p>
+</dd>
+<dt>dataset: str or None, optional</dt>
+<dd><p class="first last">Dataset with the requested frame, only required by <a class="reference internal" href="#pydriver.datasets.kitti.KITTITrackletsReader" title="pydriver.datasets.kitti.KITTITrackletsReader"><code class="xref py py-class docutils literal"><span class="pre">KITTITrackletsReader</span></code></a></p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dictionary with information about the frame:</p>
+<dl class="last docutils">
+<dt>&#8216;dataset&#8217;: str or None</dt>
+<dd><p class="first last">Dataset of the frame, <em>None</em> for <a class="reference internal" href="#pydriver.datasets.kitti.KITTIObjectsReader" title="pydriver.datasets.kitti.KITTIObjectsReader"><code class="xref py py-class docutils literal"><span class="pre">KITTIObjectsReader</span></code></a></p>
+</dd>
+<dt>&#8216;frameId&#8217;: int</dt>
+<dd><p class="first last">Frame ID</p>
+</dd>
+<dt>&#8216;img_left&#8217;: NumPy array</dt>
+<dd><p class="first last">Left image, can be None</p>
+</dd>
+<dt>&#8216;img_right&#8217;: NumPy array</dt>
+<dd><p class="first last">Right image, can be None</p>
+</dd>
+<dt>&#8216;lidar&#8217;: dict{&#8216;XYZ&#8217;: NumPy array, &#8216;RGB&#8217;: NumPy array}</dt>
+<dd><p class="first last">XYZ (transformed to camera coordinates, rectification matrix applied) and RGB (reflectance, gray) data from lidar sensor, can be None</p>
+</dd>
+<dt>&#8216;calibration&#8217;: dict</dt>
+<dd><dl class="first last docutils">
+<dt>Calibration matrices</dt>
+<dd><dl class="first last docutils">
+<dt>&#8216;reprojection&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">3D reconstruction out of disparity, shape: (4, 4)</p>
+</dd>
+<dt>&#8216;projection_left&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">Projection of camera coordinates to left camera image, shape: (3, 4)</p>
+</dd>
+<dt>&#8216;projection_right&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">Projection of camera coordinates to right camera image, shape: (3, 4)</p>
+</dd>
+<dt>&#8216;rect&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">Rectification matrix, shape: (4, 4)</p>
+</dd>
+<dt>&#8216;lidar2cam&#8217;: np.matrix[FLOAT_dtype]</dt>
+<dd><p class="first last">Transformation from lidar to camera coordinates, shape: (4, 4)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>&#8216;labels&#8217;: list of dictionaries</dt>
+<dd><dl class="first last docutils">
+<dt>List with labels in this frame. Each label contains the following keys:</dt>
+<dd><dl class="first last docutils">
+<dt>&#8216;category&#8217;: string</dt>
+<dd><p class="first last">Possible values: &#8216;car&#8217;, &#8216;van&#8217;, &#8216;truck&#8217;, &#8216;pedestrian&#8217;, &#8216;person_sitting&#8217;, &#8216;cyclist&#8217;, &#8216;tram&#8217;, &#8216;misc&#8217;, &#8216;dontcare&#8217;</p>
+</dd>
+<dt>&#8216;box2D&#8217;: dict</dt>
+<dd><p class="first last">Bounding box in the left image, keys: <em>&#8216;left&#8217;</em>, <em>&#8216;top&#8217;</em>, <em>&#8216;right&#8217;</em>, <em>&#8216;bottom&#8217;</em></p>
+</dd>
+<dt>&#8216;box3D&#8217;: dict</dt>
+<dd><dl class="first last docutils">
+<dt>&#8216;location&#8217;: dict</dt>
+<dd><p class="first last">Center of the 3D box, keys: <em>&#8216;x&#8217;</em>, <em>&#8216;y&#8217;</em>, <em>&#8216;z&#8217;</em></p>
+</dd>
+<dt>&#8216;dimensions&#8217;: dict</dt>
+<dd><p class="first last">Size of the 3D box, keys: <em>&#8216;height&#8217;</em>, <em>&#8216;width&#8217;</em>, <em>&#8216;length&#8217;</em></p>
+</dd>
+<dt>&#8216;rotation_y&#8217;: float</dt>
+<dd><p class="first last">Object rotation around Y-axis in camera coordinates [-pi...pi], 0 = facing along X-axis</p>
+</dd>
+</dl>
+</dd>
+<dt>&#8216;info&#8217;: dict</dt>
+<dd><dl class="first last docutils">
+<dt>&#8216;truncated&#8217;: float</dt>
+<dd><p class="first last">Float from 0 (non-truncated) to 1 (truncated), where <em>truncated</em> refers to the object leaving image boundaries</p>
+</dd>
+<dt>&#8216;occluded&#8217;: int</dt>
+<dd><p class="first last">Occlusion status (0 = fully visible, 1 = partly occluded, 2 = largely occluded, 3 = unknown)</p>
+</dd>
+<dt>&#8216;trackId&#8217;: int, optional</dt>
+<dd><p class="first last">Unique tracking id of this object within this sequence, supplied only by <cite>KITTITrackletsReader</cite></p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.datasets.kitti.KITTITrackletsReader.getFramesInfo">
+<code class="descname">getFramesInfo</code><span class="sig-paren">(</span><em>frameStart=0</em>, <em>frameStop=None</em>, <em>frameStep=1</em>, <em>datasets=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.kitti.KITTITrackletsReader.getFramesInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lazy generator function to get information about frames</p>
+<p>The function returns the same information as <a class="reference internal" href="#pydriver.datasets.kitti.KITTITrackletsReader.getFrameInfo" title="pydriver.datasets.kitti.KITTITrackletsReader.getFrameInfo"><code class="xref py py-func docutils literal"><span class="pre">getFrameInfo()</span></code></a>. A frame will not be processed until the generator reaches it.</p>
+<p>The parameters <em>frameStart</em>, <em>frameStop</em> and <em>frameStep</em> will be applied to each requested dataset separately.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>frameStart: int, optional</dt>
+<dd><p class="first last">First frame, 0 by default</p>
+</dd>
+<dt>frameStop: int, optional</dt>
+<dd><p class="first last">Frame at which to stop (will not be yielded), no end by default</p>
+</dd>
+<dt>frameStep: int, optional</dt>
+<dd><p class="first last">Yield every n-th frame of a dataset, 1 by default</p>
+</dd>
+<dt>datasets: list of str, optional</dt>
+<dd><p class="first last">Restrict generator to specified datasets, all datasets by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pydriver.datasets.kitti.correctKITTILabelForStereo">
+<code class="descclassname">pydriver.datasets.kitti.</code><code class="descname">correctKITTILabelForStereo</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.kitti.correctKITTILabelForStereo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Roughly adjust for an empirically estimated labeling error w.r.t. stereo reconstruction in KITTI dataset</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydriver.datasets.kitti.getKITTIGroundTruth">
+<code class="descclassname">pydriver.datasets.kitti.</code><code class="descname">getKITTIGroundTruth</code><span class="sig-paren">(</span><em>labels</em>, <em>categories</em>, <em>categoriesOpt</em>, <em>mode='moderate'</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.kitti.getKITTIGroundTruth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get mandatory and optional ground truth out of a list of labels</p>
+<p>The KITTI dataset defines criteria which labels have to be detected in order to avoid a false negative. There are three evaluation
+modes &#8216;easy&#8217;, &#8216;moderate&#8217; and &#8216;hard&#8217;. To avoid penalizing good detection algorithms labels which are hard to detect become optional
+ground truth so their detection will not result in a false positive. The harder the mode the more labels become mandatory ground truth.</p>
+<p>The category &#8216;dontcare&#8217; is always included in optional ground truth.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>labels: list of dicts</dt>
+<dd><p class="first last">List with labels provided by dataset reader</p>
+</dd>
+<dt>categories: list of strings</dt>
+<dd><p class="first last">Mandatory categories</p>
+</dd>
+<dt>categoriesOpt: list of strings</dt>
+<dd><p class="first last">Optional categories</p>
+</dd>
+<dt>mode: string, optional</dt>
+<dd><p class="first last">Evaluation mode, &#8216;moderate&#8217; by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">mandatory and optional ground truth</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">tuple(groundTruth: list, groundTruthOpt: list)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydriver.datasets.kitti.writeLabels">
+<code class="descclassname">pydriver.datasets.kitti.</code><code class="descname">writeLabels</code><span class="sig-paren">(</span><em>labels</em>, <em>filepath</em>, <em>includeAlpha=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.kitti.writeLabels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write labels to file</p>
+<p>The produced file can be used for evaluation on KITTI servers. Labels are expected to use the camera coordinate system.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>labels: list</dt>
+<dd><p class="first last">List with object labels</p>
+</dd>
+<dt>filepath: string</dt>
+<dd><p class="first last">Path to the file to use</p>
+</dd>
+<dt>includeAlpha: bool, optional</dt>
+<dd><p class="first last">Write alpha values (observation angle) to file, <em>True</em> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pydriver.datasets.utils">
+<span id="utils"></span><h2>Utils<a class="headerlink" href="#module-pydriver.datasets.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pydriver.datasets.utils.detections2labels">
+<code class="descclassname">pydriver.datasets.utils.</code><code class="descname">detections2labels</code><span class="sig-paren">(</span><em>detections</em>, <em>transformation=None</em>, <em>projection=None</em>, <em>imgShape=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.utils.detections2labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert NumPy array of detections to a list of dictionaries with labels</p>
+<p>The key <em>&#8216;info&#8217;</em> will contain a dictionary with the &#8216;weight&#8217; key.</p>
+<p>If transformation is given, the result will be transformed accordingly (before projection to 2D box).
+If projection matrix is given, the result will contain the &#8216;box2Duntruncated&#8217; key. If imgShape (height, width) is also given, 2D boxes
+will be truncated to be within image boundaries and saved as &#8216;box2D&#8217;, the value [&#8216;info&#8217;][&#8216;truncated&#8217;] will be set as well.</p>
+<p>See <a class="reference internal" href="#pydriver.datasets.base.BaseReader" title="pydriver.datasets.base.BaseReader"><code class="xref py py-class docutils literal"><span class="pre">BaseReader</span></code></a> for label format description.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of dictionaries with labels</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returntype:</th><td class="field-body">list of dictionaries</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pydriver.datasets.utils.labels2detections">
+<code class="descclassname">pydriver.datasets.utils.</code><code class="descname">labels2detections</code><span class="sig-paren">(</span><em>labels</em>, <em>transformation=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.utils.labels2detections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert list of dictionaries with labels to NumPy array of detections</p>
+<p>If transformation is given, the result will be transformed accordingly.</p>
+<p>See <a class="reference internal" href="#pydriver.datasets.base.BaseReader" title="pydriver.datasets.base.BaseReader"><code class="xref py py-class docutils literal"><span class="pre">BaseReader</span></code></a> for label format description.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">NumPy array with detections</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returntype:</th><td class="field-body">np.ndarray[Detection_dtype]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The <code class="docutils literal"><span class="pre">datasets</span></code> Module</a><ul>
+<li><a class="reference internal" href="#module-pydriver.datasets.base">Base</a></li>
+<li><a class="reference internal" href="#module-pydriver.datasets.kitti">KITTI</a></li>
+<li><a class="reference internal" href="#module-pydriver.datasets.utils">Utils</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="reference.html">Reference</a><ul>
+      <li>Previous: <a href="main.html" title="previous chapter">Basics</a></li>
+      <li>Next: <a href="detectors.html" title="next chapter">The <code class="docutils literal"><span class="pre">detectors</span></code> Module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/datasets.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+      
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/datasets.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

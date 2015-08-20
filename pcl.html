@@ -1,0 +1,744 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The pcl Module &mdash; PyDriver 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyDriver 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="Reference" href="reference.html" />
+    <link rel="next" title="The preprocessing Module" href="preprocessing.html" />
+    <link rel="prev" title="The keypoints Module" href="keypoints.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pydriver.pcl">
+<span id="the-pcl-module"></span><h1>The <a class="reference internal" href="#module-pydriver.pcl" title="pydriver.pcl"><code class="xref py py-mod docutils literal"><span class="pre">pcl</span></code></a> Module<a class="headerlink" href="#module-pydriver.pcl" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://pointclouds.org/">Point Cloud Library</a> interface.</p>
+<span class="target" id="module-pydriver.pcl.pcl"></span><dl class="data">
+<dt id="pydriver.pcl.pcl.SHOTFeature_dtype">
+<code class="descclassname">pydriver.pcl.pcl.</code><code class="descname">SHOTFeature_dtype</code><a class="headerlink" href="#pydriver.pcl.pcl.SHOTFeature_dtype" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">Structure for SHOT features extracted by PCL</code></dt>
+<dd><dl class="docutils">
+<dt>descriptor: <a class="reference internal" href="main.html#pydriver.FLOAT_dtype" title="pydriver.FLOAT_dtype"><code class="xref py py-const docutils literal"><span class="pre">FLOAT_dtype</span></code></a> [352]</dt>
+<dd>Feature descriptor</dd>
+<dt>rf: <a class="reference internal" href="main.html#pydriver.FLOAT_dtype" title="pydriver.FLOAT_dtype"><code class="xref py py-const docutils literal"><span class="pre">FLOAT_dtype</span></code></a> [3,3]</dt>
+<dd>Reference frame</dd>
+</dl>
+</dd></dl>
+
+<dl class="data">
+<dt id="pydriver.pcl.pcl.SHOTColorFeature_dtype">
+<code class="descclassname">pydriver.pcl.pcl.</code><code class="descname">SHOTColorFeature_dtype</code><a class="headerlink" href="#pydriver.pcl.pcl.SHOTColorFeature_dtype" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">Structure for SHOT+Color features extracted by PCL</code></dt>
+<dd><dl class="docutils">
+<dt>descriptor: <a class="reference internal" href="main.html#pydriver.FLOAT_dtype" title="pydriver.FLOAT_dtype"><code class="xref py py-const docutils literal"><span class="pre">FLOAT_dtype</span></code></a> [1344]</dt>
+<dd>Feature descriptor</dd>
+<dt>rf: <a class="reference internal" href="main.html#pydriver.FLOAT_dtype" title="pydriver.FLOAT_dtype"><code class="xref py py-const docutils literal"><span class="pre">FLOAT_dtype</span></code></a> [3,3]</dt>
+<dd>Reference frame</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="pydriver.pcl.pcl.PCLHelper">
+<em class="property">class </em><code class="descclassname">pydriver.pcl.pcl.</code><code class="descname">PCLHelper</code><span class="sig-paren">(</span><em>XYZ=None</em>, <em>RGB=None</em>, <em>int normals_k=30</em>, <em>FLOAT_t normals_radius=0.0</em>, <em>tuple bgColor=None</em>, <em>tuple camPosition=None</em>, <em>dict kpVisParams=None</em>, <em>dict detVisParams=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Point Cloud Library helper</p>
+<p>An instance of this class represents a single XYZRGB point cloud.</p>
+<dl class="attribute">
+<dt id="pydriver.pcl.pcl.PCLHelper.__init__">
+<code class="descname">__init__</code><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a new PCLHelper instance</p>
+<p>The default background is dark green so black and missing regions can easily be distinguished.</p>
+<p>This object can be pickled with the <code class="xref py py-mod docutils literal"><span class="pre">pickle</span></code> Python module.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>XYZ: np.ndarray[FLOAT_dtype, ndim=2 or 3], optional</dt>
+<dd><p class="first last">X, Y and Z coordinates of points, see <a class="reference internal" href="#pydriver.pcl.pcl.PCLHelper.fromArray" title="pydriver.pcl.pcl.PCLHelper.fromArray"><code class="xref py py-meth docutils literal"><span class="pre">fromArray()</span></code></a></p>
+</dd>
+<dt>RGB: np.ndarray[np.uint8, ndim=2 or 3], optional</dt>
+<dd><p class="first last">R, G and B colors of points, see <a class="reference internal" href="#pydriver.pcl.pcl.PCLHelper.fromArray" title="pydriver.pcl.pcl.PCLHelper.fromArray"><code class="xref py py-meth docutils literal"><span class="pre">fromArray()</span></code></a></p>
+</dd>
+<dt>normals_k: int, optional</dt>
+<dd><p class="first last">See <a class="reference internal" href="#pydriver.pcl.pcl.PCLHelper.setNormalsKSearch" title="pydriver.pcl.pcl.PCLHelper.setNormalsKSearch"><code class="xref py py-meth docutils literal"><span class="pre">setNormalsKSearch()</span></code></a>, 30 by default</p>
+</dd>
+<dt>normals_radius: FLOAT_dtype, optional</dt>
+<dd><p class="first last">See <a class="reference internal" href="#pydriver.pcl.pcl.PCLHelper.setNormalsRadius" title="pydriver.pcl.pcl.PCLHelper.setNormalsRadius"><code class="xref py py-meth docutils literal"><span class="pre">setNormalsRadius()</span></code></a>, disabled by default</p>
+</dd>
+<dt>bgColor: tuple, optional</dt>
+<dd><p class="first last">Background color for visualization, see <a class="reference internal" href="#pydriver.pcl.pcl.PCLHelper.setBGColor" title="pydriver.pcl.pcl.PCLHelper.setBGColor"><code class="xref py py-meth docutils literal"><span class="pre">setBGColor()</span></code></a></p>
+</dd>
+<dt>camPosition: tuple, optional</dt>
+<dd><p class="first last">Camera position for visualization, see <a class="reference internal" href="#pydriver.pcl.pcl.PCLHelper.setCameraPosition" title="pydriver.pcl.pcl.PCLHelper.setCameraPosition"><code class="xref py py-meth docutils literal"><span class="pre">setCameraPosition()</span></code></a></p>
+</dd>
+<dt>kpVisParams: dict, optional</dt>
+<dd><p class="first last">Dictionary with keypoints visualization parameters, keys: <em>&#8216;size&#8217;</em>, <em>&#8216;normalLength&#8217;</em>, <em>&#8216;color&#8217;</em>, see <a class="reference internal" href="#pydriver.pcl.pcl.PCLHelper.setKeypointsVisualization" title="pydriver.pcl.pcl.PCLHelper.setKeypointsVisualization"><code class="xref py py-meth docutils literal"><span class="pre">setKeypointsVisualization()</span></code></a></p>
+</dd>
+<dt>detVisParams: dict, optional</dt>
+<dd><p class="first last">Dictionary with detection visualization parameters, keys: <em>&#8216;negSize&#8217;</em>, <em>&#8216;negColor&#8217;</em>, <em>&#8216;posColor&#8217;</em>, <em>&#8216;GTColor&#8217;</em>, <em>&#8216;GTOptColor&#8217;</em>, see <a class="reference internal" href="#pydriver.pcl.pcl.PCLHelper.setDetectionsVisualization" title="pydriver.pcl.pcl.PCLHelper.setDetectionsVisualization"><code class="xref py py-meth docutils literal"><span class="pre">setDetectionsVisualization()</span></code></a></p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.addCloud">
+<code class="descname">addCloud</code><span class="sig-paren">(</span><em>self</em>, <em>PCLHelper addend</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.addCloud" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge another cloud into this one</p>
+<p>Destroys point cloud organization.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.computeSHOT">
+<code class="descname">computeSHOT</code><span class="sig-paren">(</span><em>self</em>, <em>FLOAT_t radius</em>, <em>PCLHelper keypoints</em><span class="sig-paren">)</span> &rarr; tuple<a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.computeSHOT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the SHOT feature (descriptor and 3D local reference frame) with given radius for specified keypoint cloud</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">tuple containing SHOT features and a mask specifying which features are valid</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returntype:</th><td class="field-body">tuple(np.ndarray[<a class="reference internal" href="#pydriver.pcl.pcl.SHOTFeature_dtype" title="pydriver.pcl.pcl.SHOTFeature_dtype"><code class="xref py py-const docutils literal"><span class="pre">SHOTFeature_dtype</span></code></a>] SHOTFeatures, np.ndarray[bool] validityMask)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.computeSHOTColor">
+<code class="descname">computeSHOTColor</code><span class="sig-paren">(</span><em>self</em>, <em>FLOAT_t radius</em>, <em>PCLHelper keypoints</em><span class="sig-paren">)</span> &rarr; tuple<a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.computeSHOTColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the SHOT+Color feature (descriptor and 3D local reference frame) with given radius for specified keypoint cloud</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">tuple containing SHOT+Color features and a mask specifying which features are valid</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returntype:</th><td class="field-body">tuple(np.ndarray[<a class="reference internal" href="#pydriver.pcl.pcl.SHOTColorFeature_dtype" title="pydriver.pcl.pcl.SHOTColorFeature_dtype"><code class="xref py py-const docutils literal"><span class="pre">SHOTColorFeature_dtype</span></code></a>] SHOTColorFeatures, np.ndarray[bool] validityMask)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span> &rarr; PCLHelper<a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a copy of this cloud</p>
+<p>Only the points are copied, no parameters will be set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">copied cloud</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returntype:</th><td class="field-body">PCLHelper</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.detectGroundPlane">
+<code class="descname">detectGroundPlane</code><span class="sig-paren">(</span><em>self</em>, <em>FLOAT_t maxPlaneAngle</em>, <em>FLOAT_t distanceThreshold</em><span class="sig-paren">)</span> &rarr; tuple<a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.detectGroundPlane" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect ground plane, return ground plane and correspondent transformation</p>
+<p>Ground plance is returned as a NumPy array of 4 elements containing a 3D normal vector pointing to positive y-direction
+and signed distance of origin to ground plane (Hesse normal form).</p>
+<p>Transformation is returned as NumPy matrix of shape (4, 4). The point under the camera with respect to ground
+plane normal will become the point (0, 0, 0).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>maxPlaneAngle: FLOAT_dtype</dt>
+<dd><p class="first last">Maximal angle between xz plane and detected ground plane</p>
+</dd>
+<dt>distanceThreshold: FLOAT_dtype</dt>
+<dd><p class="first last">Maximal distance to the plane for a point to be considered an inlier</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">ground plane coefficients and correspondent transformation</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">tuple(np.ndarray[FLOAT_dtype], np.matrix[FLOAT_dtype, ndim=2])</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.downsampleVoxelGrid">
+<code class="descname">downsampleVoxelGrid</code><span class="sig-paren">(</span><em>self</em>, <em>FLOAT_t leafSize</em><span class="sig-paren">)</span> &rarr; PCLHelper<a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.downsampleVoxelGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get PCLHelper containing the cloud downsampled with PCL VoxelGrid filter</p>
+<p>The resulting cloud is not organized.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>leafSize: float</dt>
+<dd><p class="first last">Voxel grid leaf size</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">downsampled cloud</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">PCLHelper</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.extractOrientedBoxes">
+<code class="descname">extractOrientedBoxes</code><span class="sig-paren">(</span><em>self</em>, <em>list boxes3D</em>, <em>FLOAT_t margin=0</em>, <em>bool invert=False</em><span class="sig-paren">)</span> &rarr; PCLHelper<a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.extractOrientedBoxes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get new PCLHelper with points inside or outside the given oriented boxes</p>
+<p>The function returns all extracted points as one cloud and does not apply any transformations.</p>
+<p>The resulting cloud is not organized.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>boxes3D: list of dicts</dt>
+<dd><p class="first last">List of dictionaries with 3D box information, see <a class="reference internal" href="datasets.html#pydriver.datasets.base.BaseReader" title="pydriver.datasets.base.BaseReader"><code class="xref py py-class docutils literal"><span class="pre">BaseReader</span></code></a> for box format description</p>
+</dd>
+<dt>margin: FLOAT_dtype, optional</dt>
+<dd><p class="first last">Safety margin to be added at each side, 0 by default</p>
+</dd>
+<dt>invert: bool, optional</dt>
+<dd><p class="first last">Get points inside the boxes if <em>False</em> or outside if <em>True</em>, <em>False</em> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.fromArray">
+<code class="descname">fromArray</code><span class="sig-paren">(</span><em>self</em>, <em>ndarray XYZ</em>, <em>ndarray RGB=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.fromArray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct point cloud from array(s)</p>
+<p>3-dimensional arrays result in organized clouds, see <a class="reference internal" href="#pydriver.pcl.pcl.PCLHelper.isOrganized" title="pydriver.pcl.pcl.PCLHelper.isOrganized"><code class="xref py py-meth docutils literal"><span class="pre">isOrganized()</span></code></a>.</p>
+<p>See <a class="reference internal" href="#pydriver.pcl.pcl.PCLHelper.toArray" title="pydriver.pcl.pcl.PCLHelper.toArray"><code class="xref py py-meth docutils literal"><span class="pre">toArray()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>XYZ: np.ndarray[FLOAT_dtype, ndim=2 or 3]</dt>
+<dd><p class="first last"><em>(nPoints, 3)</em>- or <em>(height, width, 3)</em>-shaped array with XYZ coordinates</p>
+</dd>
+<dt>RGB: np.ndarray[np.uint8, ndim=2 or 3], optional</dt>
+<dd><p class="first last"><em>(nPoints, 3)</em>- or <em>(height, width, 3)</em>-shaped array with RGB values</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.getCloudSize">
+<code class="descname">getCloudSize</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span> &rarr; tuple<a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.getCloudSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get cloud size</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Tuple with total points number and shape</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returntype:</th><td class="field-body">tuple(nPoints, (width, height))</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.getConnectedComponents">
+<code class="descname">getConnectedComponents</code><span class="sig-paren">(</span><em>self</em>, <em>FLOAT_t distanceThreshold</em><span class="sig-paren">)</span> &rarr; list<a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.getConnectedComponents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get PCLHelper list with segmented components</p>
+<p>The cloud needs to be organized.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>distanceThreshold: FLOAT_dtype</dt>
+<dd><p class="first last">Threshold to use for segmentation</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List with PCLHelpers containing the segments</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">list(PCLHelper)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.getHarrisPoints">
+<code class="descname">getHarrisPoints</code><span class="sig-paren">(</span><em>self</em>, <em>FLOAT_t radius</em>, <em>bool refine=True</em>, <em>FLOAT_t threshold=0</em>, <em>int method=1</em><span class="sig-paren">)</span> &rarr; PCLHelper<a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.getHarrisPoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get PCLHelper containing the cloud with Harris keypoints</p>
+<p>See <a class="reference external" href="http://docs.pointclouds.org/1.7.1/classpcl_1_1_harris_keypoint3_d.html">pcl::HarrisKeypoint3D</a> and
+<a class="reference external" href="http://docs.pointclouds.org/1.7.1/classpcl_1_1_harris_keypoint3_d.html#a372b4e5dd47b17cb70dd3a8f6e9e4187">available methods</a>
+for further information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>radius: FLOAT_dtype</dt>
+<dd><p class="first last">Radius for normal estimation and non maxima suppression</p>
+</dd>
+<dt>refine: bool, optional</dt>
+<dd><p class="first last">Flag whether to refine keypoints, <em>True</em> by default</p>
+</dd>
+<dt>threshold: FLOAT_dtype, optional</dt>
+<dd><p class="first last">Threshold value for detecting corners, <em>0</em> by default</p>
+</dd>
+<dt>method: int, optional</dt>
+<dd><p class="first last">Method to use (1-5), <em>1</em> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.getISSPoints">
+<code class="descname">getISSPoints</code><span class="sig-paren">(</span><em>self</em>, <em>FLOAT_t salientRadius</em>, <em>FLOAT_t nonMaxRadius</em>, <em>int minNeighbors=5</em>, <em>FLOAT_t threshold21=0.975</em>, <em>FLOAT_t threshold32=0.975</em>, <em>FLOAT_t angleThreshold=&lt;???&gt;</em>, <em>FLOAT_t normalRadius=0</em>, <em>FLOAT_t borderRadius=0</em><span class="sig-paren">)</span> &rarr; PCLHelper<a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.getISSPoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get PCLHelper containing the cloud with ISS keypoints</p>
+<p>See <a class="reference external" href="http://docs.pointclouds.org/1.7.1/classpcl_1_1_i_s_s_keypoint3_d.html">pcl::ISSKeypoint3D</a> for further information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.getNormalsOfCloud">
+<code class="descname">getNormalsOfCloud</code><span class="sig-paren">(</span><em>self</em>, <em>PCLHelper pointCloud</em>, <em>FLOAT_t radius</em><span class="sig-paren">)</span> &rarr; tuple<a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.getNormalsOfCloud" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get surface normals at positions given by <em>pointCloud</em></p>
+<p>Normals are computed based on points of this PCLHelper within the given radius. The resulting normals array has the shape <em>(nPoints, 3)</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">tuple containing normals and a mask specifying which normals are valid</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returntype:</th><td class="field-body">tuple(np.ndarray[FLOAT_dtype, ndim=2] normals, np.ndarray[bool] validityMask)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.isOrganized">
+<code class="descname">isOrganized</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.isOrganized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the cloud is organized</p>
+<p>Organized clouds have meaningful width and height, invalid points must be set to <em>NaN</em>. Some operations require such organized clouds and some
+operations (such as <a class="reference internal" href="#pydriver.pcl.pcl.PCLHelper.removeNaN" title="pydriver.pcl.pcl.PCLHelper.removeNaN"><code class="xref py py-meth docutils literal"><span class="pre">removeNaN()</span></code></a>) make organized clouds unorganized.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.removeGroundPlane">
+<code class="descname">removeGroundPlane</code><span class="sig-paren">(</span><em>self</em>, <em>FLOAT_t distanceThreshold</em>, <em>ndarray coefficients</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.removeGroundPlane" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove ground plane</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>distanceThreshold: FLOAT_dtype</dt>
+<dd><p class="first last">Maximal distance to the plane for a point to be considered an inlier</p>
+</dd>
+<dt>coefficients: np.ndarray[FLOAT_dtype]</dt>
+<dd><p class="first last">Array of shape (4, 1) with ground plane information as returned by <a class="reference internal" href="#pydriver.pcl.pcl.PCLHelper.detectGroundPlane" title="pydriver.pcl.pcl.PCLHelper.detectGroundPlane"><code class="xref py py-meth docutils literal"><span class="pre">detectGroundPlane()</span></code></a></p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.removeNaN">
+<code class="descname">removeNaN</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.removeNaN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove <em>NaN</em> values from point cloud</p>
+<p>Destroys point cloud organization.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.restrictViewport">
+<code class="descname">restrictViewport</code><span class="sig-paren">(</span><em>self</em>, <em>tuple viewport</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.restrictViewport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restrict viewport to given coordinate ranges</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>viewport: tuple</dt>
+<dd><p class="first last">3-tuple of 2-tuples defining x-, y- and z-ranges</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>self</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save point cloud to file in PCD format</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.setBGColor">
+<code class="descname">setBGColor</code><span class="sig-paren">(</span><em>self</em>, <em>tuple color</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.setBGColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set background color for visualization</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>color: tuple</dt>
+<dd><p class="first last">Contains 3 float values (RGB) between 0 and 1</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.setCameraPosition">
+<code class="descname">setCameraPosition</code><span class="sig-paren">(</span><em>self</em>, <em>tuple camPosition</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.setCameraPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set camera position for visualization</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>camPosition: tuple</dt>
+<dd><p class="first last">Contains 3 tuples (position, view, up) with 3 float values (x, y, z) each</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.setDetectionsVisualization">
+<code class="descname">setDetectionsVisualization</code><span class="sig-paren">(</span><em>self</em>, <em>FLOAT_t negSize=-1</em>, <em>tuple negColor=None</em>, <em>tuple posColor=None</em>, <em>tuple GTColor=None</em>, <em>tuple GTOptColor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.setDetectionsVisualization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set parameters for detections visualization</p>
+<p>Colors must be given as tuples with three RGB float values between 0.0 and 1.0. Parameters which are not given will not be changed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>negSize: FLOAT_dtype, optional</dt>
+<dd><p class="first last">Edge length of cubes visualizing negative detections</p>
+</dd>
+<dt>negColor: tuple, optional</dt>
+<dd><p class="first last">Color of negative detections</p>
+</dd>
+<dt>posColor: tuple, optional</dt>
+<dd><p class="first last">Color of positive detections</p>
+</dd>
+<dt>GTColor: tuple, optional</dt>
+<dd><p class="first last">Color of ground truth</p>
+</dd>
+<dt>GTOptColor: tuple, optional</dt>
+<dd><p class="first last">Color of optional ground truth</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.setKeypointsVisualization">
+<code class="descname">setKeypointsVisualization</code><span class="sig-paren">(</span><em>self</em>, <em>FLOAT_t size=-1</em>, <em>FLOAT_t normalLength=-1</em>, <em>tuple color=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.setKeypointsVisualization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set parameters for keypoints visualization</p>
+<p>Color must be given as tuple with three RGB float values between 0.0 and 1.0. Parameters which are not given will not be changed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>size: FLOAT_dtype, optional</dt>
+<dd><p class="first last">Size of keypoints (in pixels)</p>
+</dd>
+<dt>normalLength: FLOAT_dtype, optional</dt>
+<dd><p class="first last">Length of normals</p>
+</dd>
+<dt>color: tuple, optional</dt>
+<dd><p class="first last">Color of keypoints and their normals, contains 3 float values (RGB) between 0 and 1</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.setNormalsKSearch">
+<code class="descname">setNormalsKSearch</code><span class="sig-paren">(</span><em>self</em>, <em>int k</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.setNormalsKSearch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set normals estimation method to kNN</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.setNormalsRadius">
+<code class="descname">setNormalsRadius</code><span class="sig-paren">(</span><em>self</em>, <em>FLOAT_t radius</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.setNormalsRadius" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set normals estimation method to radius search</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.toArray">
+<code class="descname">toArray</code><span class="sig-paren">(</span><em>self</em>, <em>bool flat</em>, <em>bool extractRGB</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.toArray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get <em>(nPoints, 3)</em>- or <em>(height, width, 3)</em>-shaped array(s) with cloud points&#8217; data</p>
+<p>The type of XYZ array is FLOAT_dtype, the type of RGB array is np.uint8.</p>
+<p>If extractRGB is True the result will be a tuple <em>(XYZ, RGB)</em> with coordinates and color of cloud points. Otherwise
+the result will be the XYZ data array.</p>
+<p>See <a class="reference internal" href="#pydriver.pcl.pcl.PCLHelper.fromArray" title="pydriver.pcl.pcl.PCLHelper.fromArray"><code class="xref py py-meth docutils literal"><span class="pre">fromArray()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>flat: bool</dt>
+<dd><p class="first last">Indicate whether to extract a flat <em>(nPoints, 3)</em>-shaped array instead of a <em>(height, width, 3)</em>-shaped one</p>
+</dd>
+<dt>extractRGB: bool</dt>
+<dd><p class="first last">Indicate whether to extract RGB data in addition to XYZ data</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">XYZ data or tuple(XYZ, RGB)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">np.ndarray[FLOAT_dtype, ndim=2 or 3] or tuple(np.ndarray[FLOAT_dtype, ndim=2 or 3], np.ndarray[np.uint8, ndim=2 or 3])</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.transform">
+<code class="descname">transform</code><span class="sig-paren">(</span><em>self</em>, <em>ndarray transformation</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate and translate point cloud according to given affine transformation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>transformation: np.ndarray[FLOAT_dtype, ndim=2]</dt>
+<dd><p class="first last">NumPy array of shape (4, 4) with affine transformation</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.visualize">
+<code class="descname">visualize</code><span class="sig-paren">(</span><em>self</em>, <em>title='Point Cloud Visualization'</em>, <em>bool fullscreen=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.visualize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interactively visualize the point cloud</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>title: string, optional</dt>
+<dd><p class="first last">Window title, <em>&#8220;Point Cloud Visualization&#8221;</em> by default</p>
+</dd>
+<dt>fullscreen: bool, optional</dt>
+<dd><p class="first last">Use full screen instead of window, <em>False</em> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.visualizeDetections">
+<code class="descname">visualizeDetections</code><span class="sig-paren">(</span><em>self</em>, <em>__Pyx_memviewslice detections=None</em>, <em>__Pyx_memviewslice groundTruth=None</em>, <em>__Pyx_memviewslice groundTruthOpt=None</em>, <em>title='Detections Visualization'</em>, <em>bool fullscreen=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.visualizeDetections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interactively visualize the point cloud with optionally specified ground truth and detection hypotheses</p>
+<p>Use <a class="reference internal" href="#pydriver.pcl.pcl.PCLHelper.setDetectionsVisualization" title="pydriver.pcl.pcl.PCLHelper.setDetectionsVisualization"><code class="xref py py-meth docutils literal"><span class="pre">setDetectionsVisualization()</span></code></a> to change how the detections will be visualized.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>detections: np.ndarray[<a class="reference internal" href="main.html#pydriver.Detection_dtype" title="pydriver.Detection_dtype"><code class="xref py py-const docutils literal"><span class="pre">Detection_dtype</span></code></a>], optional</dt>
+<dd><p class="first last">Detection hypotheses</p>
+</dd>
+<dt>groundTruth: np.ndarray[<a class="reference internal" href="main.html#pydriver.Detection_dtype" title="pydriver.Detection_dtype"><code class="xref py py-const docutils literal"><span class="pre">Detection_dtype</span></code></a>], optional</dt>
+<dd><p class="first last">Ground truth for this cloud</p>
+</dd>
+<dt>groundTruthOpt: np.ndarray[<a class="reference internal" href="main.html#pydriver.Detection_dtype" title="pydriver.Detection_dtype"><code class="xref py py-const docutils literal"><span class="pre">Detection_dtype</span></code></a>], optional</dt>
+<dd><p class="first last">Optional ground truth for this cloud</p>
+</dd>
+<dt>title: string, optional</dt>
+<dd><p class="first last">Window title, <em>&#8220;Detections Visualization&#8221;</em> by default</p>
+</dd>
+<dt>fullscreen: bool, optional</dt>
+<dd><p class="first last">Use full screen instead of window, <em>False</em> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.pcl.pcl.PCLHelper.visualizeKeypoints">
+<code class="descname">visualizeKeypoints</code><span class="sig-paren">(</span><em>self</em>, <em>PCLHelper keypoints</em>, <em>PCLHelper normals=None</em>, <em>title='Keypoints Visualization'</em>, <em>bool fullscreen=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.pcl.pcl.PCLHelper.visualizeKeypoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interactively visualize the point cloud with given keypoints and optionally their normals</p>
+<p>Use <a class="reference internal" href="#pydriver.pcl.pcl.PCLHelper.setKeypointsVisualization" title="pydriver.pcl.pcl.PCLHelper.setKeypointsVisualization"><code class="xref py py-meth docutils literal"><span class="pre">setKeypointsVisualization()</span></code></a> to change how the keypoints will be visualized.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>keypoints: PCLHelper</dt>
+<dd><p class="first last">PCLHelper instance containing the keypoints</p>
+</dd>
+<dt>normals: PCLHelper, optional</dt>
+<dd><p class="first last">PCLHelper instance where XYZ values represent the normal vector for each keypoint in <em>keypoints</em></p>
+</dd>
+<dt>title: string, optional</dt>
+<dd><p class="first last">Window title, <em>&#8220;Keypoints Visualization&#8221;</em> by default</p>
+</dd>
+<dt>fullscreen: bool, optional</dt>
+<dd><p class="first last">Use full screen instead of window, <em>False</em> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="reference.html">Reference</a><ul>
+      <li>Previous: <a href="keypoints.html" title="previous chapter">The <code class="docutils literal"><span class="pre">keypoints</span></code> Module</a></li>
+      <li>Next: <a href="preprocessing.html" title="next chapter">The <code class="docutils literal"><span class="pre">preprocessing</span></code> Module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pcl.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+      
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/pcl.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

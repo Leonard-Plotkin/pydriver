@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The features Module &mdash; PyDriver 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyDriver 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="Reference" href="reference.html" />
+    <link rel="next" title="The geometry Module" href="geometry.html" />
+    <link rel="prev" title="The evaluation Module" href="evaluation.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pydriver.features">
+<span id="the-features-module"></span><h1>The <a class="reference internal" href="#module-pydriver.features" title="pydriver.features"><code class="xref py py-mod docutils literal"><span class="pre">features</span></code></a> Module<a class="headerlink" href="#module-pydriver.features" title="Permalink to this headline">¶</a></h1>
+<p>Feature extraction module</p>
+<div class="section" id="module-pydriver.features.base">
+<span id="base"></span><h2>Base<a class="headerlink" href="#module-pydriver.features.base" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pydriver.features.base.FeatureExtractor">
+<em class="property">class </em><code class="descclassname">pydriver.features.base.</code><code class="descname">FeatureExtractor</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.features.base.FeatureExtractor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for feature extractors</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>fixedY: float, optional</dt>
+<dd><p class="first last">Ignore y-coordinate of keypoint and use this value, disabled by default</p>
+</dd>
+<dt>includeY: bool, optional</dt>
+<dd><p class="first last">Include y-coordinate of keypoint as first feature dimension, <em>False</em> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pydriver.features.base.FeatureExtractor.__init__">
+<code class="descname">__init__</code><a class="headerlink" href="#pydriver.features.base.FeatureExtractor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize feature extractor</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.features.base.FeatureExtractor.dims">
+<code class="descname">dims</code><a class="headerlink" href="#pydriver.features.base.FeatureExtractor.dims" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get number of dimensions of the returned feature</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.features.base.FeatureExtractor.getFeatures">
+<code class="descname">getFeatures</code><span class="sig-paren">(</span><em>self</em>, <em>dict scene</em>, <em>PCLHelper keypointCloud</em><span class="sig-paren">)</span> &rarr; tuple<a class="headerlink" href="#pydriver.features.base.FeatureExtractor.getFeatures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract features from scene at given keypoints</p>
+<p>Returned keypoints may be identical to <em>keypointCloud</em> but can also differ (e.g. if the
+feature ignores the original y-coordinate of keypoints). The number of returned keypoints is
+equal or less than the number of given keypoints (some keypoints may produce invalid features).</p>
+<p>Features is a <a class="reference internal" href="main.html#pydriver.FLOAT_dtype" title="pydriver.FLOAT_dtype"><code class="xref py py-const docutils literal"><span class="pre">FLOAT_dtype</span></code></a> array of shape <em>(number of keypoints, number of feature dimensions)</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>scene: dict</dt>
+<dd><p class="first last">Scene information as described in <a class="reference internal" href="preprocessing.html#pydriver.preprocessing.preprocessing.Preprocessor" title="pydriver.preprocessing.preprocessing.Preprocessor"><code class="xref py py-class docutils literal"><span class="pre">Preprocessor</span></code></a> documentation</p>
+</dd>
+<dt>keypointCloud: <a class="reference internal" href="pcl.html#pydriver.pcl.pcl.PCLHelper" title="pydriver.pcl.pcl.PCLHelper"><code class="xref py py-class docutils literal"><span class="pre">PCLHelper</span></code></a></dt>
+<dd><p class="first last">Cloud with keypoints</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">tuple with keypoints and features</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">tuple(np.ndarray[<a class="reference internal" href="main.html#pydriver.Position_dtype" title="pydriver.Position_dtype"><code class="xref py py-const docutils literal"><span class="pre">Position_dtype</span></code></a>], np.ndarray[FLOAT_dtype, ndim=2])</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pydriver.features.shot">
+<span id="shot"></span><h2>SHOT<a class="headerlink" href="#module-pydriver.features.shot" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pydriver.features.shot.SHOTColorExtractor">
+<em class="property">class </em><code class="descclassname">pydriver.features.shot.</code><code class="descname">SHOTColorExtractor</code><a class="headerlink" href="#pydriver.features.shot.SHOTColorExtractor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute SHOT+Color features</p>
+<p>Feature has 1344 dimensions (or 1345 including keypoint y-coordinate).</p>
+<p>Parameters are identical to those of <a class="reference internal" href="#pydriver.features.shot.SHOTExtractor" title="pydriver.features.shot.SHOTExtractor"><code class="xref py py-class docutils literal"><span class="pre">SHOTExtractor</span></code></a>.</p>
+<dl class="attribute">
+<dt id="pydriver.features.shot.SHOTColorExtractor.__init__">
+<code class="descname">__init__</code><a class="headerlink" href="#pydriver.features.shot.SHOTColorExtractor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize feature extractor</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.features.shot.SHOTColorExtractor.dims">
+<code class="descname">dims</code><a class="headerlink" href="#pydriver.features.shot.SHOTColorExtractor.dims" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pydriver.features.shot.SHOTColorExtractor.getFeatures">
+<code class="descname">getFeatures</code><span class="sig-paren">(</span><em>self</em>, <em>dict scene</em>, <em>PCLHelper keypointCloud</em><span class="sig-paren">)</span> &rarr; tuple<a class="headerlink" href="#pydriver.features.shot.SHOTColorExtractor.getFeatures" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydriver.features.shot.SHOTExtractor">
+<em class="property">class </em><code class="descclassname">pydriver.features.shot.</code><code class="descname">SHOTExtractor</code><a class="headerlink" href="#pydriver.features.shot.SHOTExtractor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute SHOT features</p>
+<p>Feature has 352 dimensions (or 353 including keypoint y-coordinate).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>shotRadius: float</dt>
+<dd><p class="first last">Radius of SHOT feature</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>For other parameters, see <a class="reference internal" href="#pydriver.features.base.FeatureExtractor" title="pydriver.features.base.FeatureExtractor"><code class="xref py py-class docutils literal"><span class="pre">FeatureExtractor</span></code></a>.</p>
+<dl class="attribute">
+<dt id="pydriver.features.shot.SHOTExtractor.__init__">
+<code class="descname">__init__</code><a class="headerlink" href="#pydriver.features.shot.SHOTExtractor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize feature extractor</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.features.shot.SHOTExtractor.dims">
+<code class="descname">dims</code><a class="headerlink" href="#pydriver.features.shot.SHOTExtractor.dims" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pydriver.features.shot.SHOTExtractor.getFeatures">
+<code class="descname">getFeatures</code><span class="sig-paren">(</span><em>self</em>, <em>dict scene</em>, <em>PCLHelper keypointCloud</em><span class="sig-paren">)</span> &rarr; tuple<a class="headerlink" href="#pydriver.features.shot.SHOTExtractor.getFeatures" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The <code class="docutils literal"><span class="pre">features</span></code> Module</a><ul>
+<li><a class="reference internal" href="#module-pydriver.features.base">Base</a></li>
+<li><a class="reference internal" href="#module-pydriver.features.shot">SHOT</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="reference.html">Reference</a><ul>
+      <li>Previous: <a href="evaluation.html" title="previous chapter">The <code class="docutils literal"><span class="pre">evaluation</span></code> Module</a></li>
+      <li>Next: <a href="geometry.html" title="next chapter">The <code class="docutils literal"><span class="pre">geometry</span></code> Module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/features.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+      
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/features.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

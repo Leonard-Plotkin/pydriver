@@ -1,0 +1,561 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The detectors Module &mdash; PyDriver 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyDriver 0.1.0 documentation" href="index.html" />
+    <link rel="up" title="Reference" href="reference.html" />
+    <link rel="next" title="The evaluation Module" href="evaluation.html" />
+    <link rel="prev" title="The datasets Module" href="datasets.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pydriver.detectors">
+<span id="the-detectors-module"></span><h1>The <a class="reference internal" href="#module-pydriver.detectors" title="pydriver.detectors"><code class="xref py py-mod docutils literal"><span class="pre">detectors</span></code></a> Module<a class="headerlink" href="#module-pydriver.detectors" title="Permalink to this headline">¶</a></h1>
+<p>Module for learning and recognizing features.</p>
+<div class="section" id="module-pydriver.detectors.detectors">
+<span id="detectors"></span><h2>Detectors<a class="headerlink" href="#module-pydriver.detectors.detectors" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pydriver.detectors.detectors.Detector">
+<em class="property">class </em><code class="descclassname">pydriver.detectors.detectors.</code><code class="descname">Detector</code><a class="headerlink" href="#pydriver.detectors.detectors.Detector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for learning and recognition</p>
+<p>This class implements learning features of different types and storing them in their respective <a class="reference internal" href="#pydriver.detectors.vocabularies.Vocabulary" title="pydriver.detectors.vocabularies.Vocabulary"><code class="xref py py-class docutils literal"><span class="pre">vocabularies</span></code></a> which
+can then be used to perform detection and recognition.</p>
+<dl class="method">
+<dt id="pydriver.detectors.detectors.Detector.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>featureTypes</em>, <em>vocabularyGenerator=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.detectors.Detector.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Detector instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>featureTypes: list of tuples(str, int)</dt>
+<dd><p class="first last">Each tuple has to contain the unique name of the feature type and the number of its dimensions</p>
+</dd>
+<dt>vocabularyGenerator: callable, optional</dt>
+<dd><p class="first last">Function to use for creating new vocabulary objects, must accept dimensions as first positional argument and the feature name as the second, <a class="reference internal" href="#pydriver.detectors.vocabularies.Vocabulary" title="pydriver.detectors.vocabularies.Vocabulary"><code class="xref py py-class docutils literal"><span class="pre">Vocabulary(dimensions)</span></code></a> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.detectors.detectors.Detector.addWords">
+<code class="descname">addWords</code><span class="sig-paren">(</span><em>self</em>, <em>str category</em>, <em>str featureType</em>, <em>ndarray features</em>, <em>ndarray keypoints=None</em>, <em>dict box3D=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.detectors.Detector.addWords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add new visual words</p>
+<p>The function adds features and their associated &#8220;meaning&#8221; (positive/negative example, object configuration if positive) to
+appropriate internal <a class="reference internal" href="#pydriver.detectors.vocabularies.Vocabulary" title="pydriver.detectors.vocabularies.Vocabulary"><code class="xref py py-class docutils literal"><span class="pre">vocabularies</span></code></a> which will be used for learning and recognition.
+Only features which are fully defined (no <em>NaN</em> values) are learned.</p>
+<dl class="docutils">
+<dt>category: str</dt>
+<dd>Category of object (or <em>&#8216;negative&#8217;</em>)</dd>
+<dt>featureType: str</dt>
+<dd>String indicating the feature type</dd>
+<dt>features: np.ndarray[FLOAT_dtype, ndim=2]</dt>
+<dd>Array with feature vectors</dd>
+<dt>keypoints: np.ndarray[<a class="reference internal" href="main.html#pydriver.Position_dtype" title="pydriver.Position_dtype"><code class="xref py py-const docutils literal"><span class="pre">Position_dtype</span></code></a>], optional</dt>
+<dd>Array with keypoints, only for positive examples</dd>
+<dt>box3D: dict, optional</dt>
+<dd>3D box of object, only for positive examples, see <a class="reference internal" href="datasets.html#pydriver.datasets.base.BaseReader" title="pydriver.datasets.base.BaseReader"><code class="xref py py-class docutils literal"><span class="pre">BaseReader</span></code></a> for box format description</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.detectors.detectors.Detector.featureTypes">
+<code class="descname">featureTypes</code><a class="headerlink" href="#pydriver.detectors.detectors.Detector.featureTypes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pydriver.detectors.detectors.Detector.getDetections">
+<code class="descname">getDetections</code><span class="sig-paren">(</span><em>self</em>, <em>dict featuresData</em>, <em>suppressNegatives=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.detectors.Detector.getDetections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get detections for given features and their corresponding keypoint positions</p>
+<p>featuresData containing no data is a valid case.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>featuresData: dict{str featureType: tuple(np.ndarray[Position_dtype] keypoints, np.ndarray[FLOAT_dtype, ndim=2] features)}</dt>
+<dd><p class="first last">Dictionary with feature types containing their keypoints and features</p>
+</dd>
+<dt>suppressNegatives: bool, optional</dt>
+<dd><p class="first last">Flag whether to produce only positive detections, <em>False</em> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Array with detections</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">np.ndarray[<a class="reference internal" href="main.html#pydriver.Detection_dtype" title="pydriver.Detection_dtype"><code class="xref py py-const docutils literal"><span class="pre">Detection_dtype</span></code></a>]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.detectors.detectors.Detector.learn">
+<code class="descname">learn</code><span class="sig-paren">(</span><em>self</em>, <em>nVocMaxRandomSamples=0</em>, <em>nStorageMaxRandomSamples=0</em>, <em>keepData=False</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.detectors.Detector.learn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform learning on stored features</p>
+<p>The detector can be used for recognition afterwards.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pydriver.detectors.detectors.Detector.load">
+<em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>cls</em>, <em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.detectors.Detector.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load model from file or file-like object and return the new instance</p>
+<dl class="docutils">
+<dt>file: str or file-like object</dt>
+<dd>If file is a string, the file will be opened and read</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.detectors.detectors.Detector.recognize">
+<code class="descname">recognize</code><span class="sig-paren">(</span><em>self</em>, <em>dict featureData</em>, <em>suppressNegatives=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.detectors.Detector.recognize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get detections aggregated using non-maximum suppression</p>
+<p>See <a class="reference internal" href="#pydriver.detectors.detectors.Detector.getDetections" title="pydriver.detectors.detectors.Detector.getDetections"><code class="xref py py-meth docutils literal"><span class="pre">getDetections()</span></code></a> for more information about parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Array with detections</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returntype:</th><td class="field-body">np.ndarray[<a class="reference internal" href="main.html#pydriver.Detection_dtype" title="pydriver.Detection_dtype"><code class="xref py py-const docutils literal"><span class="pre">Detection_dtype</span></code></a>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.detectors.detectors.Detector.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>self</em>, <em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.detectors.Detector.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save model to file or file-like object</p>
+<p>No further compression is applied, but sub-objects (like <a class="reference internal" href="#pydriver.detectors.vocabularies.Vocabulary" title="pydriver.detectors.vocabularies.Vocabulary"><code class="xref py py-class docutils literal"><span class="pre">vocabularies</span></code></a>) can compress their data.</p>
+<dl class="docutils">
+<dt>file: str or file-like object</dt>
+<dd>If file is a string, the file will be created</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.detectors.detectors.Detector.vocabularyGenerator">
+<code class="descname">vocabularyGenerator</code><a class="headerlink" href="#pydriver.detectors.detectors.Detector.vocabularyGenerator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pydriver.detectors.vocabularies">
+<span id="vocabularies"></span><h2>Vocabularies<a class="headerlink" href="#module-pydriver.detectors.vocabularies" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pydriver.detectors.vocabularies.Storage">
+<em class="property">class </em><code class="descclassname">pydriver.detectors.vocabularies.</code><code class="descname">Storage</code><a class="headerlink" href="#pydriver.detectors.vocabularies.Storage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for storing vocabulary data of specified category and recognizing it with a specified regressor</p>
+<p>The class is aware of the special <em>&#8216;negative&#8217;</em> category.</p>
+<dl class="method">
+<dt id="pydriver.detectors.vocabularies.Storage.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>dimensions</em>, <em>category</em>, <em>preprocessors=None</em>, <em>regressor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.vocabularies.Storage.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize storage object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>dimensions: int</dt>
+<dd><p class="first last">Number of feature vector dimensions</p>
+</dd>
+<dt>category: str</dt>
+<dd><p class="first last">Category of stored features</p>
+</dd>
+<dt>preprocessors: list, optional</dt>
+<dd><p class="first last">List of preprocessors which support fit() and transform() functions, empty by default</p>
+</dd>
+<dt>regressor: object, optional</dt>
+<dd><p class="first last">Regressor to fit and use for recognition, <code class="docutils literal"><span class="pre">sklearn.neighbors.KNeighborsRegressor(n_neighbors=1)</span></code> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.detectors.vocabularies.Storage.addWords">
+<code class="descname">addWords</code><span class="sig-paren">(</span><em>self</em>, <em>ndarray features</em>, <em>ndarray detections=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.vocabularies.Storage.addWords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add words to storage</p>
+<p>The internal storage will grow at least by factor <em>self.GROWTH_FACTOR</em> or more if there is more data to store.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>features: np.ndarray[FLOAT_dtype, ndim=2]</dt>
+<dd><p class="first last">Features to learn</p>
+</dd>
+<dt>detections: np.ndarray[<a class="reference internal" href="main.html#pydriver.Detection_dtype" title="pydriver.Detection_dtype"><code class="xref py py-const docutils literal"><span class="pre">Detection_dtype</span></code></a>], optional</dt>
+<dd><p class="first last">Corresponding detections to learn, only required for the non-negative category</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.detectors.vocabularies.Storage.category">
+<code class="descname">category</code><a class="headerlink" href="#pydriver.detectors.vocabularies.Storage.category" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.detectors.vocabularies.Storage.dims">
+<code class="descname">dims</code><a class="headerlink" href="#pydriver.detectors.vocabularies.Storage.dims" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.detectors.vocabularies.Storage.entries">
+<code class="descname">entries</code><a class="headerlink" href="#pydriver.detectors.vocabularies.Storage.entries" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.detectors.vocabularies.Storage.isEmpty">
+<code class="descname">isEmpty</code><a class="headerlink" href="#pydriver.detectors.vocabularies.Storage.isEmpty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.detectors.vocabularies.Storage.isPreparedForRecognition">
+<code class="descname">isPreparedForRecognition</code><a class="headerlink" href="#pydriver.detectors.vocabularies.Storage.isPreparedForRecognition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <em>True</em> if storage can be used for recognition</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pydriver.detectors.vocabularies.Storage.load">
+<em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>cls</em>, <em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.vocabularies.Storage.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load storage from file or file-like object and return the new instance</p>
+<dl class="docutils">
+<dt>file: str or file-like object</dt>
+<dd>If file is a string, the file will be opened and read</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.detectors.vocabularies.Storage.prepareForRecognition">
+<code class="descname">prepareForRecognition</code><span class="sig-paren">(</span><em>self</em>, <em>nMaxRandomSamples=0</em>, <em>keepData=False</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.vocabularies.Storage.prepareForRecognition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare storage for recognition</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.detectors.vocabularies.Storage.preprocessors">
+<code class="descname">preprocessors</code><a class="headerlink" href="#pydriver.detectors.vocabularies.Storage.preprocessors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pydriver.detectors.vocabularies.Storage.recognizeFeatures">
+<code class="descname">recognizeFeatures</code><span class="sig-paren">(</span><em>self</em>, <em>ndarray features</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.vocabularies.Storage.recognizeFeatures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produce detections for given features</p>
+<p>The result will be a list of arrays with the same number of list elements as features.</p>
+<p>Detection weights will be set to 1.0.</p>
+<p>The current implementation produces exactly one detection per feature.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>features: np.ndarray[FLOAT_dtype, ndim=2]</dt>
+<dd><p class="first last">Array with features</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">detections</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">list(np.ndarray[<a class="reference internal" href="main.html#pydriver.Detection_dtype" title="pydriver.Detection_dtype"><code class="xref py py-const docutils literal"><span class="pre">Detection_dtype</span></code></a>])</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.detectors.vocabularies.Storage.regressor">
+<code class="descname">regressor</code><a class="headerlink" href="#pydriver.detectors.vocabularies.Storage.regressor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pydriver.detectors.vocabularies.Storage.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>self</em>, <em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.vocabularies.Storage.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save storage data to file or file-like object</p>
+<p>Compression will be applied if possible.</p>
+<dl class="docutils">
+<dt>file: str or file-like object</dt>
+<dd>If file is a string, the file will be created</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pydriver.detectors.vocabularies.Vocabulary">
+<em class="property">class </em><code class="descclassname">pydriver.detectors.vocabularies.</code><code class="descname">Vocabulary</code><a class="headerlink" href="#pydriver.detectors.vocabularies.Vocabulary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vocabulary class to perform classifiction and recognition</p>
+<p>The data for each category will be stored in its <a class="reference internal" href="#pydriver.detectors.vocabularies.Storage" title="pydriver.detectors.vocabularies.Storage"><code class="xref py py-class docutils literal"><span class="pre">Storage</span></code></a> instance.</p>
+<dl class="method">
+<dt id="pydriver.detectors.vocabularies.Vocabulary.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>self</em>, <em>dimensions</em>, <em>preprocessors=None</em>, <em>classifier=None</em>, <em>storageGenerator=None</em>, <em>balanceNegatives=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.vocabularies.Vocabulary.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize vocabulary object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>dimensions: int</dt>
+<dd><p class="first last">Number of feature vector dimensions</p>
+</dd>
+<dt>preprocessors: list, optional</dt>
+<dd><p class="first last">List of preprocessors which support fit() and transform() functions, empty by default</p>
+</dd>
+<dt>classifier: object, optional</dt>
+<dd><p class="first last">Classifier object to use for category classification, <code class="docutils literal"><span class="pre">sklearn.ensemble.AdaBoostClassifier(n_estimators=50)</span></code> by default</p>
+</dd>
+<dt>storageGenerator: callable, optional</dt>
+<dd><p class="first last">Function to use for creating new internal storage objects, must accept dimensions and category as first positional arguments, <code class="docutils literal"><span class="pre">Storage(dimensions,</span> <span class="pre">category)</span></code> by default</p>
+</dd>
+<dt>balanceNegatives: bool, optional</dt>
+<dd><p class="first last">Flag whether to restrict the number of negative samples to maximum number of available samples for positive category, <em>True</em> by default</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.detectors.vocabularies.Vocabulary.addWords">
+<code class="descname">addWords</code><span class="sig-paren">(</span><em>self</em>, <em>ndarray features</em>, <em>ndarray detections=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.vocabularies.Vocabulary.addWords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add words to vocabulary</p>
+<p>All detections must be of the same category.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt>features: np.ndarray[FLOAT_dtype, ndim=2]</dt>
+<dd><p class="first last">Features to learn</p>
+</dd>
+<dt>detections: np.ndarray[<a class="reference internal" href="main.html#pydriver.Detection_dtype" title="pydriver.Detection_dtype"><code class="xref py py-const docutils literal"><span class="pre">Detection_dtype</span></code></a>], optional</dt>
+<dd><p class="first last">Corresponding detections to learn, only required for the non-negative category</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.detectors.vocabularies.Vocabulary.classifier">
+<code class="descname">classifier</code><a class="headerlink" href="#pydriver.detectors.vocabularies.Vocabulary.classifier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.detectors.vocabularies.Vocabulary.dims">
+<code class="descname">dims</code><a class="headerlink" href="#pydriver.detectors.vocabularies.Vocabulary.dims" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.detectors.vocabularies.Vocabulary.isEmpty">
+<code class="descname">isEmpty</code><a class="headerlink" href="#pydriver.detectors.vocabularies.Vocabulary.isEmpty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <em>True</em> if vocabulary has not enough words in it or <em>False</em> otherwise</p>
+<p>The vocabulary must contain negative examples and at least one other category.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.detectors.vocabularies.Vocabulary.isPreparedForRecognition">
+<code class="descname">isPreparedForRecognition</code><a class="headerlink" href="#pydriver.detectors.vocabularies.Vocabulary.isPreparedForRecognition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <em>True</em> if vocabulary can be used for recognition</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pydriver.detectors.vocabularies.Vocabulary.load">
+<em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>cls</em>, <em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.vocabularies.Vocabulary.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load vocabulary from file or file-like object and return the new instance</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The storageGenerator function will NOT be loaded. Only Storages which were already created can be used.</p>
+</div>
+<dl class="docutils">
+<dt>file: str or file-like object</dt>
+<dd>If file is a string, the file will be opened and read</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.detectors.vocabularies.Vocabulary.prepareForRecognition">
+<code class="descname">prepareForRecognition</code><span class="sig-paren">(</span><em>self</em>, <em>nMaxRandomSamples=0</em>, <em>nStorageMaxRandomSamples=0</em>, <em>keepData=False</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.vocabularies.Vocabulary.prepareForRecognition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare vocabulary for recognition</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.detectors.vocabularies.Vocabulary.preprocessors">
+<code class="descname">preprocessors</code><a class="headerlink" href="#pydriver.detectors.vocabularies.Vocabulary.preprocessors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pydriver.detectors.vocabularies.Vocabulary.recognizeFeatures">
+<code class="descname">recognizeFeatures</code><span class="sig-paren">(</span><em>self</em>, <em>ndarray features</em>, <em>suppressNegatives</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.vocabularies.Vocabulary.recognizeFeatures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recognize given features</p>
+<p>The result will contain a list of arrays with detections with the same number of list elemnents as features.</p>
+<p>Detection weights will be multiplied with the probability of recognizing the correct category.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt>features: np.ndarray[FLOAT_dtype, ndim=2]</dt>
+<dd><p class="first last">Array with features</p>
+</dd>
+<dt>suppressNegatives: bool</dt>
+<dd><p class="first last">Flag whether to produce only positive detections</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">detections</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returntype:</th><td class="field-body"><p class="first last">list(np.ndarray[<a class="reference internal" href="main.html#pydriver.Detection_dtype" title="pydriver.Detection_dtype"><code class="xref py py-const docutils literal"><span class="pre">Detection_dtype</span></code></a>])</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pydriver.detectors.vocabularies.Vocabulary.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>self</em>, <em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.detectors.vocabularies.Vocabulary.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save vocabulary to file or file-like object</p>
+<p>No further compression is applied, but sub-objects (like <a class="reference internal" href="#pydriver.detectors.vocabularies.Storage" title="pydriver.detectors.vocabularies.Storage"><code class="xref py py-class docutils literal"><span class="pre">storages</span></code></a>) can compress their data.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The storageGenerator function will NOT be saved. Only Storages which were already created will be preserved.</p>
+</div>
+<dl class="docutils">
+<dt>file: str or file-like object</dt>
+<dd>If file is a string, the file will be created</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pydriver.detectors.vocabularies.Vocabulary.storageGenerator">
+<code class="descname">storageGenerator</code><a class="headerlink" href="#pydriver.detectors.vocabularies.Vocabulary.storageGenerator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The <code class="docutils literal"><span class="pre">detectors</span></code> Module</a><ul>
+<li><a class="reference internal" href="#module-pydriver.detectors.detectors">Detectors</a></li>
+<li><a class="reference internal" href="#module-pydriver.detectors.vocabularies">Vocabularies</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="reference.html">Reference</a><ul>
+      <li>Previous: <a href="datasets.html" title="previous chapter">The <code class="docutils literal"><span class="pre">datasets</span></code> Module</a></li>
+      <li>Next: <a href="evaluation.html" title="next chapter">The <code class="docutils literal"><span class="pre">evaluation</span></code> Module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/detectors.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+      
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/detectors.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
