@@ -11,10 +11,10 @@ from ..common.constants import FLOAT_dtype
 class Evaluator(object):
     """Evaluation curve representation
 
-    Average precision and orientation similarity measures will compute the area unter the monotonically
+    Average precision and orientation similarity measures will compute the area under the monotonically
     decreasing function of maximum performance w.r.t. increasing minimum recall values.
 
-    The negative category of hypotheses is processed correctly in that sense that it will be ignored during
+    The negative category of hypotheses is processed correctly in the sense that it will be ignored during
     matching of hypotheses to ground truth.
 
     Evaluation is performed under the assumption that the exact positive category does not matter. Create
