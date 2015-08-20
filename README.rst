@@ -25,10 +25,10 @@ Which licence does PyDriver use?
   PyDriver is subject to the MIT licence.
 
 How do I install PyDriver?
-  `PyDriver installation documentation <TODO>`_
+  `PyDriver installation documentation <http://lpltk.github.io/pydriver/installation.html>`_
 
 Where are the docs?
-  `PyDriver documentation <TODO>`_
+  `PyDriver documentation <http://lpltk.github.io/pydriver/>`_
 
 Where is the source?
   The most current development version is available here: http://github.com/lpltk/pydriver
