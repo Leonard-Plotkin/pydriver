@@ -75,6 +75,9 @@ You have multiple options for installing PyDriver on Windows depending on your n
 download compiled binaries from https://github.com/lpltk/pydriver/releases. They are currently
 available for x64 systems only.
 
+You may need to install Microsoft Visual C++ redistributable packages for 2008 and 2010 versions
+if they are not already present on your system.
+
 Standalone archive
 ------------------
 This archive is a WinPython distribution with pre-installed PyDriver package. Extract it and
