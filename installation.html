@@ -40,8 +40,8 @@
             
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>Although the PyDriver framework was only tested with Ubuntu 14.04 and Windows 7 so far, it should be usable with every
-operating system which supports Python 2.7 and all required components.</p>
+<p>Although the PyDriver framework was only tested with Ubuntu 14.04 and Windows 7 so far, it should
+be usable with every operating system which supports Python 2.7 and all required components.</p>
 <p>The <a class="reference external" href="https://github.com/lpltk/pydriver">PyDriver repository</a> is located at GitHub.</p>
 <p><strong>Required software</strong></p>
 <ul class="simple">
@@ -94,33 +94,42 @@ source code, that will result in an error), run the Python interpreter and try <
 <div class="section" id="windows">
 <h2>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h2>
 <p>You have multiple options for installing PyDriver on Windows depending on your needs. You can
-download precompiled binaries from <a class="reference external" href="https://github.com/lpltk/pydriver/releases">https://github.com/lpltk/pydriver/releases</a>. They are currently
+download compiled binaries from <a class="reference external" href="https://github.com/lpltk/pydriver/releases">https://github.com/lpltk/pydriver/releases</a>. They are currently
 available for x64 systems only.</p>
-<div class="section" id="download-standalone-archive">
-<h3>Download standalone archive<a class="headerlink" href="#download-standalone-archive" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="standalone-archive">
+<h3>Standalone archive<a class="headerlink" href="#standalone-archive" title="Permalink to this headline">¶</a></h3>
 <p>This archive is a WinPython distribution with pre-installed PyDriver package. Extract it and
 run the WinPython command prompt. You should be able to start Python there and execute
 <em>import pydriver</em>.</p>
 </div>
-<div class="section" id="download-package-installer">
-<h3>Download package installer<a class="headerlink" href="#download-package-installer" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="msi-package-installer">
+<h3>MSI package installer<a class="headerlink" href="#msi-package-installer" title="Permalink to this headline">¶</a></h3>
 <p>Use the package installer to install PyDriver in an existing Python installation. You will need
 to install the required Python packages manually, but this option does not require Point Cloud
 Library or CMake to be installed. See <a class="reference internal" href="#compile-from-source">Compile from source</a> for more information about installing
 dependencies.</p>
 </div>
+<div class="section" id="python-binary-wheel">
+<h3>Python binary wheel<a class="headerlink" href="#python-binary-wheel" title="Permalink to this headline">¶</a></h3>
+<p>You can also use a binary wheel to install PyDriver in an existing Python installation. The installation
+command is <em>pip install &lt;wheel.whl&gt;</em>. The required Python packages will be installed automatically, but
+there are known issues with some of them. Specifically, you should install Shapely from its binary wheel
+manually instead of relying on automatic installation. This option does not require Point Cloud
+Library or CMake to be installed. See <a class="reference internal" href="#compile-from-source">Compile from source</a> for more information about installing
+dependencies.</p>
+</div>
 <div class="section" id="compile-from-source">
 <h3>Compile from source<a class="headerlink" href="#compile-from-source" title="Permalink to this headline">¶</a></h3>
-<p>For Windows the recommended way to install large parts of required software is to use
+<p>For Windows the recommended way to install large parts of the required software is to use
 <a class="reference external" href="https://winpython.github.io/">WinPython</a> that already includes Python, Cython, NumPy, SciPy,
 Matplotlib and other packages. The homepage of <a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs/">Christoph Gohlke</a>,
 who is doing great work maintaining it, offers binary wheels for many Python packages including
-those for which an official Windows installer is not provided. Keep in mind that you will probably
+those for which an official Windows binary distribution is not provided. Keep in mind that you will probably
 need large amounts of training data for sensible results and therefore you should use 64-bit packages.</p>
 <p>The PCL installer for Windows is currently (August 2015) outdated and PCL must be compiled from source.
 Versions prior to 1.7.1 are not compatible with PyDriver. The recommended compiler for PCL 1.7.1 on
 Windows is Visual C++ 2010 (i.e. 10.0). After installing PCL the pcl_helper library (in <em>pcl/pcl_helper</em>)
-must be compiled with the compiler used for PCL. You have to generate a Visual C++ project in
+must be compiled with the same compiler used for PCL. You have to generate a Visual C++ project in
 <em>pcl_helper/build</em> with CMake and supplied CMake configuration files. Now you can build the generated
 project with Visual Studio. Remember that you may want to switch to the &#8220;Release&#8221; configuration.</p>
 <p>To compile Cython extensions for Python you should use the same compiler which was used to compile
@@ -163,8 +172,9 @@ editable mode, generating documentation and other useful commands.</p>
 <li><a class="reference internal" href="#">Installation</a><ul>
 <li><a class="reference internal" href="#ubuntu-14-04">Ubuntu 14.04</a></li>
 <li><a class="reference internal" href="#windows">Windows</a><ul>
-<li><a class="reference internal" href="#download-standalone-archive">Download standalone archive</a></li>
-<li><a class="reference internal" href="#download-package-installer">Download package installer</a></li>
+<li><a class="reference internal" href="#standalone-archive">Standalone archive</a></li>
+<li><a class="reference internal" href="#msi-package-installer">MSI package installer</a></li>
+<li><a class="reference internal" href="#python-binary-wheel">Python binary wheel</a></li>
 <li><a class="reference internal" href="#compile-from-source">Compile from source</a></li>
 </ul>
 </li>

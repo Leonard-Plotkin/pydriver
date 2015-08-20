@@ -2,8 +2,8 @@
 Installation
 ============
 
-Although the PyDriver framework was only tested with Ubuntu 14.04 and Windows 7 so far, it should be usable with every
-operating system which supports Python 2.7 and all required components.
+Although the PyDriver framework was only tested with Ubuntu 14.04 and Windows 7 so far, it should
+be usable with every operating system which supports Python 2.7 and all required components.
 
 The `PyDriver repository <https://github.com/lpltk/pydriver>`_ is located at GitHub.
 
@@ -72,36 +72,45 @@ Windows
 -------
 
 You have multiple options for installing PyDriver on Windows depending on your needs. You can
-download precompiled binaries from https://github.com/lpltk/pydriver/releases. They are currently
+download compiled binaries from https://github.com/lpltk/pydriver/releases. They are currently
 available for x64 systems only.
 
-Download standalone archive
----------------------------
+Standalone archive
+------------------
 This archive is a WinPython distribution with pre-installed PyDriver package. Extract it and
 run the WinPython command prompt. You should be able to start Python there and execute
 *import pydriver*.
 
-Download package installer
---------------------------
+MSI package installer
+---------------------
 Use the package installer to install PyDriver in an existing Python installation. You will need
 to install the required Python packages manually, but this option does not require Point Cloud
+Library or CMake to be installed. See `Compile from source`_ for more information about installing
+dependencies.
+
+Python binary wheel
+-------------------
+You can also use a binary wheel to install PyDriver in an existing Python installation. The installation
+command is *pip install <wheel.whl>*. The required Python packages will be installed automatically, but
+there are known issues with some of them. Specifically, you should install Shapely from its binary wheel
+manually instead of relying on automatic installation. This option does not require Point Cloud
 Library or CMake to be installed. See `Compile from source`_ for more information about installing
 dependencies.
 
 Compile from source
 -------------------
 
-For Windows the recommended way to install large parts of required software is to use
+For Windows the recommended way to install large parts of the required software is to use
 `WinPython <https://winpython.github.io/>`_ that already includes Python, Cython, NumPy, SciPy,
 Matplotlib and other packages. The homepage of `Christoph Gohlke <http://www.lfd.uci.edu/~gohlke/pythonlibs/>`_,
 who is doing great work maintaining it, offers binary wheels for many Python packages including
-those for which an official Windows installer is not provided. Keep in mind that you will probably
+those for which an official Windows binary distribution is not provided. Keep in mind that you will probably
 need large amounts of training data for sensible results and therefore you should use 64-bit packages.
 
 The PCL installer for Windows is currently (August 2015) outdated and PCL must be compiled from source.
 Versions prior to 1.7.1 are not compatible with PyDriver. The recommended compiler for PCL 1.7.1 on
 Windows is Visual C++ 2010 (i.e. 10.0). After installing PCL the pcl_helper library (in *pcl/pcl_helper*)
-must be compiled with the compiler used for PCL. You have to generate a Visual C++ project in
+must be compiled with the same compiler used for PCL. You have to generate a Visual C++ project in
 *pcl_helper/build* with CMake and supplied CMake configuration files. Now you can build the generated
 project with Visual Studio. Remember that you may want to switch to the "Release" configuration.
 
