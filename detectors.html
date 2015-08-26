@@ -1,43 +1,165 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>The detectors Module &mdash; PyDriver 0.1.0 documentation</title>
-    
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="PyDriver 0.1.0 documentation" href="index.html" />
-    <link rel="up" title="Reference" href="reference.html" />
-    <link rel="next" title="The evaluation Module" href="evaluation.html" />
-    <link rel="prev" title="The datasets Module" href="datasets.html" />
-   
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>The detectors Module &mdash; PyDriver 0.1.0 documentation</title>
+  
 
-  </head>
-  <body role="document">  
+  
+  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="PyDriver 0.1.0 documentation" href="index.html"/>
+        <link rel="up" title="Reference" href="reference.html"/>
+        <link rel="next" title="The evaluation Module" href="evaluation.html"/>
+        <link rel="prev" title="The datasets Module" href="datasets.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="index.html" class="icon icon-home"> PyDriver
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#ubuntu-14-04">Ubuntu 14.04</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#windows">Windows</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#standalone-archive">Standalone archive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#msi-package-installer">MSI package installer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#python-binary-wheel">Python binary wheel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#compile-from-source">Compile from source</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#developers">Developers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage Example</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="reference.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="main.html">Basics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="main.html#coordinate-system">Coordinate system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="main.html#numpy-array-types">NumPy array types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html">The <code class="docutils literal"><span class="pre">datasets</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="datasets.html#module-pydriver.datasets.base">Base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datasets.html#module-pydriver.datasets.kitti">KITTI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datasets.html#module-pydriver.datasets.utils">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">The <code class="docutils literal"><span class="pre">detectors</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-pydriver.detectors.detectors">Detectors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pydriver.detectors.vocabularies">Vocabularies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="evaluation.html">The <code class="docutils literal"><span class="pre">evaluation</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html">The <code class="docutils literal"><span class="pre">features</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="features.html#module-pydriver.features.base">Base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="features.html#module-pydriver.features.shot">SHOT</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html">The <code class="docutils literal"><span class="pre">geometry</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keypoints.html">The <code class="docutils literal"><span class="pre">keypoints</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="keypoints.html#module-pydriver.keypoints.base">Base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="keypoints.html#module-pydriver.keypoints.harris">Harris</a></li>
+<li class="toctree-l3"><a class="reference internal" href="keypoints.html#module-pydriver.keypoints.iss">ISS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pcl.html">The <code class="docutils literal"><span class="pre">pcl</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html">The <code class="docutils literal"><span class="pre">preprocessing</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stereo.html">The <code class="docutils literal"><span class="pre">stereo</span></code> Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo.html#module-pydriver.stereo.stereo">Stereo</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">PyDriver</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="reference.html">Reference</a> &raquo;</li>
+      
+    <li>The <code class="docutils literal"><span class="pre">detectors</span></code> Module</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
             
   <div class="section" id="module-pydriver.detectors">
 <span id="the-detectors-module"></span><h1>The <a class="reference internal" href="#module-pydriver.detectors" title="pydriver.detectors"><code class="xref py py-mod docutils literal"><span class="pre">detectors</span></code></a> Module<a class="headerlink" href="#module-pydriver.detectors" title="Permalink to this headline">¶</a></h1>
@@ -495,57 +617,67 @@ Only features which are fully defined (no <em>NaN</em> values) are learned.</p>
 
 
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">The <code class="docutils literal"><span class="pre">detectors</span></code> Module</a><ul>
-<li><a class="reference internal" href="#module-pydriver.detectors.detectors">Detectors</a></li>
-<li><a class="reference internal" href="#module-pydriver.detectors.vocabularies">Vocabularies</a></li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="reference.html">Reference</a><ul>
-      <li>Previous: <a href="datasets.html" title="previous chapter">The <code class="docutils literal"><span class="pre">datasets</span></code> Module</a></li>
-      <li>Next: <a href="evaluation.html" title="next chapter">The <code class="docutils literal"><span class="pre">evaluation</span></code> Module</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="evaluation.html" class="btn btn-neutral float-right" title="The evaluation Module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="datasets.html" class="btn btn-neutral" title="The datasets Module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      
-      
-      
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
-      
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>
