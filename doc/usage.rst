@@ -1,5 +1,5 @@
-Basic Usage Example
-----------------------------------------
+Usage Example
+-------------
 
 This example shows PyDriver training and evaluation steps using the "Objects" dataset of
 the `KITTI Vision Benchmark Suite <http://www.cvlibs.net/datasets/kitti/eval_object.php>`_.
@@ -12,7 +12,7 @@ You can find this code in the "examples" directory.
 
 .. code-block:: python
 
-    # basic example for using the PyDriver framework with KITTI objects dataset
+    # example for using the PyDriver framework with KITTI objects dataset
     # this code performs classifier training on one half of the dataset and evaluates it on the other
 
     # adjust this path to point to the training directory of KITTI objects dataset

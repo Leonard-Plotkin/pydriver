@@ -1,4 +1,4 @@
-# basic example for using the PyDriver framework with KITTI objects dataset
+# example for using the PyDriver framework with KITTI objects dataset
 # this code performs classifier training on one half of the dataset and evaluates it on the other
 
 # adjust this path to point to the training directory of KITTI objects dataset
