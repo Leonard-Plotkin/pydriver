@@ -1,6 +1,8 @@
 PyDriver
 ========
 
+.. image:: doc/_images/000019_front.png
+
 What is PyDriver?
   PyDriver is a Python framework for training and evaluating object detectors
   and classifiers in road traffic environment. It aims at researchers experimenting
