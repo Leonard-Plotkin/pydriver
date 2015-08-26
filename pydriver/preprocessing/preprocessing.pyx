@@ -21,7 +21,7 @@ class Preprocessor(object):
         In case you don't want to utilize a reconstructor, pass a None value explicitly (explicit value for default reconstructor
         is the string 'default'). For disabling processors pass an empty tuple.
 
-        .. warning:: There is no verification whether current preprocessing pipeline is identical to the one used to cache
+        .. warning:: There is no verification whether the current preprocessing pipeline is identical to the one used to cache
             the frame, so pay attention to not to use the cache directory of a different configuration or you will get misleading results.
 
         :Parameters:
