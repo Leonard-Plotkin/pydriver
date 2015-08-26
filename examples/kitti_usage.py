@@ -29,7 +29,10 @@ VISUALIZE3D = False             # show 3D visualization of detections
 # initialize reader for KITTI objects dataset
 reader = pydriver.datasets.kitti.KITTIObjectsReader(PATH_TO_KITTI)
 # initialize lidar reconstructor
-reconstructor = pydriver.preprocessing.LidarReconstructor(useImageColor=USE_IMAGE_COLOR, removeInvisible=True)
+reconstructor = pydriver.preprocessing.LidarReconstructor(
+    useImageColor=USE_IMAGE_COLOR,
+    removeInvisible=True,
+    )
 # default preprocessor
 preprocessor = pydriver.preprocessing.Preprocessor(reconstructor)
 keypointExtractor = pydriver.keypoints.ISSExtractor(salientRadius=0.25, nonMaxRadius=0.25)
@@ -62,7 +65,7 @@ def vocabularyGenerator(dimensions, featureName):
 detector = pydriver.detectors.Detector(featureTypes, vocabularyGenerator=vocabularyGenerator)
 
 # perform training with some frames in the dataset
-time_start = datetime.datetime.now()
+timeStart = datetime.datetime.now()
 for frame in reader.getFramesInfo(0, TRAINING_FRAMES):
     print('Training on frame %d...' % frame['frameId'])
     # reconstruct scene
@@ -109,20 +112,20 @@ for frame in reader.getFramesInfo(0, TRAINING_FRAMES):
     fkeypoints, features = featureExtractor.getFeatures(scene, negativeKeypointCloud)
     # learn features associated with absence of objects
     detector.addWords('negative', 'myfeature', features)
-time_training = datetime.datetime.now() - time_start
+timeTraining = datetime.datetime.now() - timeStart
 
 # perform learning on stored data
 print('Learning...')
-time_start = datetime.datetime.now()
+timeStart = datetime.datetime.now()
 detector.learn(nStorageMaxRandomSamples=25000)
-time_learning = datetime.datetime.now() - time_start
+timeLearning = datetime.datetime.now() - timeStart
 
 # initialize evaluator
 evaluator = pydriver.evaluation.Evaluator(minOverlap=MIN_OVERLAP, nPoints=100)
 # perform testing with frames which were not used for training
 firstFrame = TRAINING_FRAMES
 lastFrame = TRAINING_FRAMES + TESTING_FRAMES
-time_start = datetime.datetime.now()
+timeStart = datetime.datetime.now()
 for frame in reader.getFramesInfo(firstFrame, lastFrame):
     print('Testing on frame %d...' % frame['frameId'])
     # see the training part above
@@ -162,21 +165,24 @@ for frame in reader.getFramesInfo(firstFrame, lastFrame):
     evaluator.addFrame(groundTruth, groundTruthOpt, detections_labels)
     if VISUALIZE3D:
         # perform visualization in the transformed cloud
-        groundTruthDetections = pydriver.datasets.labels2detections(groundTruth, scene['transformation'])
-        groundTruthDetectionsOpt = pydriver.datasets.labels2detections(groundTruthOpt, scene['transformation'])
-        scene['cloud'].visualizeDetections(detections, groundTruthDetections, groundTruthDetectionsOpt)
-time_evaluation = datetime.datetime.now() - time_start
+        # convert ground truth labels to ground truth detections
+        gtd = pydriver.datasets.labels2detections(groundTruth, scene['transformation'])
+        gtdOpt = pydriver.datasets.labels2detections(groundTruthOpt, scene['transformation'])
+        scene['cloud'].visualizeDetections(detections, gtd, gtdOpt)
+timeEvaluation = datetime.datetime.now() - timeStart
 
 # show evaluation results
-print("Training time: %s" % time_training)
-print("Learning time: %s" % time_learning)
-print("Evaluation time: %s" % time_evaluation)
+print("Training time: %s" % timeTraining)
+print("Learning time: %s" % timeLearning)
+print("Evaluation time: %s" % timeEvaluation)
 print("Average precision: %.2f" % evaluator.aprecision)
 print("Average orientation similarity: %.2f" % evaluator.aos)
 values = evaluator.getValues()
 plt.figure()
-plt.plot(values['recall'], values['precision'], label='Precision (AP %0.2f)' % evaluator.aprecision)
-plt.plot(values['recall'], values['OS'], label='Orientation similarity (AOS %0.2f)' % evaluator.aos)
+plt.plot(values['recall'], values['precision'],
+    label='Precision (AP %0.2f)' % evaluator.aprecision)
+plt.plot(values['recall'], values['OS'],
+    label='Orientation similarity (AOS %0.2f)' % evaluator.aos)
 plt.xlim([0.0, 1.0])
 plt.ylim([0.0, 1.05])
 plt.xlabel('Recall')
