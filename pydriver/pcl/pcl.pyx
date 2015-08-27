@@ -66,7 +66,7 @@ cdef class PCLHelper:
     def __init__(self, XYZ = None, RGB = None, int normals_k = 30, FLOAT_t normals_radius = 0.0, tuple bgColor = None, tuple camPosition = None, dict kpVisParams = None, dict detVisParams = None):
         """Initialize a new PCLHelper instance
 
-        The default background is dark green so black and missing regions can easily be distinguished.
+        The default background is dark green so black and missing regions can be easily distinguished.
 
         This object can be pickled with the :mod:`pickle` Python module.
 
