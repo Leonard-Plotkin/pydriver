@@ -573,7 +573,7 @@ class Vocabulary(object):
         """
         cdef:
             cnp.ndarray[cnp.float64_t, ndim=2] probabilities
-            cnp.ndarray[cnp.int_t] categories
+            cnp.ndarray categories
             int i, j
         if not self.isPreparedForRecognition:
             raise RuntimeError("Vocabulary not prepared for recognition, try to call prepareForRecognition() first.")
