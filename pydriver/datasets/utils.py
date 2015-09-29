@@ -27,14 +27,14 @@ def labels2detections(labels, transformation = None):
             box3D = geometry.transform3DBox(box3D, transformation)
 
         Detection = (
-                label['category'],  # category
-                (                   # position tuple
-                 box3D['location']['x'], box3D['location']['y'], box3D['location']['z'], box3D['rotation_y'],
-                 ),                 # dimensions
-                box3D['dimensions']['height'],
+                label['category'].encode('ascii'),  # category
+                (
+                 box3D['location']['x'], box3D['location']['y'], box3D['location']['z'], box3D['rotation_y'],   # position tuple
+                 ),
+                box3D['dimensions']['height'],  # dimensions...
                 box3D['dimensions']['width'],
                 box3D['dimensions']['length'],
-                1.0,                # weight
+                1.0,    # weight
                 )
         detections.append(Detection)
     # convert list to np.array and return it
@@ -59,7 +59,7 @@ def detections2labels(detections, transformation = None, projection = None, imgS
     for i in range(detections.shape[0]):
         Detection = detections[i]
         label = {
-                'category': Detection['category'],
+                'category': Detection['category'].decode('ascii'),
                 'box3D': {
                           'location': {'x': Detection['position']['x'], 'y': Detection['position']['y'], 'z': Detection['position']['z']},
                           'dimensions': {'height': Detection['height'], 'width': Detection['width'], 'length': Detection['length']},

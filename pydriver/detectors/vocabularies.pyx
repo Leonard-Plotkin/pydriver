@@ -270,7 +270,7 @@ class Storage(object):
         # initialize array with detections
         detections = np.zeros(features.shape[0], dtype = Detection_dtype)
         # set Detection category
-        detections['category'] = self.category
+        detections['category'] = self.category.encode('ascii')
         if self.category == 'negative':
             # weight has no meaning for negative category, set to 1.0
             detections['weight'] = 1.0
@@ -509,9 +509,13 @@ class Vocabulary(object):
             category = 'negative'
         else:
             assert features.shape[0] == detections.shape[0], "Numbers of features (%d) and detections (%d) do not match" % (features.shape[0], detections.shape[0])
+            # Python 3 note: "categories" contains bytes (and not strings)
             categories = np.unique(detections['category'])
             assert categories.shape[0] == 1, "Detections contain more than one category. Encountered categories: %s" % categories
-            category = categories[0]
+            # get unicode string
+            category = categories[0].decode('ascii')
+            # prevent accidental use of bytes
+            del categories
         # add words to the category storage, create the storage if necessary
         if category == 'negative' and self._balanceNegatives:
             # only add data if number of negative samples is under the maximum number of samples for a positive category
