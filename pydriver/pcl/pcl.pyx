@@ -366,7 +366,7 @@ cdef class PCLHelper:
             fullscreen: bool, optional
                 Use full screen instead of window, *False* by default
          """
-        pcl_helper.visualize(self.me, title, fullscreen)
+        pcl_helper.visualize(self.me, title.encode('ascii'), fullscreen)
 
     cpdef visualizeKeypoints(PCLHelper self, PCLHelper keypoints, PCLHelper normals = None, title = "Keypoints Visualization", py_bool fullscreen = False):
         """Interactively visualize the point cloud with given keypoints and optionally their normals
@@ -385,7 +385,7 @@ cdef class PCLHelper:
         """
         if normals is not None:
             assert keypoints.getCloudSize() == normals.getCloudSize(), "keypoints and normals must have exactly the same cloud size and shape if both are given"
-        pcl_helper.visualizeKeypoints(self.me, title, keypoints.me, <pcl_helper.CPCLHelperPtr>0 if normals is None else normals.me, fullscreen)
+        pcl_helper.visualizeKeypoints(self.me, title.encode('ascii'), keypoints.me, <pcl_helper.CPCLHelperPtr>0 if normals is None else normals.me, fullscreen)
 
     cpdef visualizeDetections(PCLHelper self, Detection[:] detections = None, Detection[:] groundTruth = None, Detection[:] groundTruthOpt = None, title = "Detections Visualization", py_bool fullscreen = False):
         """Interactively visualize the point cloud with optionally specified ground truth and detection hypotheses
@@ -419,7 +419,7 @@ cdef class PCLHelper:
         else:
             cGroundTruthOpt = np.ascontiguousarray(groundTruthOpt)
 
-        pcl_helper.visualizeDetections(self.me, title,
+        pcl_helper.visualizeDetections(self.me, title.encode('ascii'),
             cDetections.shape[0], <Detection*>(&cDetections[0] if cDetections.shape[0]>0 else <Detection*>0),
             cGroundTruth.shape[0], <Detection*>(&cGroundTruth[0] if cGroundTruth.shape[0]>0 else <Detection*>0),
             cGroundTruthOpt.shape[0], <Detection*>(&cGroundTruthOpt[0] if cGroundTruthOpt.shape[0]>0 else <Detection*>0),
@@ -428,7 +428,7 @@ cdef class PCLHelper:
 
     cpdef save(PCLHelper self, filename):
         """Save point cloud to file in PCD format"""
-        pcl_helper.saveCloud(self.me, filename)
+        pcl_helper.saveCloud(self.me, filename.encode('ascii'))
 
     cpdef PCLHelper downsampleVoxelGrid(PCLHelper self, FLOAT_t leafSize):
         """Get PCLHelper containing the cloud downsampled with PCL VoxelGrid filter
