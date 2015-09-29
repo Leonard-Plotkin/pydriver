@@ -246,7 +246,7 @@ setup_args = {
     'platforms': 'any',
     'setup_requires': [
         'numpy>=1.8.1',
-        'cython>=0.20.1',
+        'cython>=0.22.1',
     ],
     'install_requires': [
         'numpy>=1.8.1',
