@@ -8,11 +8,11 @@ Changes in this file require a recompilation of Python AND C/C++ code. This file
 #include "cconstants.h"
 
 // type definition for float values (where they are not required to be of some specific float type)
-// must match FLOAT_dtype (in constants.py)
+// must match FLOAT_dtype (in constants.pyx)
 typedef float FLOAT_t;
 
 // structure for storing detection positions
-// must define an identical structure as Position_dtype (in constants.py)
+// must define an identical structure as Position_dtype (in constants.pyx)
 typedef struct Position {
     FLOAT_t x;
     FLOAT_t y;
@@ -21,7 +21,7 @@ typedef struct Position {
 } Position;
 
 // structure for storing object detections
-// must define an identical structure as Detection_dtype (in constants.py)
+// must define an identical structure as Detection_dtype (in constants.pyx)
 typedef struct Detection {
     char category[C_CATEGORY_LENGTH];
     Position position;
@@ -32,7 +32,7 @@ typedef struct Detection {
 } Detection;
 
 // structure for tetragonal prisms: 4 points (defining the base) and height boundaries
-// must define an identical structure as TetragonalPrism_dtype (in constants.py)
+// must define an identical structure as TetragonalPrism_dtype (in constants.pyx)
 typedef struct TetragonalPrism {
 	FLOAT_t xyz[4][3];	// 4 points with 3 coordinates each
 	FLOAT_t height_min;
