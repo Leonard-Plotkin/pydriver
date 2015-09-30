@@ -157,8 +157,29 @@ class CleanCommand(Command):
         for dirpath, dirnames, filenames in os.walk(full_dir):
             matches.extend([os.path.join(dirpath, f) for f in filenames if f.endswith('.'+ext)])
         for f in matches:
-            print('Removing file: ' + f)
-            os.remove(f)
+            self._remove_file(f)
+    def _remove_file(self, filepath):
+        # sanity checks
+        if not os.path.exists(filepath):
+            # nothing to do
+            return
+        if not os.path.isfile(filepath):
+            print('"{}" is not a file, aborting...'.format(filepath))
+            sys.exit()
+        filepath_dir = os.path.abspath(os.path.dirname(filepath))
+        path_check = True
+        if not filepath_dir.startswith(cwd):
+            path_check = False
+        if path_check and len(filepath_dir) > len(cwd):
+            # first character after cwd should be a slash (on all platforms)
+            if filepath_dir[len(cwd)] != '/':
+                path_check = False
+        if not path_check:
+            print('The file "{}" appears to be outside of main directory ({}), aborting...'.format(filepath, cwd))
+            sys.exit()
+        # all checks ok
+        print('Removing file: ' + filepath)
+        os.remove(filepath)
 
 class lazy_cythonize(list):
     # cythonize only if needed (e.g. not for "clean" command)
