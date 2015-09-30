@@ -3,6 +3,7 @@
 /.eggs
 /pydriver.egg-info
 /dist
+/pydriver/version.py
 *.pyc
 *.pyd
 *.so

@@ -2,8 +2,10 @@
 from __future__ import absolute_import, division
 
 import argparse
+import datetime
 import os
 import platform
+import re
 import shutil
 import subprocess
 import sys
@@ -27,17 +29,60 @@ if platform.system() == 'Windows':
 # current working directory (directory of setup.py)
 cwd = os.path.abspath(os.path.dirname(__file__))
 
-# "import" version information without importing the package
-exec(open(os.path.join(cwd, __package__, 'version.py')).read())
-
 # pcl_helper directories
 pcl_helper_dir = os.path.join(__package__, 'pcl', 'pcl_helper')
 pcl_helper_dir_build = os.path.join(pcl_helper_dir, 'build')
 pcl_helper_dir_lib = os.path.join(pcl_helper_dir, 'lib')
 
+# version.py file path
+version_py_path = os.path.join(cwd, __package__, 'version.py')
+# source code template for version.py
+version_py_src = """# this file was created automatically by setup.py on {timestamp}
+__version__ = '{version}'
+__version_info__ = {{
+    'full': __version__,
+    'short': '.'.join(__version__.split('.')[:2])
+}}
+"""
 
 def read(fname):
     return open(os.path.join(cwd, fname)).read()
+
+def update_version_py():
+    """Update version.py using "git describe" command"""
+    if not os.path.isdir('.git'):
+        print('This does not appear to be a Git repository, leaving version.py unchanged.')
+        return False
+    try:
+        describe_output = subprocess.check_output(['git', 'describe', '--long', '--dirty']).decode('ascii').strip()
+    except:
+        print('Unable to run Git, leaving version.py unchanged.')
+        return False
+    # output looks like <version tag>-<commits since tag>-g<hash> and can end with '-dirty', e.g. v0.1.0-14-gd9f10e2-dirty
+    # our version tags look like 'v0.1.0' or 'v0.1' and optionally additional segments (e.g. v0.1.0rc1), see PEP 0440
+    describe_parts = re.match('^v([0-9]+\.[0-9]+(?:\.[0-9]+)?\S*)-([0-9]+)-g([0-9a-f]+)(?:-(dirty))?$', describe_output)
+    assert describe_parts is not None, 'Unexpected output from "git describe": {}'.format(describe_output)
+    version_tag, n_commits, commit_hash, dirty_flag = describe_parts.groups()
+    n_commits = int(n_commits)
+    if dirty_flag is not None:
+        print('WARNING: Uncommitted changes detected.')
+    if n_commits > 0:
+        # non-exact match, dev version
+        dev_release = '.dev{}'.format(n_commits)
+    else:
+        dev_release = ''
+    # final version string
+    version = version_tag + dev_release
+    with open(version_py_path, 'w') as f:
+        f.write(version_py_src.format(version=version, timestamp=datetime.datetime.now()))
+    print('Set version to: {}'.format(version))
+    # success
+    return True
+
+# update version.py (if we're in a Git repository)
+update_version_py()
+# "import" version information without importing the package
+exec(open(version_py_path).read())
 
 class build_pcl_helper(Command):
     description = 'build pcl_helper library (inplace)'
