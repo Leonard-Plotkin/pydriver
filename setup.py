@@ -68,7 +68,7 @@ def update_version_py():
         print('WARNING: Uncommitted changes detected.')
     if n_commits > 0:
         # non-exact match, dev version
-        dev_release = '.dev{}'.format(n_commits)
+        dev_release = '.dev{}+{}'.format(n_commits, commit_hash)
     else:
         dev_release = ''
     # final version string
