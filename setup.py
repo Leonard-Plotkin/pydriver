@@ -216,8 +216,8 @@ class CleanCommand(Command):
         if not filepath_dir.startswith(cwd):
             path_check = False
         if path_check and len(filepath_dir) > len(cwd):
-            # first character after cwd should be a slash (on all platforms)
-            if filepath_dir[len(cwd)] != '/':
+            # first character after cwd should be a slash or a backslash
+            if filepath_dir[len(cwd)] != os.sep:
                 path_check = False
         if not path_check:
             print('The file "{}" appears to be outside of main directory ({}), aborting...'.format(filepath, cwd))
