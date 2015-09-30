@@ -173,6 +173,8 @@ class CleanCommand(Command):
     def finalize_options(self):
         pass
     def run(self):
+        self._remove_dirs('__pycache__')
+
         self._remove_dir(cwd, 'build')
         self._remove_dir(cwd, 'build_c')
         self._remove_dir(cwd, 'dist')
@@ -185,6 +187,16 @@ class CleanCommand(Command):
         self._remove_files('pyo')
         self._remove_files('pyd')
         self._remove_files('so')
+    def _remove_dirs(self, dirname, parent_dir=None):
+        if parent_dir is None:
+            full_parent_dir = cwd
+        else:
+            full_parent_dir = os.path.join(cwd, parent_dir)
+        matches = []
+        for dirpath, dirnames, filenames in os.walk(full_parent_dir):
+            matches.extend([os.path.join(dirpath, d) for d in dirnames if d==dirname])
+        for d in matches:
+            self._remove_dir(d)
     def _remove_dir(self, *args):
         dirpath = os.path.abspath(os.path.join(*args))
         # sanity checks
@@ -212,11 +224,11 @@ class CleanCommand(Command):
             print("Can't remove symlink to directory: " + dirpath)
     def _remove_files(self, ext, parent_dir=None):
         if parent_dir is None:
-            full_dir = cwd
+            full_parent_dir = cwd
         else:
-            full_dir = os.path.join(cwd, parent_dir)
+            full_parent_dir = os.path.join(cwd, parent_dir)
         matches = []
-        for dirpath, dirnames, filenames in os.walk(full_dir):
+        for dirpath, dirnames, filenames in os.walk(full_parent_dir):
             matches.extend([os.path.join(dirpath, f) for f in filenames if f.endswith('.'+ext)])
         for f in matches:
             self._remove_file(f)
