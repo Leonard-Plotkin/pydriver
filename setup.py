@@ -132,7 +132,7 @@ class CleanCommand(Command):
         self._remove_dir('build_c')
         self._remove_dir('dist')
         self._remove_dir('.eggs')
-        self._remove_dir('pydriver.egg-info')
+        self._remove_dir('{}.egg-info'.format(__package__))
         self._remove_dir(pcl_helper_dir_build)
         self._remove_dir(pcl_helper_dir_lib)
 
