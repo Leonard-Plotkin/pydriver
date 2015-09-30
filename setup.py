@@ -185,22 +185,22 @@ class CleanCommand(Command):
         self._remove_files('pyo')
         self._remove_files('pyd')
         self._remove_files('so')
-    def _remove_dir(self, dir):
-        full_dir = os.path.join(cwd, dir)
+    def _remove_dir(self, dirpath):
+        full_dir = os.path.join(cwd, dirpath)
         if os.path.isdir(full_dir):
             if not os.path.islink(full_dir):
                 print('Removing directory: ' + full_dir)
                 shutil.rmtree(full_dir, ignore_errors=True)
             else:
                 print("Can't remove symlink to directory: " + full_dir)
-    def _remove_files(self, ext, dir=None):
-        if dir is None:
+    def _remove_files(self, ext, dirpath=None):
+        if dirpath is None:
             full_dir = cwd
         else:
-            full_dir = os.path.join(cwd, dir)
+            full_dir = os.path.join(cwd, dirpath)
         matches = []
-        for dirpath, dirnames, filenames in os.walk(full_dir):
-            matches.extend([os.path.join(dirpath, f) for f in filenames if f.endswith('.'+ext)])
+        for cur_dirpath, dirnames, filenames in os.walk(full_dir):
+            matches.extend([os.path.join(cur_dirpath, f) for f in filenames if f.endswith('.'+ext)])
         for f in matches:
             self._remove_file(f)
     def _remove_file(self, filepath):
