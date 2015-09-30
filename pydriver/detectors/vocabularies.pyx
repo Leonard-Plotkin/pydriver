@@ -617,7 +617,7 @@ class Vocabulary(object):
                   'dims': self.dims,
                   'preprocessors': self.preprocessors,
                   'classifier': self.classifier,
-                  'categories': self._storages.keys(),
+                  'categories': list(self._storages.keys()),
                   'learned': self._learned,
                   }
         return params
