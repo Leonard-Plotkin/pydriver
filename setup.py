@@ -173,37 +173,55 @@ class CleanCommand(Command):
     def finalize_options(self):
         pass
     def run(self):
-        self._remove_dir('build')
-        self._remove_dir('build_c')
-        self._remove_dir('dist')
-        self._remove_dir('.eggs')
-        self._remove_dir('{}.egg-info'.format(__package__))
-        self._remove_dir(pcl_helper_dir_build)
-        self._remove_dir(pcl_helper_dir_lib)
+        self._remove_dir(cwd, 'build')
+        self._remove_dir(cwd, 'build_c')
+        self._remove_dir(cwd, 'dist')
+        self._remove_dir(cwd, '.eggs')
+        self._remove_dir(cwd, '{}.egg-info'.format(__package__))
+        self._remove_dir(cwd, pcl_helper_dir_build)
+        self._remove_dir(cwd, pcl_helper_dir_lib)
 
         self._remove_files('pyc')
         self._remove_files('pyo')
         self._remove_files('pyd')
         self._remove_files('so')
-    def _remove_dir(self, dirpath):
-        full_dir = os.path.join(cwd, dirpath)
-        if os.path.isdir(full_dir):
-            if not os.path.islink(full_dir):
-                print('Removing directory: ' + full_dir)
-                shutil.rmtree(full_dir, ignore_errors=True)
-            else:
-                print("Can't remove symlink to directory: " + full_dir)
-    def _remove_files(self, ext, dirpath=None):
-        if dirpath is None:
+    def _remove_dir(self, *args):
+        dirpath = os.path.abspath(os.path.join(*args))
+        # sanity checks
+        if not os.path.exists(dirpath):
+            # nothing to do
+            return
+        if not os.path.isdir(dirpath):
+            print('"{}" is not a directory, aborting...'.format(dirpath))
+            sys.exit()
+        path_check = True
+        if not dirpath.startswith(cwd):
+            path_check = False
+        if path_check and len(dirpath) > len(cwd):
+            # first character after cwd should be a slash or a backslash
+            if dirpath[len(cwd)] != os.sep:
+                path_check = False
+        if not path_check:
+            print('The directory "{}" appears to be outside of main directory ({}), aborting...'.format(dirpath, cwd))
+            sys.exit()
+        # all sanity checks ok
+        if not os.path.islink(dirpath):
+            print('Removing directory: ' + dirpath)
+            shutil.rmtree(dirpath, ignore_errors=True)
+        else:
+            print("Can't remove symlink to directory: " + dirpath)
+    def _remove_files(self, ext, parent_dir=None):
+        if parent_dir is None:
             full_dir = cwd
         else:
-            full_dir = os.path.join(cwd, dirpath)
+            full_dir = os.path.join(cwd, parent_dir)
         matches = []
-        for cur_dirpath, dirnames, filenames in os.walk(full_dir):
-            matches.extend([os.path.join(cur_dirpath, f) for f in filenames if f.endswith('.'+ext)])
+        for dirpath, dirnames, filenames in os.walk(full_dir):
+            matches.extend([os.path.join(dirpath, f) for f in filenames if f.endswith('.'+ext)])
         for f in matches:
             self._remove_file(f)
-    def _remove_file(self, filepath):
+    def _remove_file(self, *args):
+        filepath = os.path.abspath(os.path.join(*args))
         # sanity checks
         if not os.path.exists(filepath):
             # nothing to do
@@ -222,7 +240,7 @@ class CleanCommand(Command):
         if not path_check:
             print('The file "{}" appears to be outside of main directory ({}), aborting...'.format(filepath, cwd))
             sys.exit()
-        # all checks ok
+        # all sanity checks ok
         print('Removing file: ' + filepath)
         os.remove(filepath)
 
