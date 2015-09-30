@@ -2,14 +2,14 @@
 Installation
 ============
 
-Although the PyDriver framework was only tested with Ubuntu 14.04 and Windows 7 so far, it should
-be usable with every operating system which supports Python 2.7 and all required components.
+Although the PyDriver framework was only tested with Debian 8 and Windows 7 so far, it should
+be usable with every operating system which supports Python 2.7 or 3.x and all required components.
 
 The `PyDriver repository <https://github.com/lpltk/pydriver>`_ is located at GitHub.
 
 **Required software**
 
-- `Python <https://www.python.org/>`_ (2.7)
+- `Python <https://www.python.org/>`_ (2.7 or 3.x)
 - `CMake <http://www.cmake.org/>`_
 - `Point Cloud Library (PCL) <http://pointclouds.org/>`_ (>=1.7.1)
 
@@ -28,13 +28,11 @@ The `PyDriver repository <https://github.com/lpltk/pydriver>`_ is located at Git
 - `PyOpenCL <http://documen.tician.de/pyopencl/>`_ and hardware drivers with OpenCL support (enables GPU usage)
 - `Sphinx <http://sphinx-doc.org/>`_ (documentation generator)
 
-------------
-Ubuntu 14.04
-------------
+--------
+Debian 8
+--------
 
-Python 2.7 and the GCC compiler are included by default in Ubuntu 14.04.
-
-PCL installation
+**PCL installation**
 
 .. code-block:: none
 
@@ -42,26 +40,65 @@ PCL installation
     sudo apt-get update
     sudo apt-get install libpcl-all
 
-Other required packages
+**CMake**
 
 .. code-block:: none
 
-    sudo apt-get install cmake python-dev python-pip python-scipy python-skimage python-shapely
-    sudo pip install cython sklearn --upgrade
+    sudo apt-get install cmake
 
-Optional packages
+Python 3.x
+----------
+
+**Required Python packages**
+
+.. code-block:: none
+
+    sudo apt-get install python3-dev python3-scipy python3-skimage python3-shapely cython3
+    sudo pip3 install cython sklearn --upgrade
+
+**Optional Python packages**
+
+OpenCV 3 has support for Python 3.x, but manual installation may be required.
+
+.. code-block:: none
+
+    sudo apt-get install python3-pyopencl
+    sudo pip3 install sphinx
+
+Python 2.7
+----------
+
+**Required Python packages**
+
+.. code-block:: none
+
+    sudo apt-get install python-dev python-pip python-scipy python-skimage python-shapely cython
+    sudo pip2 install cython sklearn --upgrade
+
+**Optional Python packages**
 
 .. code-block:: none
 
     sudo apt-get install python-opencv
     sudo apt-get install python-pyopencl
-    sudo pip install sphinx
+    sudo pip2 install sphinx
+
+Final step
+----------
 
 Switch to the PyDriver source directory (the one with setup.py in it) and install the package.
 
+**Python 3.x**
+
 .. code-block:: none
 
-    sudo pip install .
+    sudo pip3 install .
+
+**Python 2.7**
+
+.. code-block:: none
+
+    sudo pip2 install .
 
 Now you can change your working directory to something else (so Python won't import the uncompiled
 source code, that will result in an error), run the Python interpreter and try *import pydriver*.
