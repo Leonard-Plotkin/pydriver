@@ -191,7 +191,7 @@ sudo pip3 install --upgrade cython sklearn
 <p><strong>Optional Python packages</strong></p>
 <p>OpenCV 3 has support for Python 3.x, but manual installation may be required.</p>
 <div class="highlight-none"><div class="highlight"><pre>sudo apt-get install python3-pyopencl
-sudo pip3 install --upgrade sphinx
+pip3 install --upgrade sphinx
 </pre></div>
 </div>
 </div>
@@ -205,23 +205,21 @@ sudo pip2 install --upgrade cython sklearn
 <p><strong>Optional Python packages</strong></p>
 <div class="highlight-none"><div class="highlight"><pre>sudo apt-get install python-opencv
 sudo apt-get install python-pyopencl
-sudo pip2 install --upgrade sphinx
+pip2 install --upgrade sphinx
 </pre></div>
 </div>
 </div>
 <div class="section" id="final-step">
 <h3>Final step<a class="headerlink" href="#final-step" title="Permalink to this headline">¶</a></h3>
-<p>Switch to the PyDriver source directory (the one with setup.py in it) and install the package.</p>
 <p><strong>Python 3.x</strong></p>
-<div class="highlight-none"><div class="highlight"><pre>sudo pip3 install .
+<div class="highlight-none"><div class="highlight"><pre>pip3 install pydriver
 </pre></div>
 </div>
 <p><strong>Python 2.7</strong></p>
-<div class="highlight-none"><div class="highlight"><pre>sudo pip2 install .
+<div class="highlight-none"><div class="highlight"><pre>pip2 install pydriver
 </pre></div>
 </div>
-<p>Now you can change your working directory to something else (so Python won&#8217;t import the uncompiled
-source code, that will result in an error), run the Python interpreter and try <em>import pydriver</em>.</p>
+<p>Now you can run the Python interpreter and try <em>import pydriver</em>.</p>
 </div>
 </div>
 <div class="section" id="windows">
@@ -256,12 +254,14 @@ installing dependencies.</p>
 </div>
 <div class="section" id="compile-from-source">
 <h3>Compile from source<a class="headerlink" href="#compile-from-source" title="Permalink to this headline">¶</a></h3>
+<p><strong>Dependencies</strong></p>
 <p>For Windows the recommended way to install large parts of the required software is to use
 <a class="reference external" href="https://winpython.github.io/">WinPython</a> that already includes Python, Cython, NumPy, SciPy,
 Matplotlib and other packages. The homepage of <a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs/">Christoph Gohlke</a>, who is doing great work maintaining it, offers
 binary wheels for many Python packages including those for which an official Windows binary
 distribution is not provided. Keep in mind that you will probably need large amounts of memory
 and therefore you should use 64-bit packages.</p>
+<p><strong>PCL</strong></p>
 <p>The PCL installer for Windows is currently (October 2015) outdated and PCL must be compiled from
 source. Versions prior to 1.7.1 are not compatible with PyDriver. The recommended compiler for
 PCL 1.7.1 on Windows is Visual C++ 2010 (10.0). After installing PCL the pcl_helper library
@@ -269,6 +269,7 @@ PCL 1.7.1 on Windows is Visual C++ 2010 (10.0). After installing PCL the pcl_hel
 a Visual C++ project in <em>pcl_helper/build</em> with CMake and supplied CMake configuration files. Now
 you can build the generated project with Visual Studio. Remember that you may want to switch to
 the &#8220;Release&#8221; configuration.</p>
+<p><strong>Compiler</strong></p>
 <p>To compile Cython extensions for Python you should use the same compiler which was used to compile
 Python. For the standard Python 3.5 Windows Distribution it&#8217;s Visual C++ 2015 (14.0), for Python
 3.4 and 3.3 it&#8217;s VC++ 2010 (10.0), and for earlier Python versions it&#8217;s VC++ 2008 (9.0). You can
@@ -279,6 +280,7 @@ cores. The recommended way for installing VC++ 2008 is to use the <a class="refe
 for Python 2.7</a> . See its
 installation instructions for dependencies which should be installed first. Remember to install
 Visual C++ compilers in the order of their versions.</p>
+<p><strong>Final step</strong></p>
 <p>The final step is to switch to the PyDriver source directory (the one with setup.py in it),
 compile and install it (administrator privileges may be required):</p>
 <div class="highlight-none"><div class="highlight"><pre>pip install .
