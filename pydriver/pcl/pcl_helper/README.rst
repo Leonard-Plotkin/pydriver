@@ -1,6 +1,6 @@
 What is PCL_HELPER?
 ===================
-PCL_HELPER is a custom python interface to Point Cloud Library used in
+PCL_HELPER is a custom Python interface to Point Cloud Library used in
 PyDriver. The main installation script will try to take care of its
 compilation. In case it doesn't succeed you have to compile PCL_HELPER
 manually using these instructions.
