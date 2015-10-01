@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation &mdash; PyDriver 0.1.0 documentation</title>
+  <title>Installation &mdash; PyDriver 0.1.0.dev18+0c52433 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="PyDriver 0.1.0 documentation" href="index.html"/>
+    <link rel="top" title="PyDriver 0.1.0.dev18+0c52433 documentation" href="index.html"/>
         <link rel="next" title="Usage Example" href="usage.html"/>
         <link rel="prev" title="PyDriver Framework" href="index.html"/> 
 
@@ -45,17 +45,27 @@
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-        
-          <a href="index.html" class="icon icon-home"> PyDriver
-        
+          
+            <a href="index.html" class="icon icon-home"> PyDriver
+          
 
-        
-        </a>
+          
+          </a>
 
-        
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -64,20 +74,25 @@
   </form>
 </div>
 
-        
-      </div>
+          
+        </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
-          
-              <ul class="current">
+            
+            
+                <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#ubuntu-14-04">Ubuntu 14.04</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#debian-8">Debian 8</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#python-3-x">Python 3.x</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-2-7">Python 2.7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#final-step">Final step</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#windows">Windows</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#standalone-archive">Standalone archive</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#msi-package-installer">MSI package installer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#python-binary-wheel">Python binary wheel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#msi-package-installer">MSI package installer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#compile-from-source">Compile from source</a></li>
 </ul>
 </li>
@@ -85,50 +100,13 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage Example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="main.html">Basics</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="main.html#coordinate-system">Coordinate system</a></li>
-<li class="toctree-l3"><a class="reference internal" href="main.html#numpy-array-types">NumPy array types</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="datasets.html">The <code class="docutils literal"><span class="pre">datasets</span></code> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="datasets.html#module-pydriver.datasets.base">Base</a></li>
-<li class="toctree-l3"><a class="reference internal" href="datasets.html#module-pydriver.datasets.kitti">KITTI</a></li>
-<li class="toctree-l3"><a class="reference internal" href="datasets.html#module-pydriver.datasets.utils">Utils</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="detectors.html">The <code class="docutils literal"><span class="pre">detectors</span></code> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="detectors.html#module-pydriver.detectors.detectors">Detectors</a></li>
-<li class="toctree-l3"><a class="reference internal" href="detectors.html#module-pydriver.detectors.vocabularies">Vocabularies</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="evaluation.html">The <code class="docutils literal"><span class="pre">evaluation</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="features.html">The <code class="docutils literal"><span class="pre">features</span></code> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="features.html#module-pydriver.features.base">Base</a></li>
-<li class="toctree-l3"><a class="reference internal" href="features.html#module-pydriver.features.shot">SHOT</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="geometry.html">The <code class="docutils literal"><span class="pre">geometry</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="keypoints.html">The <code class="docutils literal"><span class="pre">keypoints</span></code> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="keypoints.html#module-pydriver.keypoints.base">Base</a></li>
-<li class="toctree-l3"><a class="reference internal" href="keypoints.html#module-pydriver.keypoints.harris">Harris</a></li>
-<li class="toctree-l3"><a class="reference internal" href="keypoints.html#module-pydriver.keypoints.iss">ISS</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pcl.html">The <code class="docutils literal"><span class="pre">pcl</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocessing.html">The <code class="docutils literal"><span class="pre">preprocessing</span></code> Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="stereo.html">The <code class="docutils literal"><span class="pre">stereo</span></code> Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="stereo.html#module-pydriver.stereo.stereo">Stereo</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a></li>
 </ul>
 
+            
           
-        
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
@@ -143,7 +121,13 @@
       
       <div class="wy-nav-content">
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
@@ -156,16 +140,17 @@
   </ul>
   <hr/>
 </div>
-          <div role="main" class="document">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>Although the PyDriver framework was only tested with Ubuntu 14.04 and Windows 7 so far, it should
-be usable with every operating system which supports Python 2.7 and all required components.</p>
+<p>Although the PyDriver framework was only tested with Debian 8 and Windows 7 so far, it should
+be usable with every operating system which supports Python 2.7 or 3.x and all required components.</p>
 <p>The <a class="reference external" href="https://github.com/lpltk/pydriver">PyDriver repository</a> is located at GitHub.</p>
 <p><strong>Required software</strong></p>
 <ul class="simple">
-<li><a class="reference external" href="https://www.python.org/">Python</a> (2.7)</li>
+<li><a class="reference external" href="https://www.python.org/">Python</a> (2.7 or 3.x)</li>
 <li><a class="reference external" href="http://www.cmake.org/">CMake</a></li>
 <li><a class="reference external" href="http://pointclouds.org/">Point Cloud Library (PCL)</a> (&gt;=1.7.1)</li>
 </ul>
@@ -184,95 +169,135 @@ be usable with every operating system which supports Python 2.7 and all required
 <li><a class="reference external" href="http://documen.tician.de/pyopencl/">PyOpenCL</a> and hardware drivers with OpenCL support (enables GPU usage)</li>
 <li><a class="reference external" href="http://sphinx-doc.org/">Sphinx</a> (documentation generator)</li>
 </ul>
-<div class="section" id="ubuntu-14-04">
-<h2>Ubuntu 14.04<a class="headerlink" href="#ubuntu-14-04" title="Permalink to this headline">¶</a></h2>
-<p>Python 2.7 and the GCC compiler are included by default in Ubuntu 14.04.</p>
-<p>PCL installation</p>
+<div class="section" id="debian-8">
+<h2>Debian 8<a class="headerlink" href="#debian-8" title="Permalink to this headline">¶</a></h2>
+<p><strong>PCL installation</strong></p>
 <div class="highlight-none"><div class="highlight"><pre>sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl
 sudo apt-get update
 sudo apt-get install libpcl-all
 </pre></div>
 </div>
-<p>Other required packages</p>
-<div class="highlight-none"><div class="highlight"><pre>sudo apt-get install cmake python-dev python-pip python-scipy python-skimage python-shapely
-sudo pip install cython sklearn --upgrade
+<p><strong>CMake</strong></p>
+<div class="highlight-none"><div class="highlight"><pre>sudo apt-get install cmake
 </pre></div>
 </div>
-<p>Optional packages</p>
+<div class="section" id="python-3-x">
+<h3>Python 3.x<a class="headerlink" href="#python-3-x" title="Permalink to this headline">¶</a></h3>
+<p><strong>Required Python packages</strong></p>
+<div class="highlight-none"><div class="highlight"><pre>sudo apt-get install python3-dev python3-scipy python3-skimage python3-shapely cython3
+sudo pip3 install --upgrade cython sklearn
+</pre></div>
+</div>
+<p><strong>Optional Python packages</strong></p>
+<p>OpenCV 3 has support for Python 3.x, but manual installation may be required.</p>
+<div class="highlight-none"><div class="highlight"><pre>sudo apt-get install python3-pyopencl
+sudo pip3 install --upgrade sphinx
+</pre></div>
+</div>
+</div>
+<div class="section" id="python-2-7">
+<h3>Python 2.7<a class="headerlink" href="#python-2-7" title="Permalink to this headline">¶</a></h3>
+<p><strong>Required Python packages</strong></p>
+<div class="highlight-none"><div class="highlight"><pre>sudo apt-get install python-dev python-pip python-scipy python-skimage python-shapely cython
+sudo pip2 install --upgrade cython sklearn
+</pre></div>
+</div>
+<p><strong>Optional Python packages</strong></p>
 <div class="highlight-none"><div class="highlight"><pre>sudo apt-get install python-opencv
 sudo apt-get install python-pyopencl
-sudo pip install sphinx
+sudo pip2 install --upgrade sphinx
 </pre></div>
 </div>
+</div>
+<div class="section" id="final-step">
+<h3>Final step<a class="headerlink" href="#final-step" title="Permalink to this headline">¶</a></h3>
 <p>Switch to the PyDriver source directory (the one with setup.py in it) and install the package.</p>
-<div class="highlight-none"><div class="highlight"><pre>sudo pip install .
+<p><strong>Python 3.x</strong></p>
+<div class="highlight-none"><div class="highlight"><pre>sudo pip3 install .
+</pre></div>
+</div>
+<p><strong>Python 2.7</strong></p>
+<div class="highlight-none"><div class="highlight"><pre>sudo pip2 install .
 </pre></div>
 </div>
 <p>Now you can change your working directory to something else (so Python won&#8217;t import the uncompiled
 source code, that will result in an error), run the Python interpreter and try <em>import pydriver</em>.</p>
+</div>
 </div>
 <div class="section" id="windows">
 <h2>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h2>
 <p>You have multiple options for installing PyDriver on Windows depending on your needs. You can
 download compiled binaries from <a class="reference external" href="https://github.com/lpltk/pydriver/releases">https://github.com/lpltk/pydriver/releases</a>. They are currently
 available for x64 systems only.</p>
-<p>You may need to install Microsoft Visual C++ redistributable packages for 2008 and 2010 versions
-if they are not already present on your system.</p>
+<p>You may need to install Microsoft Visual C++ 2010 redistributable package if it&#8217;s not already
+installed on your system. For Python 3.5 and later you will also need the 2015 version whereas for
+Python 3.2 and earlier the 2008 version is required.</p>
 <div class="section" id="standalone-archive">
 <h3>Standalone archive<a class="headerlink" href="#standalone-archive" title="Permalink to this headline">¶</a></h3>
 <p>This archive is a WinPython distribution with pre-installed PyDriver package. Extract it and
 run the WinPython command prompt. You should be able to start Python there and execute
 <em>import pydriver</em>.</p>
 </div>
-<div class="section" id="msi-package-installer">
-<h3>MSI package installer<a class="headerlink" href="#msi-package-installer" title="Permalink to this headline">¶</a></h3>
-<p>Use the package installer to install PyDriver in an existing Python installation. You will need
-to install the required Python packages manually, but this option does not require Point Cloud
-Library or CMake to be installed. See <a class="reference internal" href="#compile-from-source">Compile from source</a> for more information about installing
-dependencies.</p>
-</div>
 <div class="section" id="python-binary-wheel">
 <h3>Python binary wheel<a class="headerlink" href="#python-binary-wheel" title="Permalink to this headline">¶</a></h3>
-<p>You can also use a binary wheel to install PyDriver in an existing Python installation. The installation
-command is <em>pip install &lt;wheel.whl&gt;</em>. The required Python packages will be installed automatically, but
-there are known issues with some of them. Specifically, you should install Shapely from its binary wheel
-manually instead of relying on automatic installation. This option does not require Point Cloud
-Library or CMake to be installed. See <a class="reference internal" href="#compile-from-source">Compile from source</a> for more information about installing
-dependencies.</p>
+<p>Use the binary wheel to install PyDriver in an existing Python installation. The installation
+command is <em>pip install &lt;wheel.whl&gt;</em>. The required Python packages will be installed automatically,
+but there are known issues with some of them. Specifically, you may need to install Shapely from
+its binary wheel manually instead of relying on automatic installation. This option does not
+require Point Cloud Library or CMake to be installed. See <a class="reference internal" href="#compile-from-source">Compile from source</a> for more
+information about installing dependencies.</p>
+</div>
+<div class="section" id="msi-package-installer">
+<h3>MSI package installer<a class="headerlink" href="#msi-package-installer" title="Permalink to this headline">¶</a></h3>
+<p>You can also use the package installer to install PyDriver in an existing Python installation. You
+will need to install the required Python packages manually, but this option does not require Point
+Cloud Library or CMake to be installed. See <a class="reference internal" href="#compile-from-source">Compile from source</a> for more information about
+installing dependencies.</p>
 </div>
 <div class="section" id="compile-from-source">
 <h3>Compile from source<a class="headerlink" href="#compile-from-source" title="Permalink to this headline">¶</a></h3>
 <p>For Windows the recommended way to install large parts of the required software is to use
 <a class="reference external" href="https://winpython.github.io/">WinPython</a> that already includes Python, Cython, NumPy, SciPy,
-Matplotlib and other packages. The homepage of <a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs/">Christoph Gohlke</a>,
-who is doing great work maintaining it, offers binary wheels for many Python packages including
-those for which an official Windows binary distribution is not provided. Keep in mind that you will probably
-need large amounts of training data for sensible results and therefore you should use 64-bit packages.</p>
-<p>The PCL installer for Windows is currently (August 2015) outdated and PCL must be compiled from source.
-Versions prior to 1.7.1 are not compatible with PyDriver. The recommended compiler for PCL 1.7.1 on
-Windows is Visual C++ 2010 (i.e. 10.0). After installing PCL the pcl_helper library (in <em>pcl/pcl_helper</em>)
-must be compiled with the same compiler used for PCL. You have to generate a Visual C++ project in
-<em>pcl_helper/build</em> with CMake and supplied CMake configuration files. Now you can build the generated
-project with Visual Studio. Remember that you may want to switch to the &#8220;Release&#8221; configuration.</p>
+Matplotlib and other packages. The homepage of <a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs/">Christoph Gohlke</a>, who is doing great work maintaining it, offers
+binary wheels for many Python packages including those for which an official Windows binary
+distribution is not provided. Keep in mind that you will probably need large amounts of memory
+and therefore you should use 64-bit packages.</p>
+<p>The PCL installer for Windows is currently (October 2015) outdated and PCL must be compiled from
+source. Versions prior to 1.7.1 are not compatible with PyDriver. The recommended compiler for
+PCL 1.7.1 on Windows is Visual C++ 2010 (10.0). After installing PCL the pcl_helper library
+(in <em>pcl/pcl_helper</em>) must be compiled with the same compiler used for PCL. You have to generate
+a Visual C++ project in <em>pcl_helper/build</em> with CMake and supplied CMake configuration files. Now
+you can build the generated project with Visual Studio. Remember that you may want to switch to
+the &#8220;Release&#8221; configuration.</p>
 <p>To compile Cython extensions for Python you should use the same compiler which was used to compile
-Python. For the standard Python 2.7 Windows distribution it&#8217;s Visual C++ 2008 (i.e. 9.0). Your compiler
-version must support 64-bit binaries in order to use 64-bit Python packages. Support for OpenMP is optional
-and will allow Cython code to make use of multiple CPU cores. The recommended way is to use the
-<a class="reference external" href="http://www.microsoft.com/en-us/download/details.aspx?id=44266">Microsoft Visual C++ Compiler for Python 2.7</a> (9.0).
-See its installation instructions for dependencies which should be installed first. Remember to install Visual
-C++ compilers in the order of their versions.</p>
-<p>The final step is to switch to the PyDriver source directory (the one with setup.py in it), compile and
-install it (administrator privileges may be required):</p>
+Python. For the standard Python 3.5 Windows Distribution it&#8217;s Visual C++ 2015 (14.0), for Python
+3.4 and 3.3 it&#8217;s VC++ 2010 (10.0), and for earlier Python versions it&#8217;s VC++ 2008 (9.0). You can
+also try using the Mingw-w64 compiler included in the latest WinPython distributions and being run
+by default. Your compiler version must support 64-bit binaries in order to use 64-bit Python
+packages. Support for OpenMP is optional and will allow Cython code to make use of multiple CPU
+cores. The recommended way for installing VC++ 2008 is to use the <a class="reference external" href="http://www.microsoft.com/en-us/download/details.aspx?id=44266">Microsoft Visual C++ Compiler
+for Python 2.7</a> . See its
+installation instructions for dependencies which should be installed first. Remember to install
+Visual C++ compilers in the order of their versions.</p>
+<p>The final step is to switch to the PyDriver source directory (the one with setup.py in it),
+compile and install it (administrator privileges may be required):</p>
+<div class="highlight-none"><div class="highlight"><pre>pip install .
+</pre></div>
+</div>
+<p>If this does not succeed, try this instead:</p>
 <div class="highlight-none"><div class="highlight"><pre>python setup.py build_ext --compiler=msvc
 pip install .
 </pre></div>
 </div>
+<p>You may need to run <em>python setup.py clean</em> and recompile (or backup) the pcl_helper library
+before doing this.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">WinPython and generally most Python packages are portable in the sense that they can be run without
-installation, e.g. from a USB stick. If you compile PCL as a static library and compile the pcl_helper
-library against it, the pcl_helper library will be portable in the same way. Thus you can make a completely
-portable PyDriver package. However, you won&#8217;t be able to modify the pcl_helper library without installing PCL.</p>
+<p class="last">WinPython and generally most Python packages are portable in the sense that they can be run
+without installation, e.g. from a USB stick. If you compile PCL as a static library and
+compile the pcl_helper library against it, the pcl_helper library will be portable in the same
+way. Thus you can make a completely portable PyDriver package. However, you won&#8217;t be able to
+modify the pcl_helper library without installing PCL.</p>
 </div>
 </div>
 </div>
@@ -284,6 +309,7 @@ editable mode, generating documentation and other useful commands.</p>
 </div>
 
 
+           </div>
           </div>
           <footer>
   
@@ -301,9 +327,10 @@ editable mode, generating documentation and other useful commands.</p>
 
   <div role="contentinfo">
     <p>
+
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -321,7 +348,7 @@ editable mode, generating documentation and other useful commands.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.1.0.dev18+0c52433',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
