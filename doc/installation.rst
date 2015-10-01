@@ -54,7 +54,7 @@ Python 3.x
 .. code-block:: none
 
     sudo apt-get install python3-dev python3-scipy python3-skimage python3-shapely cython3
-    sudo pip3 install cython sklearn --upgrade
+    sudo pip3 install --upgrade cython sklearn
 
 **Optional Python packages**
 
@@ -63,7 +63,7 @@ OpenCV 3 has support for Python 3.x, but manual installation may be required.
 .. code-block:: none
 
     sudo apt-get install python3-pyopencl
-    sudo pip3 install sphinx
+    sudo pip3 install --upgrade sphinx
 
 Python 2.7
 ----------
@@ -73,7 +73,7 @@ Python 2.7
 .. code-block:: none
 
     sudo apt-get install python-dev python-pip python-scipy python-skimage python-shapely cython
-    sudo pip2 install cython sklearn --upgrade
+    sudo pip2 install --upgrade cython sklearn
 
 **Optional Python packages**
 
@@ -81,7 +81,7 @@ Python 2.7
 
     sudo apt-get install python-opencv
     sudo apt-get install python-pyopencl
-    sudo pip2 install sphinx
+    sudo pip2 install --upgrade sphinx
 
 Final step
 ----------
