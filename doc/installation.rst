@@ -63,7 +63,7 @@ OpenCV 3 has support for Python 3.x, but manual installation may be required.
 .. code-block:: none
 
     sudo apt-get install python3-pyopencl
-    sudo pip3 install --upgrade sphinx
+    pip3 install --upgrade sphinx
 
 Python 2.7
 ----------
@@ -81,27 +81,24 @@ Python 2.7
 
     sudo apt-get install python-opencv
     sudo apt-get install python-pyopencl
-    sudo pip2 install --upgrade sphinx
+    pip2 install --upgrade sphinx
 
 Final step
 ----------
-
-Switch to the PyDriver source directory (the one with setup.py in it) and install the package.
 
 **Python 3.x**
 
 .. code-block:: none
 
-    sudo pip3 install .
+    pip3 install pydriver
 
 **Python 2.7**
 
 .. code-block:: none
 
-    sudo pip2 install .
+    pip2 install pydriver
 
-Now you can change your working directory to something else (so Python won't import the uncompiled
-source code, that will result in an error), run the Python interpreter and try *import pydriver*.
+Now you can run the Python interpreter and try *import pydriver*.
 
 
 -------
@@ -141,6 +138,8 @@ installing dependencies.
 Compile from source
 -------------------
 
+**Dependencies**
+
 For Windows the recommended way to install large parts of the required software is to use
 `WinPython <https://winpython.github.io/>`_ that already includes Python, Cython, NumPy, SciPy,
 Matplotlib and other packages. The homepage of `Christoph Gohlke
@@ -149,6 +148,8 @@ binary wheels for many Python packages including those for which an official Win
 distribution is not provided. Keep in mind that you will probably need large amounts of memory
 and therefore you should use 64-bit packages.
 
+**PCL**
+
 The PCL installer for Windows is currently (October 2015) outdated and PCL must be compiled from
 source. Versions prior to 1.7.1 are not compatible with PyDriver. The recommended compiler for
 PCL 1.7.1 on Windows is Visual C++ 2010 (10.0). After installing PCL the pcl_helper library
@@ -156,6 +157,8 @@ PCL 1.7.1 on Windows is Visual C++ 2010 (10.0). After installing PCL the pcl_hel
 a Visual C++ project in *pcl_helper/build* with CMake and supplied CMake configuration files. Now
 you can build the generated project with Visual Studio. Remember that you may want to switch to
 the "Release" configuration.
+
+**Compiler**
 
 To compile Cython extensions for Python you should use the same compiler which was used to compile
 Python. For the standard Python 3.5 Windows Distribution it's Visual C++ 2015 (14.0), for Python
@@ -167,6 +170,8 @@ cores. The recommended way for installing VC++ 2008 is to use the `Microsoft Vis
 for Python 2.7 <http://www.microsoft.com/en-us/download/details.aspx?id=44266>`_ . See its
 installation instructions for dependencies which should be installed first. Remember to install
 Visual C++ compilers in the order of their versions.
+
+**Final step**
 
 The final step is to switch to the PyDriver source directory (the one with setup.py in it),
 compile and install it (administrator privileges may be required):
