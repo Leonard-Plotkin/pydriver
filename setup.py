@@ -2,7 +2,6 @@
 from __future__ import absolute_import, division
 
 import argparse
-import datetime
 import os
 import platform
 import re
@@ -37,7 +36,7 @@ pcl_helper_dir_lib = os.path.join(pcl_helper_dir, 'lib')
 # version.py file path
 version_py_path = os.path.join(cwd, __package__, 'version.py')
 # source code template for version.py
-version_py_src = """# this file was created automatically by setup.py on {timestamp}
+version_py_src = """# this file was created automatically by setup.py
 __version__ = '{version}'
 __version_info__ = {{
     'full': __version__,
@@ -63,18 +62,26 @@ def update_version_py():
     describe_parts = re.match('^v([0-9]+\.[0-9]+(?:\.[0-9]+)?\S*)-([0-9]+)-g([0-9a-f]+)(?:-(dirty))?$', describe_output)
     assert describe_parts is not None, 'Unexpected output from "git describe": {}'.format(describe_output)
     version_tag, n_commits, commit_hash, dirty_flag = describe_parts.groups()
+    version_parts = re.match('^([0-9]+)\.([0-9]+)(?:\.([0-9]+))?(\S*)$', version_tag)
+    assert version_parts is not None, 'Unexpected version format: {}'.format(version_tag)
+    version_major, version_minor, version_micro, version_segments = version_parts.groups()
+    version_major = int(version_major)
+    version_minor = int(version_minor)
+    version_micro = int(version_micro) if version_micro is not None else 0
     n_commits = int(n_commits)
     if dirty_flag is not None:
         print('WARNING: Uncommitted changes detected.')
     if n_commits > 0:
         # non-exact match, dev version
-        dev_release = '.dev{}+{}'.format(n_commits, commit_hash)
-    else:
-        dev_release = ''
+        version_micro += 1
+        version_segments += '.dev{}+{}'.format(n_commits, commit_hash)
     # final version string
-    version = version_tag + dev_release
+    if version_micro > 0:
+        version = '{}.{}.{}{}'.format(version_major, version_minor, version_micro, version_segments)
+    else:
+        version = '{}.{}{}'.format(version_major, version_minor, version_segments)
     with open(version_py_path, 'w') as f:
-        f.write(version_py_src.format(version=version, timestamp=datetime.datetime.now()))
+        f.write(version_py_src.format(version=version))
     print('Set version to: {}'.format(version))
     # success
     return True
