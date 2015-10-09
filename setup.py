@@ -11,7 +11,6 @@ import sys
 import warnings
 
 import setuptools
-import distutils.ccompiler
 from distutils.core import Command
 
 from Cython.Distutils import build_ext as _build_ext
