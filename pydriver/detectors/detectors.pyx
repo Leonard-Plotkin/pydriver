@@ -12,7 +12,7 @@ cimport cython
 cimport numpy as cnp
 import numpy as np
 
-import shapely.geometry, sklearn.cluster
+import sklearn.cluster
 
 from ..common.structs cimport FLOAT_t, Position
 from ..common.constants import FLOAT_dtype, Detection_dtype
@@ -20,6 +20,15 @@ from ..datasets.utils import detections2labels
 from ..geometry import get3DBoxVertices
 
 from . import vocabularies
+
+try:
+    import shapely.geometry
+except ImportError:
+    # shapely not available, deactivate some functionality
+    USE_SHAPELY = False
+else:
+    # shapely available
+    USE_SHAPELY = True
 
 
 class Detector(object):
@@ -199,6 +208,11 @@ class Detector(object):
             int iHyp, iOtherHyp
         # get raw hypotheses
         detections_raw = self.getDetections(featureData, suppressNegatives)
+        if not USE_SHAPELY:
+            # shapely module not available, no non-maximum suppression possible
+            warnings.warn(UserWarning('The module "shapely" could not be imported, non-maximum suppression deactivated.'))
+            return detections_raw
+
         # copy weights since we will modify them to exclude processed hypotheses
         weights = detections_raw['weight'].copy()
         weights_view = weights

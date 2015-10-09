@@ -356,7 +356,6 @@ setup_args = {
         'scipy>=0.13.3',
         'scikit-image',
         'scikit-learn',
-        'shapely',
     ],
     'classifiers': [
         'Development Status :: 3 - Alpha',
