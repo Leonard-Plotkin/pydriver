@@ -137,7 +137,7 @@ def writeLabels(labels, filepath, includeAlpha = True):
 
 # named tuples definition
 
-NavigationInfo = namedtuple('NavigationInfo', [
+_NavigationInfo = namedtuple('_NavigationInfo', [
     'lat',      # latitude of the oxts-unit (deg)
     'lon',      # longitude of the oxts-unit (deg)
     'alt',      # altitude of the oxts-unit (m)
@@ -588,7 +588,7 @@ class KITTITrackletsReader(KITTIReader):
                 with open(oxtsFile, 'r') as f:
                     lines = [line for line in f.read().strip().split('\n') if line]
                 self._cache['oxts']['files'][dataset] = lines
-            # initialize dataset dictionary, key: frameId, value: NavigationInfo-like OrderedDict or None
+            # initialize dataset dictionary, key: frameId, value: _NavigationInfo-like OrderedDict or None
             self._cache['oxts']['data'][dataset] = {}
         # assertion: self._cache['oxts']['files'][dataset] exists (list of strings or None)
         # assertion: self._cache['oxts']['data'][dataset] dict exists (can be empty)
@@ -606,6 +606,6 @@ class KITTITrackletsReader(KITTIReader):
                 # process and cache frame data
                 values_float = [float(v) for v in values_str[:25]]
                 values_int = [int(v) for v in values_str[25:]]
-                self._cache['oxts']['data'][dataset][frameId] = NavigationInfo(*tuple(values_float + values_int))._asdict()
-        # assertion: self._cache['oxts']['data'][dataset][frameId] exists (NavigationInfo-like OrderedDict or None)
+                self._cache['oxts']['data'][dataset][frameId] = _NavigationInfo(*tuple(values_float + values_int))._asdict()
+        # assertion: self._cache['oxts']['data'][dataset][frameId] exists (_NavigationInfo-like OrderedDict or None)
         return self._cache['oxts']['data'][dataset][frameId]
