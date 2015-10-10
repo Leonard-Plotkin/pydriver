@@ -312,7 +312,7 @@ class KITTIReader(BaseReader):
 
     def _readCamCalibration(self, filename):
         def line2values(line):
-            return [float(v) for v in line.split(":")[1].strip().split(" ")]
+            return [float(v) for v in line.strip().split(" ")[1:]]
         def getMatrix(values, shape):
             return np.matrix(values, dtype = FLOAT_dtype).reshape(shape)
         def padMatrix(matrix_raw):
