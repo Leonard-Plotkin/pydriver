@@ -497,6 +497,72 @@ class KITTITrackletsReader(KITTIReader):
         return sorted(list(_union(*[os.listdir(os.path.dirname(image_dir)) for image_dir in self._getImageDirs('0')])))
 
     def getFrameInfo(self, frameId, dataset):
+        """See :func:`~pydriver.datasets.base.BaseReader.getFrameInfo` for general description
+
+        If navigation data is available (in the *'oxts'* directory), the result will contain an additional key:
+
+        'navigation': OrderedDict
+            'lat': float
+                latitude of the oxts-unit (deg)
+            'lon': float
+                longitude of the oxts-unit (deg)
+            'alt': float
+                altitude of the oxts-unit (m)
+            'roll': float
+                roll angle (rad),  0 = level, positive = left side up (-pi..pi)
+            'pitch': float
+                pitch angle (rad), 0 = level, positive = front down (-pi/2..pi/2)
+            'yaw': float
+                heading (rad),     0 = east,  positive = counter clockwise (-pi..pi)
+            'vn': float
+                velocity towards north (m/s)
+            've': float
+                velocity towards east (m/s)
+            'vf': float
+                forward velocity, i.e. parallel to earth-surface (m/s)
+            'vl': float
+                leftward velocity, i.e. parallel to earth-surface (m/s)
+            'vu': float
+                upward velocity, i.e. perpendicular to earth-surface (m/s)
+            'ax': float
+                acceleration in x, i.e. in direction of vehicle front (m/s^2)
+            'ay': float
+                acceleration in y, i.e. in direction of vehicle left (m/s^2)
+            'az': float
+                acceleration in z, i.e. in direction of vehicle top (m/s^2)
+            'af': float
+                forward acceleration (m/s^2)
+            'al': float
+                leftward acceleration (m/s^2)
+            'au': float
+                upward acceleration (m/s^2)
+            'wx': float
+                angular rate around x (rad/s)
+            'wy': float
+                angular rate around y (rad/s)
+            'wz': float
+                angular rate around z (rad/s)
+            'wf': float
+                angular rate around forward axis (rad/s)
+            'wl': float
+                angular rate around leftward axis (rad/s)
+            'wu': float
+                angular rate around upward axis (rad/s)
+            'posacc': float
+                velocity accuracy (north/east in m)
+            'velacc': float
+                velocity accuracy (north/east in m/s)
+            'navstat': int
+                navigation status
+            'numsats': int
+                number of satellites tracked by primary GPS receiver
+            'posmode': int
+                position mode of primary GPS receiver
+            'velmode': int
+                velocity mode of primary GPS receiver
+            'orimode': int
+                orientation mode of primary GPS receiver
+        """
         info = super(KITTITrackletsReader, self).getFrameInfo(frameId, dataset)
         # add navigation information if available
         oxts = self._getOxtsInfo(frameId, dataset)
