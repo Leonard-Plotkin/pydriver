@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division
 
-import copy, math, os, re
+from collections import namedtuple
+import copy
+import math
+import os
+import re
+import warnings
 
 import numpy as np
 
@@ -128,6 +133,43 @@ def writeLabels(labels, filepath, includeAlpha = True):
     with open(filepath, mode='w') as f:
         for label in labels:
             f.write(label2line(label))
+
+
+# named tuples definition
+
+NavigationInfo = namedtuple('NavigationInfo', [
+    'lat',      # latitude of the oxts-unit (deg)
+    'lon',      # longitude of the oxts-unit (deg)
+    'alt',      # altitude of the oxts-unit (m)
+    'roll',     # roll angle (rad),  0 = level, positive = left side up (-pi..pi)
+    'pitch',    # pitch angle (rad), 0 = level, positive = front down (-pi/2..pi/2)
+    'yaw',      # heading (rad),     0 = east,  positive = counter clockwise (-pi..pi)
+    'vn',       # velocity towards north (m/s)
+    've',       # velocity towards east (m/s)
+    'vf',       # forward velocity, i.e. parallel to earth-surface (m/s)
+    'vl',       # leftward velocity, i.e. parallel to earth-surface (m/s)
+    'vu',       # upward velocity, i.e. perpendicular to earth-surface (m/s)
+    'ax',       # acceleration in x, i.e. in direction of vehicle front (m/s^2)
+    'ay',       # acceleration in y, i.e. in direction of vehicle left (m/s^2)
+    'az',       # acceleration in z, i.e. in direction of vehicle top (m/s^2)
+    'af',       # forward acceleration (m/s^2)
+    'al',       # leftward acceleration (m/s^2)
+    'au',       # upward acceleration (m/s^2)
+    'wx',       # angular rate around x (rad/s)
+    'wy',       # angular rate around y (rad/s)
+    'wz',       # angular rate around z (rad/s)
+    'wf',       # angular rate around forward axis (rad/s)
+    'wl',       # angular rate around leftward axis (rad/s)
+    'wu',       # angular rate around upward axis (rad/s)
+    'posacc',   # velocity accuracy (north/east in m)
+    'velacc',   # velocity accuracy (north/east in m/s)
+    'navstat',  # navigation status
+    'numsats',  # number of satellites tracked by primary GPS receiver
+    'posmode',  # position mode of primary GPS receiver
+    'velmode',  # velocity mode of primary GPS receiver
+    'orimode',  # orientation mode of primary GPS receiver
+    ])
+
 
 # dataset readers implementation
 
@@ -435,7 +477,8 @@ class KITTIObjectsReader(KITTIReader):
 class KITTITrackletsReader(KITTIReader):
     """Data extractor for KITTI tracklets dataset
 
-    The data directory must contain the directories *'calib'*, *'image_02'* and/or *'image_03'* and optionally *'label_02'*.
+    The data directory must contain the directories *'calib'*, *'image_02'* and/or *'image_03'*.
+    Optional directories are *'label_02'* and *'oxts'*.
 
     See :class:`KITTIReader` for more information.
     """
@@ -446,11 +489,20 @@ class KITTITrackletsReader(KITTIReader):
         self._cache = {
                        'calibration': {},
                        'labels': {},
+                       'oxts': {'files': {}, 'data': {}},
                        }
 
     def getDatasets(self):
         # use a dummy dataset, we only need the directory above it
         return sorted(list(_union(*[os.listdir(os.path.dirname(image_dir)) for image_dir in self._getImageDirs('0')])))
+
+    def getFrameInfo(self, frameId, dataset):
+        info = super(KITTITrackletsReader, self).getFrameInfo(frameId, dataset)
+        # add navigation information if available
+        oxts = self._getOxtsInfo(frameId, dataset)
+        if oxts is not None:
+            info['navigation'] = oxts
+        return info
 
 
     # -- directory functions ---
@@ -469,6 +521,25 @@ class KITTITrackletsReader(KITTIReader):
             # no labels given
             return None
 
+    def _getOxtsDir(self):
+        oxtsDir = os.path.join(self._dir, "oxts")
+        if os.path.exists(oxtsDir):
+            return oxtsDir
+        else:
+            # no oxts data given
+            warnings.warn(UserWarning('"{}" directory not found, navigation data not available.'.format(oxtsDir)))
+            return None
+    def _getOxtsFile(self, dataset):
+        oxtsDir = self._getOxtsDir()
+        if oxtsDir is None:
+            return None
+        oxtsFile = os.path.join(oxtsDir, '{}.txt'.format(dataset))
+        if os.path.exists(oxtsFile):
+            return oxtsFile
+        else:
+            # no oxts data given
+            warnings.warn(UserWarning('"{}" file not found, navigation data for dataset {} not available.'.format(oxtsFile, dataset)))
+            return None
 
     # --- internal functions ---
 
@@ -503,3 +574,38 @@ class KITTITrackletsReader(KITTIReader):
         if dataset not in self._cache['calibration']:
             self._cache['calibration'][dataset] = self._readCamCalibration(os.path.join(self._getCalibrationDir(), "%s.txt" % dataset))
         return self._cache['calibration'][dataset]
+
+    def _getOxtsInfo(self, frameId, dataset):
+        """Extract oxts navigation data"""
+        if dataset not in self._cache['oxts']['files']:
+            # dataset file not in cache
+            oxtsFile = self._getOxtsFile(dataset)
+            if oxtsFile is None:
+                # no oxts file
+                self._cache['oxts']['files'][dataset] = None
+            else:
+                # read file lines
+                with open(oxtsFile, 'r') as f:
+                    lines = [line for line in f.read().strip().split('\n') if line]
+                self._cache['oxts']['files'][dataset] = lines
+            # initialize dataset dictionary, key: frameId, value: NavigationInfo-like OrderedDict or None
+            self._cache['oxts']['data'][dataset] = {}
+        # assertion: self._cache['oxts']['files'][dataset] exists (list of strings or None)
+        # assertion: self._cache['oxts']['data'][dataset] dict exists (can be empty)
+        if frameId not in self._cache['oxts']['data'][dataset]:
+            # get text file lines for this dataset
+            lines = self._cache['oxts']['files'][dataset]
+            if lines is None:
+                # no information available
+                self._cache['oxts']['data'][dataset][frameId] = None
+            else:
+                if frameId >= len(lines):
+                    raise ValueError('Navigation information for frame {} in dataset {} not found.'.format(frameId, dataset))
+                # list with values (as strings) in text file line for this frame
+                values_str = lines[frameId].strip().split(' ')
+                # process and cache frame data
+                values_float = [float(v) for v in values_str[:25]]
+                values_int = [int(v) for v in values_str[25:]]
+                self._cache['oxts']['data'][dataset][frameId] = NavigationInfo(*tuple(values_float + values_int))._asdict()
+        # assertion: self._cache['oxts']['data'][dataset][frameId] exists (NavigationInfo-like OrderedDict or None)
+        return self._cache['oxts']['data'][dataset][frameId]
