@@ -20,12 +20,12 @@ The `PyDriver repository <https://github.com/lpltk/pydriver>`_ is located at Git
 - `SciPy <http://www.scipy.org/>`_ (NumPy>=1.8.1, SciPy Library, Matplotlib)
 - `scikit-learn <http://scikit-learn.org/>`_
 - `scikit-image <http://scikit-image.org/>`_
-- `Shapely <https://pypi.python.org/pypi/Shapely>`_
 
 **Optional software**
 
 - `OpenCV <http://opencv.org/>`_ (used for stereo image processing)
 - `PyOpenCL <http://documen.tician.de/pyopencl/>`_ and hardware drivers with OpenCL support (enables GPU usage)
+- `Shapely <https://pypi.python.org/pypi/Shapely>`_ (enables non-maximum suppression during object recognition)
 - `Sphinx <http://sphinx-doc.org/>`_ (documentation generator)
 
 --------
@@ -53,7 +53,7 @@ Python 3.x
 
 .. code-block:: none
 
-    sudo apt-get install python3-dev python3-scipy python3-skimage python3-shapely cython3
+    sudo apt-get install python3-dev python3-scipy python3-skimage cython3
     sudo pip3 install --upgrade cython sklearn
 
 **Optional Python packages**
@@ -62,7 +62,7 @@ OpenCV 3 has support for Python 3.x, but manual installation may be required.
 
 .. code-block:: none
 
-    sudo apt-get install python3-pyopencl
+    sudo apt-get install python3-pyopencl python3-shapely
     pip3 install --upgrade sphinx
 
 Python 2.7
@@ -72,15 +72,14 @@ Python 2.7
 
 .. code-block:: none
 
-    sudo apt-get install python-dev python-pip python-scipy python-skimage python-shapely cython
+    sudo apt-get install python-dev python-pip python-scipy python-skimage cython
     sudo pip2 install --upgrade cython sklearn
 
 **Optional Python packages**
 
 .. code-block:: none
 
-    sudo apt-get install python-opencv
-    sudo apt-get install python-pyopencl
+    sudo apt-get install python-opencv python-pyopencl python-shapely
     pip2 install --upgrade sphinx
 
 Final step
@@ -122,9 +121,9 @@ run the WinPython command prompt. You should be able to start Python there and e
 Python binary wheel
 -------------------
 Use the binary wheel to install PyDriver in an existing Python installation. The installation
-command is *pip install <wheel.whl>*. The required Python packages will be installed automatically,
-but there are known issues with some of them. Specifically, you may need to install Shapely from
-its binary wheel manually instead of relying on automatic installation. This option does not
+command is *pip install <wheel.whl>*. The required Python packages should be installed
+automatically, but this is not always possible. In this case you may need to install them from
+their binary wheels manually instead of relying on automatic installation. This option does not
 require Point Cloud Library or CMake to be installed. See `Compile from source`_ for more
 information about installing dependencies.
 
@@ -145,8 +144,9 @@ For Windows the recommended way to install large parts of the required software 
 Matplotlib and other packages. The homepage of `Christoph Gohlke
 <http://www.lfd.uci.edu/~gohlke/pythonlibs/>`_, who is doing great work maintaining it, offers
 binary wheels for many Python packages including those for which an official Windows binary
-distribution is not provided. Keep in mind that you will probably need large amounts of memory
-and therefore you should use 64-bit packages.
+distribution is not provided. The installation command is *pip install <wheel.whl>*. Keep in mind
+that you will probably need large amounts of memory and therefore you should use 64-bit Python
+and corresponding packages.
 
 **PCL**
 
