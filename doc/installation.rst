@@ -79,8 +79,7 @@ Python 2.7
 
 .. code-block:: none
 
-    sudo apt-get install python-opencv python-shapely
-    sudo apt-get install python-pyopencl
+    sudo apt-get install python-opencv python-pyopencl python-shapely
     pip2 install --upgrade sphinx
 
 Final step
@@ -145,8 +144,9 @@ For Windows the recommended way to install large parts of the required software 
 Matplotlib and other packages. The homepage of `Christoph Gohlke
 <http://www.lfd.uci.edu/~gohlke/pythonlibs/>`_, who is doing great work maintaining it, offers
 binary wheels for many Python packages including those for which an official Windows binary
-distribution is not provided. Keep in mind that you will probably need large amounts of memory
-and therefore you should use 64-bit Python and corresponding packages.
+distribution is not provided. The installation command is *pip install <wheel.whl>*. Keep in mind
+that you will probably need large amounts of memory and therefore you should use 64-bit Python
+and corresponding packages.
 
 **PCL**
 
