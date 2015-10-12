@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>The datasets Module &mdash; PyDriver 1.0.1.dev5+f8e46fd documentation</title>
+  <title>The datasets Module &mdash; PyDriver 1.0.1.dev9+3f8937b documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="PyDriver 1.0.1.dev5+f8e46fd documentation" href="index.html"/>
+    <link rel="top" title="PyDriver 1.0.1.dev9+3f8937b documentation" href="index.html"/>
         <link rel="up" title="Reference" href="reference.html"/>
         <link rel="next" title="The detectors Module" href="detectors.html"/>
         <link rel="prev" title="Basics" href="main.html"/> 
@@ -669,111 +669,80 @@ further dimension with 3 (RGB) or 4 (RGBA) values for channel information.</p>
 <dt id="pydriver.datasets.kitti.KITTITrackletsReader">
 <em class="property">class </em><code class="descclassname">pydriver.datasets.kitti.</code><code class="descname">KITTITrackletsReader</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.kitti.KITTITrackletsReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data extractor for KITTI tracklets dataset</p>
-<p>The data directory must contain the directories <em>&#8216;calib&#8217;</em>, <em>&#8216;image_02&#8217;</em> and/or <em>&#8216;image_03&#8217;</em> and optionally <em>&#8216;label_02&#8217;</em>.</p>
+<p>The data directory must contain the directories <em>&#8216;calib&#8217;</em>, <em>&#8216;image_02&#8217;</em> and/or <em>&#8216;image_03&#8217;</em>.
+Optional directories are <em>&#8216;label_02&#8217;</em> and <em>&#8216;oxts&#8217;</em>.</p>
 <p>See <a class="reference internal" href="#pydriver.datasets.kitti.KITTIReader" title="pydriver.datasets.kitti.KITTIReader"><code class="xref py py-class docutils literal"><span class="pre">KITTIReader</span></code></a> for more information.</p>
 <dl class="method">
 <dt id="pydriver.datasets.kitti.KITTITrackletsReader.getFrameInfo">
-<code class="descname">getFrameInfo</code><span class="sig-paren">(</span><em>frameId</em>, <em>dataset=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.kitti.KITTITrackletsReader.getFrameInfo" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get information about a frame in the specified dataset</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt>frameId: int</dt>
-<dd><p class="first last">Frame ID of the requested frame</p>
-</dd>
-<dt>dataset: str or None, optional</dt>
-<dd><p class="first last">Dataset with the requested frame, only required by <a class="reference internal" href="#pydriver.datasets.kitti.KITTITrackletsReader" title="pydriver.datasets.kitti.KITTITrackletsReader"><code class="xref py py-class docutils literal"><span class="pre">KITTITrackletsReader</span></code></a></p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dictionary with information about the frame:</p>
-<dl class="last docutils">
-<dt>&#8216;dataset&#8217;: str or None</dt>
-<dd><p class="first last">Dataset of the frame, <em>None</em> for <a class="reference internal" href="#pydriver.datasets.kitti.KITTIObjectsReader" title="pydriver.datasets.kitti.KITTIObjectsReader"><code class="xref py py-class docutils literal"><span class="pre">KITTIObjectsReader</span></code></a></p>
-</dd>
-<dt>&#8216;frameId&#8217;: int</dt>
-<dd><p class="first last">Frame ID</p>
-</dd>
-<dt>&#8216;img_left&#8217;: NumPy array</dt>
-<dd><p class="first last">Left image, can be None</p>
-</dd>
-<dt>&#8216;img_right&#8217;: NumPy array</dt>
-<dd><p class="first last">Right image, can be None</p>
-</dd>
-<dt>&#8216;lidar&#8217;: dict{&#8216;XYZ&#8217;: NumPy array, &#8216;RGB&#8217;: NumPy array}</dt>
-<dd><p class="first last">XYZ (transformed to camera coordinates, rectification matrix applied) and RGB (reflectance, gray) data from lidar sensor, can be None</p>
-</dd>
-<dt>&#8216;calibration&#8217;: dict</dt>
+<code class="descname">getFrameInfo</code><span class="sig-paren">(</span><em>frameId</em>, <em>dataset</em><span class="sig-paren">)</span><a class="headerlink" href="#pydriver.datasets.kitti.KITTITrackletsReader.getFrameInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#pydriver.datasets.base.BaseReader.getFrameInfo" title="pydriver.datasets.base.BaseReader.getFrameInfo"><code class="xref py py-func docutils literal"><span class="pre">getFrameInfo()</span></code></a> for general description</p>
+<p>If navigation data is available (in the <em>&#8216;oxts&#8217;</em> directory), the result will contain an additional key:</p>
+<dl class="docutils">
+<dt>&#8216;navigation&#8217;: OrderedDict</dt>
 <dd><dl class="first last docutils">
-<dt>Calibration matrices</dt>
-<dd><dl class="first last docutils">
-<dt>&#8216;reprojection&#8217;: np.matrix[FLOAT_dtype]</dt>
-<dd><p class="first last">3D reconstruction out of disparity, shape: (4, 4)</p>
-</dd>
-<dt>&#8216;projection_left&#8217;: np.matrix[FLOAT_dtype]</dt>
-<dd><p class="first last">Projection of camera coordinates to left camera image, shape: (3, 4)</p>
-</dd>
-<dt>&#8216;projection_right&#8217;: np.matrix[FLOAT_dtype]</dt>
-<dd><p class="first last">Projection of camera coordinates to right camera image, shape: (3, 4)</p>
-</dd>
-<dt>&#8216;rect&#8217;: np.matrix[FLOAT_dtype]</dt>
-<dd><p class="first last">Rectification matrix, shape: (4, 4)</p>
-</dd>
-<dt>&#8216;lidar2cam&#8217;: np.matrix[FLOAT_dtype]</dt>
-<dd><p class="first last">Transformation from lidar to camera coordinates, shape: (4, 4)</p>
-</dd>
+<dt>&#8216;lat&#8217;: float</dt>
+<dd>latitude of the oxts-unit (deg)</dd>
+<dt>&#8216;lon&#8217;: float</dt>
+<dd>longitude of the oxts-unit (deg)</dd>
+<dt>&#8216;alt&#8217;: float</dt>
+<dd>altitude of the oxts-unit (m)</dd>
+<dt>&#8216;roll&#8217;: float</dt>
+<dd>roll angle (rad),  0 = level, positive = left side up (-pi..pi)</dd>
+<dt>&#8216;pitch&#8217;: float</dt>
+<dd>pitch angle (rad), 0 = level, positive = front down (-pi/2..pi/2)</dd>
+<dt>&#8216;yaw&#8217;: float</dt>
+<dd>heading (rad),     0 = east,  positive = counter clockwise (-pi..pi)</dd>
+<dt>&#8216;vn&#8217;: float</dt>
+<dd>velocity towards north (m/s)</dd>
+<dt>&#8216;ve&#8217;: float</dt>
+<dd>velocity towards east (m/s)</dd>
+<dt>&#8216;vf&#8217;: float</dt>
+<dd>forward velocity, i.e. parallel to earth-surface (m/s)</dd>
+<dt>&#8216;vl&#8217;: float</dt>
+<dd>leftward velocity, i.e. parallel to earth-surface (m/s)</dd>
+<dt>&#8216;vu&#8217;: float</dt>
+<dd>upward velocity, i.e. perpendicular to earth-surface (m/s)</dd>
+<dt>&#8216;ax&#8217;: float</dt>
+<dd>acceleration in x, i.e. in direction of vehicle front (m/s^2)</dd>
+<dt>&#8216;ay&#8217;: float</dt>
+<dd>acceleration in y, i.e. in direction of vehicle left (m/s^2)</dd>
+<dt>&#8216;az&#8217;: float</dt>
+<dd>acceleration in z, i.e. in direction of vehicle top (m/s^2)</dd>
+<dt>&#8216;af&#8217;: float</dt>
+<dd>forward acceleration (m/s^2)</dd>
+<dt>&#8216;al&#8217;: float</dt>
+<dd>leftward acceleration (m/s^2)</dd>
+<dt>&#8216;au&#8217;: float</dt>
+<dd>upward acceleration (m/s^2)</dd>
+<dt>&#8216;wx&#8217;: float</dt>
+<dd>angular rate around x (rad/s)</dd>
+<dt>&#8216;wy&#8217;: float</dt>
+<dd>angular rate around y (rad/s)</dd>
+<dt>&#8216;wz&#8217;: float</dt>
+<dd>angular rate around z (rad/s)</dd>
+<dt>&#8216;wf&#8217;: float</dt>
+<dd>angular rate around forward axis (rad/s)</dd>
+<dt>&#8216;wl&#8217;: float</dt>
+<dd>angular rate around leftward axis (rad/s)</dd>
+<dt>&#8216;wu&#8217;: float</dt>
+<dd>angular rate around upward axis (rad/s)</dd>
+<dt>&#8216;posacc&#8217;: float</dt>
+<dd>velocity accuracy (north/east in m)</dd>
+<dt>&#8216;velacc&#8217;: float</dt>
+<dd>velocity accuracy (north/east in m/s)</dd>
+<dt>&#8216;navstat&#8217;: int</dt>
+<dd>navigation status</dd>
+<dt>&#8216;numsats&#8217;: int</dt>
+<dd>number of satellites tracked by primary GPS receiver</dd>
+<dt>&#8216;posmode&#8217;: int</dt>
+<dd>position mode of primary GPS receiver</dd>
+<dt>&#8216;velmode&#8217;: int</dt>
+<dd>velocity mode of primary GPS receiver</dd>
+<dt>&#8216;orimode&#8217;: int</dt>
+<dd>orientation mode of primary GPS receiver</dd>
 </dl>
 </dd>
 </dl>
-</dd>
-<dt>&#8216;labels&#8217;: list of dictionaries</dt>
-<dd><dl class="first last docutils">
-<dt>List with labels in this frame. Each label contains the following keys:</dt>
-<dd><dl class="first last docutils">
-<dt>&#8216;category&#8217;: string</dt>
-<dd><p class="first last">Possible values: &#8216;car&#8217;, &#8216;van&#8217;, &#8216;truck&#8217;, &#8216;pedestrian&#8217;, &#8216;person_sitting&#8217;, &#8216;cyclist&#8217;, &#8216;tram&#8217;, &#8216;misc&#8217;, &#8216;dontcare&#8217;</p>
-</dd>
-<dt>&#8216;box2D&#8217;: dict</dt>
-<dd><p class="first last">Bounding box in the left image, keys: <em>&#8216;left&#8217;</em>, <em>&#8216;top&#8217;</em>, <em>&#8216;right&#8217;</em>, <em>&#8216;bottom&#8217;</em></p>
-</dd>
-<dt>&#8216;box3D&#8217;: dict</dt>
-<dd><dl class="first last docutils">
-<dt>&#8216;location&#8217;: dict</dt>
-<dd><p class="first last">Center of the 3D box, keys: <em>&#8216;x&#8217;</em>, <em>&#8216;y&#8217;</em>, <em>&#8216;z&#8217;</em></p>
-</dd>
-<dt>&#8216;dimensions&#8217;: dict</dt>
-<dd><p class="first last">Size of the 3D box, keys: <em>&#8216;height&#8217;</em>, <em>&#8216;width&#8217;</em>, <em>&#8216;length&#8217;</em></p>
-</dd>
-<dt>&#8216;rotation_y&#8217;: float</dt>
-<dd><p class="first last">Object rotation around Y-axis in camera coordinates [-pi...pi], 0 = facing along X-axis</p>
-</dd>
-</dl>
-</dd>
-<dt>&#8216;info&#8217;: dict</dt>
-<dd><dl class="first last docutils">
-<dt>&#8216;truncated&#8217;: float</dt>
-<dd><p class="first last">Float from 0 (non-truncated) to 1 (truncated), where <em>truncated</em> refers to the object leaving image boundaries</p>
-</dd>
-<dt>&#8216;occluded&#8217;: int</dt>
-<dd><p class="first last">Occlusion status (0 = fully visible, 1 = partly occluded, 2 = largely occluded, 3 = unknown)</p>
-</dd>
-<dt>&#8216;trackId&#8217;: int, optional</dt>
-<dd><p class="first last">Unique tracking id of this object within this sequence, supplied only by <cite>KITTITrackletsReader</cite></p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
@@ -963,7 +932,7 @@ will be truncated to be within image boundaries and saved as &#8216;box2D&#8217;
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.1.dev5+f8e46fd',
+            VERSION:'1.0.1.dev9+3f8937b',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
