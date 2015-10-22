@@ -136,29 +136,38 @@ class OpenCVMatcher(object):
     def __init__(self, **kwargs):
         """Initialize OpenCVMatcher instance
 
-        Keyword arguments are the non-default parameters to pass to *cv2.StereoSGBM()*.
+        Keyword arguments are the non-default parameters to pass to *cv2.StereoSGBM_create()*.
 
         The class uses its own default parameters which do not match OpenCV defaults.
         """
-        # keyword arguments for cv2.StereoSGBM()
-        SADWindowSize = kwargs.get('SADWindowSize', 1)
+        # import OpenCV here so we can check whether OpenCV is installed before using this class
+        import cv2
+
+        # keyword arguments for cv2.StereoSGBM_create()
+        blockSize = kwargs.get('blockSize', 1)
         self.params = {
             'minDisparity': kwargs.get('minDisparity', 0),
             'numDisparities': kwargs.get('numDisparities', 128),
-            'SADWindowSize': SADWindowSize,
-            'P1': kwargs.get('P1', 16 * 3 * min(SADWindowSize, 7)**2),  # X * 3[channels] * SADWindowSize**2
-            'P2': kwargs.get('P2', 128 * 3 * min(SADWindowSize, 7)**2), # X * 3[channels] * SADWindowSize**2
+            'blockSize': blockSize,
+            'P1': kwargs.get('P1', 16 * 3 * min(blockSize, 7)**2),  # X * 3[channels] * blockSize**2
+            'P2': kwargs.get('P2', 128 * 3 * min(blockSize, 7)**2), # X * 3[channels] * blockSize**2
             'disp12MaxDiff': kwargs.get('disp12MaxDiff', 1),
             'preFilterCap': kwargs.get('preFilterCap', 0),
             'uniquenessRatio': kwargs.get('uniquenessRatio', 10),
             'speckleWindowSize': kwargs.get('speckleWindowSize', 200),
             'speckleRange': kwargs.get('speckleRange', 16),
-            'fullDP': True,                                             # True uses a lot of memory
         }
-        # import OpenCV here so we can dynamically decide whether to use this class
-        import cv2
         # initialize StereoSGBM() instance
-        self._StereoSGBM = cv2.StereoSGBM(**self.params)
+        if 'StereoSGBM_create' in dir(cv2):
+            # OpenCV 3
+            self.params['mode'] = kwargs.get('mode', cv2.STEREO_SGBM_MODE_SGBM)
+            self._StereoSGBM = cv2.StereoSGBM_create(**self.params)
+        else:
+            # OpenCV 2 compatibility
+            self.params['SADWindowSize'] = self.params['blockSize']
+            self.params['fullDP'] = bool(kwargs.get('mode', False))
+            del self.params['blockSize']
+            self._StereoSGBM = cv2.StereoSGBM(**self.params)
 
     def computeDisparity(self, cnp.ndarray img_left, cnp.ndarray img_right):
         """Compute left disparity map for a pair of left and right images
