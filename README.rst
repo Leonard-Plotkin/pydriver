@@ -34,3 +34,29 @@ Where are the docs?
 
 Where is the source?
   The most current development version is available here: http://github.com/lpltk/pydriver
+
+History
+  The project emerged from a student research project ("Studienarbeit") at Karlsruhe
+  Institute of Technology (KIT). The thesis written in German is available here: `PyDriver:
+  Entwicklung eines Frameworks für räumliche Detektion und Klassifikation von Objekten in Fahrzeugumgebung
+  <https://github.com/lpltk/pydriver/releases/download/v0.1.0/PyDriver_thesis.pdf>`_.
+  The publicly available PyDriver releases are missing some of the original features (so
+  that PyDriver can be distributed under the MIT licence) but can still be used to reproduce
+  the `published results
+  <http://www.cvlibs.net/datasets/kitti/eval_object_detail.php?result=d739924bc40f899123df46f7f022e868effb4d78>`_.
+
+Citation
+  When using this software in your research, please cite:
+
+  .. code:: TeX
+
+    @MastersThesis{thesisSTUDIENARBEITPlotkin,
+    author = {Leonard Plotkin},
+    title = {PyDriver: Entwicklung eines Frameworks für räumliche Detektion und Klassifikation von Objekten in Fahrzeugumgebung},
+    school = {Karlsruhe Institute of Technology},
+    type = {Bachelor's Thesis ({Studienarbeit})},
+    address = {Germany},
+    month = MAR,
+    year = 2015,
+    url = {https://github.com/lpltk/pydriver/releases/download/v0.1.0/PyDriver_thesis.pdf}
+    }
